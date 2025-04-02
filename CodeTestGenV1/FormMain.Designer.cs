@@ -41,9 +41,6 @@
             this.materialLabel6 = new MaterialSkin.Controls.MaterialLabel();
             this.materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
             this.lostBorderPanel2 = new ReaLTaiizor.Controls.LostBorderPanel();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.materialRaisedButton6 = new MaterialSkin.Controls.MaterialRaisedButton();
             this.materialRaisedButton5 = new MaterialSkin.Controls.MaterialRaisedButton();
             this.lostBorderPanel1 = new ReaLTaiizor.Controls.LostBorderPanel();
@@ -74,7 +71,6 @@
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).BeginInit();
             this.lostBorderPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.lostBorderPanel1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.SuspendLayout();
@@ -211,6 +207,7 @@
             this.fastColoredTextBox1.CharWidth = 10;
             this.fastColoredTextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.fastColoredTextBox1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.fastColoredTextBox1.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.fastColoredTextBox1.IsReplaceMode = false;
             this.fastColoredTextBox1.Location = new System.Drawing.Point(23, 17);
             this.fastColoredTextBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -248,7 +245,7 @@
             this.materialLabel6.Location = new System.Drawing.Point(37, 174);
             this.materialLabel6.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel6.Name = "materialLabel6";
-            this.materialLabel6.Size = new System.Drawing.Size(180, 24);
+            this.materialLabel6.Size = new System.Drawing.Size(179, 23);
             this.materialLabel6.TabIndex = 1;
             this.materialLabel6.Text = "Điệu Khiện Cho Test";
             // 
@@ -264,7 +261,7 @@
             this.materialLabel3.Location = new System.Drawing.Point(37, 17);
             this.materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel3.Name = "materialLabel3";
-            this.materialLabel3.Size = new System.Drawing.Size(109, 24);
+            this.materialLabel3.Size = new System.Drawing.Size(108, 23);
             this.materialLabel3.TabIndex = 0;
             this.materialLabel3.Text = "Lưu lại Test";
             this.materialLabel3.Click += new System.EventHandler(this.materialLabel3_Click_1);
@@ -276,7 +273,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lostBorderPanel2.BackColor = System.Drawing.Color.DimGray;
             this.lostBorderPanel2.BorderColor = System.Drawing.Color.DodgerBlue;
-            this.lostBorderPanel2.Controls.Add(this.dataGridView1);
             this.lostBorderPanel2.Controls.Add(this.materialRaisedButton6);
             this.lostBorderPanel2.Controls.Add(this.materialRaisedButton5);
             this.lostBorderPanel2.Font = new System.Drawing.Font("Segoe UI", 12F);
@@ -288,33 +284,6 @@
             this.lostBorderPanel2.ShowText = false;
             this.lostBorderPanel2.Size = new System.Drawing.Size(372, 304);
             this.lostBorderPanel2.TabIndex = 2;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2});
-            this.dataGridView1.Location = new System.Drawing.Point(19, 69);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.Size = new System.Drawing.Size(329, 164);
-            this.dataGridView1.TabIndex = 6;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Column1";
-            this.Column1.MinimumWidth = 6;
-            this.Column1.Name = "Column1";
-            this.Column1.Width = 125;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Column2";
-            this.Column2.MinimumWidth = 6;
-            this.Column2.Name = "Column2";
-            this.Column2.Width = 125;
             // 
             // materialRaisedButton6
             // 
@@ -417,7 +386,7 @@
             this.materialLabel7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.materialLabel7.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel7.Name = "materialLabel7";
-            this.materialLabel7.Size = new System.Drawing.Size(0, 24);
+            this.materialLabel7.Size = new System.Drawing.Size(0, 23);
             this.materialLabel7.TabIndex = 0;
             // 
             // tabPage2
@@ -524,7 +493,7 @@
             this.materialLabel5.Location = new System.Drawing.Point(13, 335);
             this.materialLabel5.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel5.Name = "materialLabel5";
-            this.materialLabel5.Size = new System.Drawing.Size(202, 24);
+            this.materialLabel5.Size = new System.Drawing.Size(202, 23);
             this.materialLabel5.TabIndex = 13;
             this.materialLabel5.Text = "C++ Compiler Options:";
             // 
@@ -553,7 +522,7 @@
             this.materialLabel4.Location = new System.Drawing.Point(13, 294);
             this.materialLabel4.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel4.Name = "materialLabel4";
-            this.materialLabel4.Size = new System.Drawing.Size(226, 24);
+            this.materialLabel4.Size = new System.Drawing.Size(226, 23);
             this.materialLabel4.TabIndex = 11;
             this.materialLabel4.Text = "Python Compiler Options:";
             // 
@@ -583,7 +552,7 @@
             this.materialLabel2.Location = new System.Drawing.Point(13, 161);
             this.materialLabel2.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel2.Name = "materialLabel2";
-            this.materialLabel2.Size = new System.Drawing.Size(64, 24);
+            this.materialLabel2.Size = new System.Drawing.Size(64, 23);
             this.materialLabel2.TabIndex = 4;
             this.materialLabel2.Text = "Mode:";
             // 
@@ -612,7 +581,7 @@
             this.materialLabel1.Location = new System.Drawing.Point(13, 66);
             this.materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel1.Name = "materialLabel1";
-            this.materialLabel1.Size = new System.Drawing.Size(83, 24);
+            this.materialLabel1.Size = new System.Drawing.Size(83, 23);
             this.materialLabel1.TabIndex = 1;
             this.materialLabel1.Text = "API KEY:";
             // 
@@ -659,7 +628,6 @@
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).EndInit();
             this.lostBorderPanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.lostBorderPanel1.ResumeLayout(false);
             this.lostBorderPanel1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
@@ -704,9 +672,6 @@
         private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton4;
         private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton5;
         private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton6;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
     }
 }
 
