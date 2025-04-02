@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CodeTestGenV1")]
+[assembly: AssemblyTitle("CodeTestGen")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("ReviOS 11 24.06")]
-[assembly: AssemblyProduct("CodeTestGenV1")]
+[assembly: AssemblyProduct("CodeTestGen")]
 [assembly: AssemblyCopyright("Copyright © ReviOS 11 24.06 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("43c7c909-72d8-4952-addd-810196106b00")]
+[assembly: Guid("0018e24b-cce7-418f-9400-cc14fb066810")]
 
 // Version information for an assembly consists of the following four values:
 //

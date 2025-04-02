@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CodeTestGenV1.Properties
+namespace CodeTestGen.Properties
 {
 
 
