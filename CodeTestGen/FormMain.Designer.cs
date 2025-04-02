@@ -41,9 +41,12 @@
             this.materialLabel6 = new MaterialSkin.Controls.MaterialLabel();
             this.materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
             this.lostBorderPanel2 = new ReaLTaiizor.Controls.LostBorderPanel();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.materialRaisedButton6 = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.materialRaisedButton5 = new MaterialSkin.Controls.MaterialRaisedButton();
             this.lostBorderPanel1 = new ReaLTaiizor.Controls.LostBorderPanel();
+            this.materialRaisedButton7 = new MaterialSkin.Controls.MaterialRaisedButton();
             this.crownDropDownList1 = new ReaLTaiizor.Controls.CrownDropDownList();
             this.materialRaisedButton3 = new MaterialSkin.Controls.MaterialRaisedButton();
             this.label4 = new System.Windows.Forms.Label();
@@ -63,8 +66,8 @@
             this.materialSingleLineTextField1 = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.materialFlatButton3 = new MaterialSkin.Controls.MaterialFlatButton();
-            this.materialRaisedButton7 = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.materialRaisedButton5 = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.materialRaisedButton8 = new MaterialSkin.Controls.MaterialRaisedButton();
             this.hopeTabPage1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -73,9 +76,9 @@
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).BeginInit();
             this.lostBorderPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.lostBorderPanel1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
             // materialFlatButton1
@@ -211,7 +214,6 @@
             this.fastColoredTextBox1.CharWidth = 8;
             this.fastColoredTextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.fastColoredTextBox1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.fastColoredTextBox1.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.fastColoredTextBox1.IsReplaceMode = false;
             this.fastColoredTextBox1.Location = new System.Drawing.Point(17, 14);
             this.fastColoredTextBox1.Margin = new System.Windows.Forms.Padding(2);
@@ -234,7 +236,7 @@
             this.materialRaisedButton1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialRaisedButton1.Name = "materialRaisedButton1";
             this.materialRaisedButton1.Primary = true;
-            this.materialRaisedButton1.Size = new System.Drawing.Size(224, 32);
+            this.materialRaisedButton1.Size = new System.Drawing.Size(325, 32);
             this.materialRaisedButton1.TabIndex = 2;
             this.materialRaisedButton1.Text = "Tải Code Lên Từ Máy";
             this.materialRaisedButton1.UseVisualStyleBackColor = true;
@@ -279,9 +281,10 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lostBorderPanel2.BackColor = System.Drawing.Color.DimGray;
             this.lostBorderPanel2.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.lostBorderPanel2.Controls.Add(this.materialRaisedButton8);
+            this.lostBorderPanel2.Controls.Add(this.materialRaisedButton5);
             this.lostBorderPanel2.Controls.Add(this.dataGridView1);
             this.lostBorderPanel2.Controls.Add(this.materialRaisedButton6);
-            this.lostBorderPanel2.Controls.Add(this.materialRaisedButton5);
             this.lostBorderPanel2.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.lostBorderPanel2.ForeColor = System.Drawing.Color.White;
             this.lostBorderPanel2.Location = new System.Drawing.Point(18, 195);
@@ -289,8 +292,32 @@
             this.lostBorderPanel2.Name = "lostBorderPanel2";
             this.lostBorderPanel2.Padding = new System.Windows.Forms.Padding(4);
             this.lostBorderPanel2.ShowText = false;
-            this.lostBorderPanel2.Size = new System.Drawing.Size(298, 315);
+            this.lostBorderPanel2.Size = new System.Drawing.Size(299, 315);
             this.lostBorderPanel2.TabIndex = 2;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2});
+            this.dataGridView1.Location = new System.Drawing.Point(14, 60);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(267, 197);
+            this.dataGridView1.TabIndex = 6;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Giới Hạn";
+            this.Column1.Name = "Column1";
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Điều Kiện (Yêu Cầu)";
+            this.Column2.Name = "Column2";
             // 
             // materialRaisedButton6
             // 
@@ -302,26 +329,10 @@
             this.materialRaisedButton6.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialRaisedButton6.Name = "materialRaisedButton6";
             this.materialRaisedButton6.Primary = true;
-            this.materialRaisedButton6.Size = new System.Drawing.Size(267, 47);
+            this.materialRaisedButton6.Size = new System.Drawing.Size(268, 47);
             this.materialRaisedButton6.TabIndex = 5;
-            this.materialRaisedButton6.Text = "Dùng PDF, Ảnh Của Đề Bài Để Tạo Điều Khiện Test!";
+            this.materialRaisedButton6.Text = "Dùng PDF, Ảnh Của Đề Bài Để Tạo Điều Khiện (Yêu Cầu) Cho Test";
             this.materialRaisedButton6.UseVisualStyleBackColor = true;
-            // 
-            // materialRaisedButton5
-            // 
-            this.materialRaisedButton5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.materialRaisedButton5.Depth = 0;
-            this.materialRaisedButton5.Location = new System.Drawing.Point(14, 19);
-            this.materialRaisedButton5.Margin = new System.Windows.Forms.Padding(2);
-            this.materialRaisedButton5.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialRaisedButton5.Name = "materialRaisedButton5";
-            this.materialRaisedButton5.Primary = true;
-            this.materialRaisedButton5.Size = new System.Drawing.Size(267, 32);
-            this.materialRaisedButton5.TabIndex = 4;
-            this.materialRaisedButton5.Text = "Tạo 1 Điều Khiện";
-            this.materialRaisedButton5.UseVisualStyleBackColor = true;
-            this.materialRaisedButton5.Click += new System.EventHandler(this.materialRaisedButton5_Click);
             // 
             // lostBorderPanel1
             // 
@@ -341,9 +352,24 @@
             this.lostBorderPanel1.Name = "lostBorderPanel1";
             this.lostBorderPanel1.Padding = new System.Windows.Forms.Padding(4);
             this.lostBorderPanel1.ShowText = false;
-            this.lostBorderPanel1.Size = new System.Drawing.Size(298, 138);
+            this.lostBorderPanel1.Size = new System.Drawing.Size(299, 138);
             this.lostBorderPanel1.TabIndex = 0;
             this.lostBorderPanel1.Click += new System.EventHandler(this.lostBorderPanel1_Click);
+            // 
+            // materialRaisedButton7
+            // 
+            this.materialRaisedButton7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.materialRaisedButton7.Depth = 0;
+            this.materialRaisedButton7.Location = new System.Drawing.Point(14, 91);
+            this.materialRaisedButton7.Margin = new System.Windows.Forms.Padding(2);
+            this.materialRaisedButton7.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton7.Name = "materialRaisedButton7";
+            this.materialRaisedButton7.Primary = true;
+            this.materialRaisedButton7.Size = new System.Drawing.Size(276, 32);
+            this.materialRaisedButton7.TabIndex = 5;
+            this.materialRaisedButton7.Text = "Check Code Test";
+            this.materialRaisedButton7.UseVisualStyleBackColor = true;
             // 
             // crownDropDownList1
             // 
@@ -351,7 +377,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.crownDropDownList1.Location = new System.Drawing.Point(125, 19);
             this.crownDropDownList1.Name = "crownDropDownList1";
-            this.crownDropDownList1.Size = new System.Drawing.Size(164, 20);
+            this.crownDropDownList1.Size = new System.Drawing.Size(165, 20);
             this.crownDropDownList1.TabIndex = 4;
             this.crownDropDownList1.Text = "crownDropDownList1";
             // 
@@ -365,7 +391,7 @@
             this.materialRaisedButton3.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialRaisedButton3.Name = "materialRaisedButton3";
             this.materialRaisedButton3.Primary = true;
-            this.materialRaisedButton3.Size = new System.Drawing.Size(275, 32);
+            this.materialRaisedButton3.Size = new System.Drawing.Size(276, 32);
             this.materialRaisedButton3.TabIndex = 3;
             this.materialRaisedButton3.Text = "Lưu Lại";
             this.materialRaisedButton3.UseVisualStyleBackColor = true;
@@ -414,7 +440,7 @@
             this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage2.Size = new System.Drawing.Size(818, 415);
+            this.tabPage2.Size = new System.Drawing.Size(916, 527);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Cài Đặt";
             this.tabPage2.Click += new System.EventHandler(this.tabPage2_Click);
@@ -423,12 +449,12 @@
             // 
             this.materialRaisedButton2.Depth = 0;
             this.materialRaisedButton2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.materialRaisedButton2.Location = new System.Drawing.Point(2, 367);
+            this.materialRaisedButton2.Location = new System.Drawing.Point(2, 479);
             this.materialRaisedButton2.Margin = new System.Windows.Forms.Padding(2);
             this.materialRaisedButton2.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialRaisedButton2.Name = "materialRaisedButton2";
             this.materialRaisedButton2.Primary = true;
-            this.materialRaisedButton2.Size = new System.Drawing.Size(814, 46);
+            this.materialRaisedButton2.Size = new System.Drawing.Size(912, 46);
             this.materialRaisedButton2.TabIndex = 19;
             this.materialRaisedButton2.Text = "Lưu Cài Đặt!";
             this.materialRaisedButton2.UseVisualStyleBackColor = true;
@@ -615,31 +641,34 @@
             this.materialFlatButton3.UseVisualStyleBackColor = true;
             this.materialFlatButton3.Click += new System.EventHandler(this.materialFlatButton3_Click);
             // 
-            // materialRaisedButton7
+            // materialRaisedButton5
             // 
-            this.materialRaisedButton7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            this.materialRaisedButton5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.materialRaisedButton7.Depth = 0;
-            this.materialRaisedButton7.Location = new System.Drawing.Point(14, 91);
-            this.materialRaisedButton7.Margin = new System.Windows.Forms.Padding(2);
-            this.materialRaisedButton7.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialRaisedButton7.Name = "materialRaisedButton7";
-            this.materialRaisedButton7.Primary = true;
-            this.materialRaisedButton7.Size = new System.Drawing.Size(275, 32);
-            this.materialRaisedButton7.TabIndex = 5;
-            this.materialRaisedButton7.Text = "Check Code Test";
-            this.materialRaisedButton7.UseVisualStyleBackColor = true;
+            this.materialRaisedButton5.Depth = 0;
+            this.materialRaisedButton5.Location = new System.Drawing.Point(14, 20);
+            this.materialRaisedButton5.Margin = new System.Windows.Forms.Padding(2);
+            this.materialRaisedButton5.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton5.Name = "materialRaisedButton5";
+            this.materialRaisedButton5.Primary = true;
+            this.materialRaisedButton5.Size = new System.Drawing.Size(128, 35);
+            this.materialRaisedButton5.TabIndex = 7;
+            this.materialRaisedButton5.Text = "Lưu lại";
+            this.materialRaisedButton5.UseVisualStyleBackColor = true;
             // 
-            // dataGridView1
+            // materialRaisedButton8
             // 
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(14, 56);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(267, 201);
-            this.dataGridView1.TabIndex = 6;
+            this.materialRaisedButton8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.materialRaisedButton8.Depth = 0;
+            this.materialRaisedButton8.Location = new System.Drawing.Point(159, 20);
+            this.materialRaisedButton8.Margin = new System.Windows.Forms.Padding(2);
+            this.materialRaisedButton8.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton8.Name = "materialRaisedButton8";
+            this.materialRaisedButton8.Primary = true;
+            this.materialRaisedButton8.Size = new System.Drawing.Size(122, 35);
+            this.materialRaisedButton8.TabIndex = 8;
+            this.materialRaisedButton8.Text = "Tải Lại";
+            this.materialRaisedButton8.UseVisualStyleBackColor = true;
             // 
             // FormMain
             // 
@@ -666,11 +695,11 @@
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).EndInit();
             this.lostBorderPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.lostBorderPanel1.ResumeLayout(false);
             this.lostBorderPanel1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -708,11 +737,14 @@
         private System.Windows.Forms.Label label4;
         private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton3;
         private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton4;
-        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton5;
         private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton6;
         private ReaLTaiizor.Controls.CrownDropDownList crownDropDownList1;
         private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton7;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
+        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton8;
+        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton5;
     }
 }
 

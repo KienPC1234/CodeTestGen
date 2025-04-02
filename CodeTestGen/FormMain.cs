@@ -24,6 +24,7 @@ namespace CodeTestGenV1
         public FormMain()
         {
             InitializeComponent();
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             this.MinimumSize = new Size(1000, 600);
             materialFlatButton3.Visible = false;
             materialSkinManager = MaterialSkinManager.Instance;
