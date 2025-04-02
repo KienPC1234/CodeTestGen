@@ -2,7 +2,11 @@
 using System.IO;
 using System.Text.Json;
 using MaterialSkin;
+using MaterialSkin.Controls;
+using ReaLTaiizor.Controls;
 using ReaLTaiizor.Child.Crown;
+using System.Windows.Forms;
+using System.Drawing;
 
 namespace CodeTestGenV1
 {
@@ -25,15 +29,16 @@ namespace CodeTestGenV1
         public string PythonCompilerOptions { get; set; }
         public string CppCompilerOptions { get; set; }
         public string BasePath { get; set; } // Vẫn giữ trong lớp nhưng không lưu vào JSON
-
+        private FormMain form;
         private static readonly string SettingsFilePath = Path.Combine(Hotro.AppPath, "settings.json");
         private readonly MaterialSkinManager skinManager;
 
         // Constructor mặc định với giá trị khởi tạo
-        public Settings(MaterialSkinManager skinManager)
+        public Settings(MaterialSkinManager skinManager,FormMain formMain)
         {
+            form = formMain;
             this.skinManager = skinManager;
-            ApiKey = "";
+            ApiKey = "AIzaSyDar-WvC-WReSGkb6AAPCm7q-KW9b3LdT4"; // Giá trị mặc định
             Mode = "Light"; // Mặc định là Light
             UseAppCompiler = true; // Mặc định bật
             PythonCompilerOptions = "";
@@ -61,23 +66,23 @@ namespace CodeTestGenV1
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error loading settings: {ex.Message}");
+                MessageBox.Show($"Error loading settings: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            return new SettingsData { Mode = "Light", UseAppCompiler = true };
+            return new SettingsData { Mode = "Light", UseAppCompiler = true, ApiKey = "AIzaSyDar-WvC-WReSGkb6AAPCm7q-KW9b3LdT4" };
         }
 
         // Tải cài đặt vào lớp Settings
-        public static Settings LoadSettings(MaterialSkinManager skinManager)
+        public static Settings LoadSettings(MaterialSkinManager skinManager,FormMain formM)
         {
             var data = LoadSettingsData();
-            var settings = new Settings(skinManager)
+            var settings = new Settings(skinManager,formM)
             {
                 ApiKey = data.ApiKey,
                 Mode = data.Mode,
                 UseAppCompiler = data.UseAppCompiler,
                 PythonCompilerOptions = data.PythonCompilerOptions,
                 CppCompilerOptions = data.CppCompilerOptions,
-                BasePath = Hotro.AppPath // BasePath lấy từ Hotro.AppPath, không từ JSON
+                BasePath = Hotro.AppPath // BasePath lấy từ Hotro.AppPath
             };
             settings.ApplyTheme();
             return settings;
@@ -101,12 +106,12 @@ namespace CodeTestGenV1
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error saving settings: {ex.Message}");
+                MessageBox.Show($"Error saving settings: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         // Cập nhật cài đặt từ Form
-        public void UpdateFromForm(FormMain form)
+        public void UpdateFromForm()
         {
             ApiKey = form.materialSingleLineTextField1.Text;
             Mode = form.dropDownControl1.SelectedItem != null ? form.dropDownControl1.SelectedItem.Text : "Light";
@@ -118,7 +123,7 @@ namespace CodeTestGenV1
         }
 
         // Áp dụng cài đặt vào Form
-        public void ApplyToForm(FormMain form)
+        public void ApplyToForm()
         {
             form.materialSingleLineTextField1.Text = ApiKey;
             foreach (CrownDropDownItem item in form.dropDownControl1.Items)
@@ -136,7 +141,7 @@ namespace CodeTestGenV1
         }
 
         // Tải lại dữ liệu từ JSON vào Form
-        public void RefreshSettings(FormMain form)
+        public void RefreshSettings()  
         {
             var data = LoadSettingsData();
             ApiKey = data.ApiKey;
@@ -145,11 +150,10 @@ namespace CodeTestGenV1
             PythonCompilerOptions = data.PythonCompilerOptions;
             CppCompilerOptions = data.CppCompilerOptions;
             BasePath = Hotro.AppPath; // BasePath lấy từ Hotro.AppPath
-            ApplyToForm(form);
+            ApplyToForm();
         }
 
-        // Áp dụng theme MaterialSkin dựa trên Mode
-        private void ApplyTheme()
+        public void ApplyTheme()
         {
             if (Mode == "Dark")
             {
@@ -159,6 +163,11 @@ namespace CodeTestGenV1
                     Primary.BlueGrey500, Accent.LightBlue200,
                     TextShade.WHITE
                 );
+                form.ForeColor = Color.White;
+                form.tabPage1.BackColor = Color.FromArgb(29, 35, 44);
+                form.tabPage2.BackColor = Color.FromArgb(29, 35, 44);
+                form.hopeTabPage1.BaseColor = Color.FromArgb(44, 55, 66);
+          
             }
             else // Light mode
             {
@@ -166,8 +175,13 @@ namespace CodeTestGenV1
                 skinManager.ColorScheme = new ColorScheme(
                     Primary.Indigo500, Primary.Indigo700,
                     Primary.Indigo100, Accent.Pink200,
-                    TextShade.BLACK
+                    TextShade.WHITE
                 );
+                form.ForeColor = Color.Black;
+                form.BackColor = Color.WhiteSmoke;
+                form.tabPage1.BackColor = Color.WhiteSmoke;
+                form.tabPage2.BackColor = Color.WhiteSmoke;
+                form.hopeTabPage1.BaseColor = Color.FromArgb(48, 63, 159);              
             }
         }
     }

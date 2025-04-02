@@ -30,24 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormCode));
-            this.dropDownControl1 = new MaterialWinforms.Controls.DropDownControl();
             this.fastColoredTextBox1 = new FastColoredTextBoxNS.FastColoredTextBox();
             this.materialFlatButton1 = new MaterialSkin.Controls.MaterialFlatButton();
             ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).BeginInit();
             this.SuspendLayout();
-            // 
-            // dropDownControl1
-            // 
-            this.dropDownControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.dropDownControl1.AnchorSize = new System.Drawing.Size(181, 21);
-            this.dropDownControl1.BackColor = System.Drawing.Color.White;
-            this.dropDownControl1.Depth = 0;
-            this.dropDownControl1.DockSide = MaterialWinforms.Controls.DropDownControl.eDockSide.Left;
-            this.dropDownControl1.Location = new System.Drawing.Point(542, 39);
-            this.dropDownControl1.MouseState = MaterialWinforms.MouseState.HOVER;
-            this.dropDownControl1.Name = "dropDownControl1";
-            this.dropDownControl1.Size = new System.Drawing.Size(181, 32);
-            this.dropDownControl1.TabIndex = 0;
             // 
             // fastColoredTextBox1
             // 
@@ -71,7 +57,6 @@
             this.fastColoredTextBox1.CharWidth = 10;
             this.fastColoredTextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.fastColoredTextBox1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.fastColoredTextBox1.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.fastColoredTextBox1.IsReplaceMode = false;
             this.fastColoredTextBox1.Location = new System.Drawing.Point(0, 89);
             this.fastColoredTextBox1.Name = "fastColoredTextBox1";
@@ -106,7 +91,6 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.materialFlatButton1);
             this.Controls.Add(this.fastColoredTextBox1);
-            this.Controls.Add(this.dropDownControl1);
             this.Name = "FormCode";
             this.Text = "Code Viewer";
             ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).EndInit();
@@ -117,7 +101,6 @@
 
         #endregion
 
-        private MaterialWinforms.Controls.DropDownControl dropDownControl1;
         private FastColoredTextBoxNS.FastColoredTextBox fastColoredTextBox1;
         private MaterialSkin.Controls.MaterialFlatButton materialFlatButton1;
     }

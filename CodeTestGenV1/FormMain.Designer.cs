@@ -28,26 +28,54 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.materialFlatButton1 = new MaterialSkin.Controls.MaterialFlatButton();
             this.hopeTabPage1 = new ReaLTaiizor.Controls.HopeTabPage();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.materialRaisedButton4 = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.crownDockPanel1 = new ReaLTaiizor.Docking.Crown.CrownDockPanel();
+            this.fastColoredTextBox1 = new FastColoredTextBoxNS.FastColoredTextBox();
+            this.materialRaisedButton1 = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.materialLabel6 = new MaterialSkin.Controls.MaterialLabel();
+            this.materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
+            this.lostBorderPanel2 = new ReaLTaiizor.Controls.LostBorderPanel();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.materialRaisedButton6 = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.materialRaisedButton5 = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.lostBorderPanel1 = new ReaLTaiizor.Controls.LostBorderPanel();
+            this.materialRaisedButton3 = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.crownDropDownList1 = new ReaLTaiizor.Controls.CrownDropDownList();
+            this.label4 = new System.Windows.Forms.Label();
+            this.materialLabel7 = new MaterialSkin.Controls.MaterialLabel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.materialRaisedButton2 = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.dropDownControl1 = new ReaLTaiizor.Controls.CrownDropDownList();
             this.materialSingleLineTextField3 = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialLabel5 = new MaterialSkin.Controls.MaterialLabel();
             this.materialSingleLineTextField2 = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialLabel4 = new MaterialSkin.Controls.MaterialLabel();
             this.materialCheckBox1 = new MaterialSkin.Controls.MaterialCheckBox();
-            this.metroLabel3 = new ReaLTaiizor.Controls.MetroLabel();
-            this.materialFlatButton2 = new MaterialSkin.Controls.MaterialFlatButton();
             this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
-            this.metroLabel2 = new ReaLTaiizor.Controls.MetroLabel();
             this.materialSingleLineTextField1 = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
-            this.metroLabel1 = new ReaLTaiizor.Controls.MetroLabel();
             this.materialFlatButton3 = new MaterialSkin.Controls.MaterialFlatButton();
-            this.dropDownControl1 = new ReaLTaiizor.Controls.CrownDropDownList();
             this.hopeTabPage1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).BeginInit();
+            this.lostBorderPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.lostBorderPanel1.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -58,7 +86,7 @@
             this.materialFlatButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.materialFlatButton1.Depth = 0;
             this.materialFlatButton1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.materialFlatButton1.Location = new System.Drawing.Point(856, 32);
+            this.materialFlatButton1.Location = new System.Drawing.Point(911, 32);
             this.materialFlatButton1.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.materialFlatButton1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialFlatButton1.Name = "materialFlatButton1";
@@ -82,11 +110,12 @@
             this.hopeTabPage1.ForeColorB = System.Drawing.Color.Gray;
             this.hopeTabPage1.ForeColorC = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
             this.hopeTabPage1.ItemSize = new System.Drawing.Size(120, 40);
-            this.hopeTabPage1.Location = new System.Drawing.Point(-1, 77);
+            this.hopeTabPage1.Location = new System.Drawing.Point(-1, 78);
+            this.hopeTabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.hopeTabPage1.Name = "hopeTabPage1";
             this.hopeTabPage1.PixelOffsetType = System.Drawing.Drawing2D.PixelOffsetMode.HighQuality;
             this.hopeTabPage1.SelectedIndex = 0;
-            this.hopeTabPage1.Size = new System.Drawing.Size(1007, 582);
+            this.hopeTabPage1.Size = new System.Drawing.Size(1069, 560);
             this.hopeTabPage1.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.hopeTabPage1.SmoothingType = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             this.hopeTabPage1.TabIndex = 2;
@@ -98,44 +127,384 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.BackColor = System.Drawing.Color.DimGray;
+            this.tabPage1.Controls.Add(this.splitContainer1);
+            this.tabPage1.ForeColor = System.Drawing.Color.Black;
             this.tabPage1.Location = new System.Drawing.Point(0, 40);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(1007, 542);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPage1.Size = new System.Drawing.Size(1069, 520);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Main";
-            this.tabPage1.UseVisualStyleBackColor = true;
             this.tabPage1.Click += new System.EventHandler(this.tabPage1_Click);
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.materialRaisedButton4);
+            this.splitContainer1.Panel1.Controls.Add(this.crownDockPanel1);
+            this.splitContainer1.Panel1.Controls.Add(this.fastColoredTextBox1);
+            this.splitContainer1.Panel1.Controls.Add(this.materialRaisedButton1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.materialLabel6);
+            this.splitContainer1.Panel2.Controls.Add(this.materialLabel3);
+            this.splitContainer1.Panel2.Controls.Add(this.lostBorderPanel2);
+            this.splitContainer1.Panel2.Controls.Add(this.lostBorderPanel1);
+            this.splitContainer1.Size = new System.Drawing.Size(1064, 519);
+            this.splitContainer1.SplitterDistance = 640;
+            this.splitContainer1.TabIndex = 3;
+            // 
+            // materialRaisedButton4
+            // 
+            this.materialRaisedButton4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.materialRaisedButton4.Depth = 0;
+            this.materialRaisedButton4.Location = new System.Drawing.Point(355, 450);
+            this.materialRaisedButton4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.materialRaisedButton4.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton4.Name = "materialRaisedButton4";
+            this.materialRaisedButton4.Primary = true;
+            this.materialRaisedButton4.Size = new System.Drawing.Size(268, 39);
+            this.materialRaisedButton4.TabIndex = 3;
+            this.materialRaisedButton4.Text = "Bắt Đầu Tạo Test!";
+            this.materialRaisedButton4.UseVisualStyleBackColor = true;
+            // 
+            // crownDockPanel1
+            // 
+            this.crownDockPanel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(63)))), ((int)(((byte)(65)))));
+            this.crownDockPanel1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.crownDockPanel1.Location = new System.Drawing.Point(637, 0);
+            this.crownDockPanel1.Margin = new System.Windows.Forms.Padding(4);
+            this.crownDockPanel1.Name = "crownDockPanel1";
+            this.crownDockPanel1.Size = new System.Drawing.Size(3, 519);
+            this.crownDockPanel1.TabIndex = 1;
+            // 
+            // fastColoredTextBox1
+            // 
+            this.fastColoredTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.fastColoredTextBox1.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+            this.fastColoredTextBox1.AutoScrollMinSize = new System.Drawing.Size(221, 18);
+            this.fastColoredTextBox1.BackBrush = null;
+            this.fastColoredTextBox1.CharHeight = 18;
+            this.fastColoredTextBox1.CharWidth = 10;
+            this.fastColoredTextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.fastColoredTextBox1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.fastColoredTextBox1.IsReplaceMode = false;
+            this.fastColoredTextBox1.Location = new System.Drawing.Point(23, 17);
+            this.fastColoredTextBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.fastColoredTextBox1.Name = "fastColoredTextBox1";
+            this.fastColoredTextBox1.Paddings = new System.Windows.Forms.Padding(0);
+            this.fastColoredTextBox1.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.fastColoredTextBox1.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fastColoredTextBox1.ServiceColors")));
+            this.fastColoredTextBox1.Size = new System.Drawing.Size(600, 409);
+            this.fastColoredTextBox1.TabIndex = 1;
+            this.fastColoredTextBox1.Text = "fastColoredTextBox1";
+            this.fastColoredTextBox1.Zoom = 100;
+            // 
+            // materialRaisedButton1
+            // 
+            this.materialRaisedButton1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.materialRaisedButton1.Depth = 0;
+            this.materialRaisedButton1.Location = new System.Drawing.Point(23, 450);
+            this.materialRaisedButton1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.materialRaisedButton1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton1.Name = "materialRaisedButton1";
+            this.materialRaisedButton1.Primary = true;
+            this.materialRaisedButton1.Size = new System.Drawing.Size(308, 39);
+            this.materialRaisedButton1.TabIndex = 2;
+            this.materialRaisedButton1.Text = "Tải Code Lên Từ Máy";
+            this.materialRaisedButton1.UseVisualStyleBackColor = true;
+            // 
+            // materialLabel6
+            // 
+            this.materialLabel6.AutoSize = true;
+            this.materialLabel6.BackColor = System.Drawing.Color.Transparent;
+            this.materialLabel6.Depth = 0;
+            this.materialLabel6.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel6.Location = new System.Drawing.Point(37, 174);
+            this.materialLabel6.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel6.Name = "materialLabel6";
+            this.materialLabel6.Size = new System.Drawing.Size(180, 24);
+            this.materialLabel6.TabIndex = 1;
+            this.materialLabel6.Text = "Điệu Khiện Cho Test";
+            // 
+            // materialLabel3
+            // 
+            this.materialLabel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.materialLabel3.AutoSize = true;
+            this.materialLabel3.BackColor = System.Drawing.Color.Transparent;
+            this.materialLabel3.Depth = 0;
+            this.materialLabel3.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel3.Location = new System.Drawing.Point(37, 17);
+            this.materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel3.Name = "materialLabel3";
+            this.materialLabel3.Size = new System.Drawing.Size(109, 24);
+            this.materialLabel3.TabIndex = 0;
+            this.materialLabel3.Text = "Lưu lại Test";
+            this.materialLabel3.Click += new System.EventHandler(this.materialLabel3_Click_1);
+            // 
+            // lostBorderPanel2
+            // 
+            this.lostBorderPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lostBorderPanel2.BackColor = System.Drawing.Color.DimGray;
+            this.lostBorderPanel2.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.lostBorderPanel2.Controls.Add(this.dataGridView1);
+            this.lostBorderPanel2.Controls.Add(this.materialRaisedButton6);
+            this.lostBorderPanel2.Controls.Add(this.materialRaisedButton5);
+            this.lostBorderPanel2.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.lostBorderPanel2.ForeColor = System.Drawing.Color.White;
+            this.lostBorderPanel2.Location = new System.Drawing.Point(24, 186);
+            this.lostBorderPanel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.lostBorderPanel2.Name = "lostBorderPanel2";
+            this.lostBorderPanel2.Padding = new System.Windows.Forms.Padding(5);
+            this.lostBorderPanel2.ShowText = false;
+            this.lostBorderPanel2.Size = new System.Drawing.Size(372, 304);
+            this.lostBorderPanel2.TabIndex = 2;
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2});
+            this.dataGridView1.Location = new System.Drawing.Point(19, 69);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(4);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.RowHeadersWidth = 51;
+            this.dataGridView1.Size = new System.Drawing.Size(329, 164);
+            this.dataGridView1.TabIndex = 6;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Column1";
+            this.Column1.MinimumWidth = 6;
+            this.Column1.Name = "Column1";
+            this.Column1.Width = 125;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Column2";
+            this.Column2.MinimumWidth = 6;
+            this.Column2.Name = "Column2";
+            this.Column2.Width = 125;
+            // 
+            // materialRaisedButton6
+            // 
+            this.materialRaisedButton6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.materialRaisedButton6.Depth = 0;
+            this.materialRaisedButton6.Location = new System.Drawing.Point(19, 239);
+            this.materialRaisedButton6.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.materialRaisedButton6.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton6.Name = "materialRaisedButton6";
+            this.materialRaisedButton6.Primary = true;
+            this.materialRaisedButton6.Size = new System.Drawing.Size(331, 58);
+            this.materialRaisedButton6.TabIndex = 5;
+            this.materialRaisedButton6.Text = "Dùng PDF, Ảnh Của Đề Bài Để Tạo Điều Khiện Test!";
+            this.materialRaisedButton6.UseVisualStyleBackColor = true;
+            // 
+            // materialRaisedButton5
+            // 
+            this.materialRaisedButton5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.materialRaisedButton5.Depth = 0;
+            this.materialRaisedButton5.Location = new System.Drawing.Point(19, 23);
+            this.materialRaisedButton5.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.materialRaisedButton5.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton5.Name = "materialRaisedButton5";
+            this.materialRaisedButton5.Primary = true;
+            this.materialRaisedButton5.Size = new System.Drawing.Size(331, 39);
+            this.materialRaisedButton5.TabIndex = 4;
+            this.materialRaisedButton5.Text = "Tạo 1 Điều Khiện";
+            this.materialRaisedButton5.UseVisualStyleBackColor = true;
+            this.materialRaisedButton5.Click += new System.EventHandler(this.materialRaisedButton5_Click);
+            // 
+            // lostBorderPanel1
+            // 
+            this.lostBorderPanel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lostBorderPanel1.BackColor = System.Drawing.Color.DimGray;
+            this.lostBorderPanel1.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.lostBorderPanel1.Controls.Add(this.materialRaisedButton3);
+            this.lostBorderPanel1.Controls.Add(this.crownDropDownList1);
+            this.lostBorderPanel1.Controls.Add(this.label4);
+            this.lostBorderPanel1.Controls.Add(this.materialLabel7);
+            this.lostBorderPanel1.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.lostBorderPanel1.ForeColor = System.Drawing.Color.White;
+            this.lostBorderPanel1.Location = new System.Drawing.Point(24, 30);
+            this.lostBorderPanel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.lostBorderPanel1.Name = "lostBorderPanel1";
+            this.lostBorderPanel1.Padding = new System.Windows.Forms.Padding(5);
+            this.lostBorderPanel1.ShowText = false;
+            this.lostBorderPanel1.Size = new System.Drawing.Size(372, 122);
+            this.lostBorderPanel1.TabIndex = 0;
+            this.lostBorderPanel1.Click += new System.EventHandler(this.lostBorderPanel1_Click);
+            // 
+            // materialRaisedButton3
+            // 
+            this.materialRaisedButton3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.materialRaisedButton3.Depth = 0;
+            this.materialRaisedButton3.Location = new System.Drawing.Point(29, 65);
+            this.materialRaisedButton3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.materialRaisedButton3.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton3.Name = "materialRaisedButton3";
+            this.materialRaisedButton3.Primary = true;
+            this.materialRaisedButton3.Size = new System.Drawing.Size(331, 39);
+            this.materialRaisedButton3.TabIndex = 3;
+            this.materialRaisedButton3.Text = "Lưu Lại";
+            this.materialRaisedButton3.UseVisualStyleBackColor = true;
+            // 
+            // crownDropDownList1
+            // 
+            this.crownDropDownList1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.crownDropDownList1.Location = new System.Drawing.Point(167, 23);
+            this.crownDropDownList1.Margin = new System.Windows.Forms.Padding(4);
+            this.crownDropDownList1.Name = "crownDropDownList1";
+            this.crownDropDownList1.Size = new System.Drawing.Size(183, 25);
+            this.crownDropDownList1.TabIndex = 2;
+            this.crownDropDownList1.Text = "crownDropDownList1";
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(13, 23);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(138, 25);
+            this.label4.TabIndex = 1;
+            this.label4.Text = "Lưu dưới dạng:";
+            // 
+            // materialLabel7
+            // 
+            this.materialLabel7.AutoSize = true;
+            this.materialLabel7.Depth = 0;
+            this.materialLabel7.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel7.Location = new System.Drawing.Point(25, 36);
+            this.materialLabel7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.materialLabel7.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel7.Name = "materialLabel7";
+            this.materialLabel7.Size = new System.Drawing.Size(0, 24);
+            this.materialLabel7.TabIndex = 0;
             // 
             // tabPage2
             // 
-            this.tabPage2.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.tabPage2.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.tabPage2.Controls.Add(this.materialRaisedButton2);
+            this.tabPage2.Controls.Add(this.label3);
+            this.tabPage2.Controls.Add(this.label2);
+            this.tabPage2.Controls.Add(this.label1);
             this.tabPage2.Controls.Add(this.dropDownControl1);
             this.tabPage2.Controls.Add(this.materialSingleLineTextField3);
             this.tabPage2.Controls.Add(this.materialLabel5);
             this.tabPage2.Controls.Add(this.materialSingleLineTextField2);
             this.tabPage2.Controls.Add(this.materialLabel4);
             this.tabPage2.Controls.Add(this.materialCheckBox1);
-            this.tabPage2.Controls.Add(this.metroLabel3);
-            this.tabPage2.Controls.Add(this.materialFlatButton2);
             this.tabPage2.Controls.Add(this.materialLabel2);
-            this.tabPage2.Controls.Add(this.metroLabel2);
             this.tabPage2.Controls.Add(this.materialSingleLineTextField1);
             this.tabPage2.Controls.Add(this.materialLabel1);
-            this.tabPage2.Controls.Add(this.metroLabel1);
             this.tabPage2.Location = new System.Drawing.Point(0, 40);
+            this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(1007, 542);
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPage2.Size = new System.Drawing.Size(1069, 520);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Cài Đặt";
             this.tabPage2.Click += new System.EventHandler(this.tabPage2_Click);
+            // 
+            // materialRaisedButton2
+            // 
+            this.materialRaisedButton2.Depth = 0;
+            this.materialRaisedButton2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.materialRaisedButton2.Location = new System.Drawing.Point(3, 461);
+            this.materialRaisedButton2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.materialRaisedButton2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton2.Name = "materialRaisedButton2";
+            this.materialRaisedButton2.Primary = true;
+            this.materialRaisedButton2.Size = new System.Drawing.Size(1063, 57);
+            this.materialRaisedButton2.TabIndex = 19;
+            this.materialRaisedButton2.Text = "Lưu Cài Đặt!";
+            this.materialRaisedButton2.UseVisualStyleBackColor = true;
+            this.materialRaisedButton2.Click += new System.EventHandler(this.materialFlatButton2_Click_1);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold);
+            this.label3.Location = new System.Drawing.Point(5, 204);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(145, 32);
+            this.label3.TabIndex = 18;
+            this.label3.Text = "Biên Dịch";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold);
+            this.label2.Location = new System.Drawing.Point(5, 110);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(150, 32);
+            this.label2.TabIndex = 17;
+            this.label2.Text = "Giao Diện";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold);
+            this.label1.Location = new System.Drawing.Point(5, 18);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(203, 32);
+            this.label1.TabIndex = 16;
+            this.label1.Text = "Gemini AI API";
+            // 
+            // dropDownControl1
+            // 
+            this.dropDownControl1.Location = new System.Drawing.Point(83, 161);
+            this.dropDownControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.dropDownControl1.Name = "dropDownControl1";
+            this.dropDownControl1.Size = new System.Drawing.Size(183, 26);
+            this.dropDownControl1.TabIndex = 15;
+            this.dropDownControl1.Text = "crownDropDownList1";
             // 
             // materialSingleLineTextField3
             // 
             this.materialSingleLineTextField3.Depth = 0;
             this.materialSingleLineTextField3.Hint = "";
             this.materialSingleLineTextField3.Location = new System.Drawing.Point(235, 335);
+            this.materialSingleLineTextField3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.materialSingleLineTextField3.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialSingleLineTextField3.Name = "materialSingleLineTextField3";
             this.materialSingleLineTextField3.PasswordChar = '\0';
@@ -164,6 +533,7 @@
             this.materialSingleLineTextField2.Depth = 0;
             this.materialSingleLineTextField2.Hint = "";
             this.materialSingleLineTextField2.Location = new System.Drawing.Point(257, 294);
+            this.materialSingleLineTextField2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.materialSingleLineTextField2.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialSingleLineTextField2.Name = "materialSingleLineTextField2";
             this.materialSingleLineTextField2.PasswordChar = '\0';
@@ -192,7 +562,7 @@
             this.materialCheckBox1.AutoSize = true;
             this.materialCheckBox1.Depth = 0;
             this.materialCheckBox1.Font = new System.Drawing.Font("Roboto", 10F);
-            this.materialCheckBox1.Location = new System.Drawing.Point(10, 249);
+            this.materialCheckBox1.Location = new System.Drawing.Point(11, 249);
             this.materialCheckBox1.Margin = new System.Windows.Forms.Padding(0);
             this.materialCheckBox1.MouseLocation = new System.Drawing.Point(-1, -1);
             this.materialCheckBox1.MouseState = MaterialSkin.MouseState.HOVER;
@@ -203,37 +573,6 @@
             this.materialCheckBox1.Text = "Sử dụng chỉnh biên dịch của App?";
             this.materialCheckBox1.UseVisualStyleBackColor = true;
             this.materialCheckBox1.CheckedChanged += new System.EventHandler(this.materialCheckBox1_CheckedChanged);
-            // 
-            // metroLabel3
-            // 
-            this.metroLabel3.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.metroLabel3.IsDerivedStyle = true;
-            this.metroLabel3.Location = new System.Drawing.Point(6, 204);
-            this.metroLabel3.Name = "metroLabel3";
-            this.metroLabel3.Size = new System.Drawing.Size(233, 32);
-            this.metroLabel3.Style = ReaLTaiizor.Enum.Metro.Style.Light;
-            this.metroLabel3.StyleManager = null;
-            this.metroLabel3.TabIndex = 9;
-            this.metroLabel3.Text = "Biên Dịch";
-            this.metroLabel3.ThemeAuthor = "Taiizor";
-            this.metroLabel3.ThemeName = "MetroLight";
-            // 
-            // materialFlatButton2
-            // 
-            this.materialFlatButton2.AutoSize = true;
-            this.materialFlatButton2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.materialFlatButton2.BackColor = System.Drawing.Color.LightGray;
-            this.materialFlatButton2.Depth = 0;
-            this.materialFlatButton2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.materialFlatButton2.Location = new System.Drawing.Point(3, 503);
-            this.materialFlatButton2.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
-            this.materialFlatButton2.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialFlatButton2.Name = "materialFlatButton2";
-            this.materialFlatButton2.Primary = false;
-            this.materialFlatButton2.Size = new System.Drawing.Size(1001, 36);
-            this.materialFlatButton2.TabIndex = 6;
-            this.materialFlatButton2.Text = "Lưu Cài Đặt!";
-            this.materialFlatButton2.UseVisualStyleBackColor = false;
             // 
             // materialLabel2
             // 
@@ -248,32 +587,19 @@
             this.materialLabel2.TabIndex = 4;
             this.materialLabel2.Text = "Mode:";
             // 
-            // metroLabel2
-            // 
-            this.metroLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.metroLabel2.IsDerivedStyle = true;
-            this.metroLabel2.Location = new System.Drawing.Point(6, 110);
-            this.metroLabel2.Name = "metroLabel2";
-            this.metroLabel2.Size = new System.Drawing.Size(233, 32);
-            this.metroLabel2.Style = ReaLTaiizor.Enum.Metro.Style.Light;
-            this.metroLabel2.StyleManager = null;
-            this.metroLabel2.TabIndex = 3;
-            this.metroLabel2.Text = "Giao Diện";
-            this.metroLabel2.ThemeAuthor = "Taiizor";
-            this.metroLabel2.ThemeName = "MetroLight";
-            // 
             // materialSingleLineTextField1
             // 
             this.materialSingleLineTextField1.Depth = 0;
             this.materialSingleLineTextField1.Hint = "";
-            this.materialSingleLineTextField1.Location = new System.Drawing.Point(112, 67);
+            this.materialSingleLineTextField1.Location = new System.Drawing.Point(112, 66);
+            this.materialSingleLineTextField1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.materialSingleLineTextField1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialSingleLineTextField1.Name = "materialSingleLineTextField1";
             this.materialSingleLineTextField1.PasswordChar = '\0';
             this.materialSingleLineTextField1.SelectedText = "";
             this.materialSingleLineTextField1.SelectionLength = 0;
             this.materialSingleLineTextField1.SelectionStart = 0;
-            this.materialSingleLineTextField1.Size = new System.Drawing.Size(516, 28);
+            this.materialSingleLineTextField1.Size = new System.Drawing.Size(579, 28);
             this.materialSingleLineTextField1.TabIndex = 2;
             this.materialSingleLineTextField1.UseSystemPasswordChar = false;
             // 
@@ -283,27 +609,12 @@
             this.materialLabel1.Depth = 0;
             this.materialLabel1.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel1.Location = new System.Drawing.Point(13, 67);
+            this.materialLabel1.Location = new System.Drawing.Point(13, 66);
             this.materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel1.Name = "materialLabel1";
             this.materialLabel1.Size = new System.Drawing.Size(83, 24);
             this.materialLabel1.TabIndex = 1;
             this.materialLabel1.Text = "API KEY:";
-            // 
-            // metroLabel1
-            // 
-            this.metroLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.metroLabel1.IsDerivedStyle = true;
-            this.metroLabel1.Location = new System.Drawing.Point(6, 18);
-            this.metroLabel1.Name = "metroLabel1";
-            this.metroLabel1.Size = new System.Drawing.Size(233, 32);
-            this.metroLabel1.Style = ReaLTaiizor.Enum.Metro.Style.Light;
-            this.metroLabel1.StyleManager = null;
-            this.metroLabel1.TabIndex = 0;
-            this.metroLabel1.Text = "Gemini AI API";
-            this.metroLabel1.ThemeAuthor = "Taiizor";
-            this.metroLabel1.ThemeName = "MetroLight";
-            this.metroLabel1.Click += new System.EventHandler(this.metroLabel1_Click);
             // 
             // materialFlatButton3
             // 
@@ -312,7 +623,7 @@
             this.materialFlatButton3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.materialFlatButton3.Depth = 0;
             this.materialFlatButton3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.materialFlatButton3.Location = new System.Drawing.Point(743, 32);
+            this.materialFlatButton3.Location = new System.Drawing.Point(786, 32);
             this.materialFlatButton3.Margin = new System.Windows.Forms.Padding(4, 6, 4, 6);
             this.materialFlatButton3.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialFlatButton3.Name = "materialFlatButton3";
@@ -321,30 +632,36 @@
             this.materialFlatButton3.TabIndex = 3;
             this.materialFlatButton3.Text = "REFRESH";
             this.materialFlatButton3.UseVisualStyleBackColor = true;
-            // 
-            // dropDownControl1
-            // 
-            this.dropDownControl1.Location = new System.Drawing.Point(83, 161);
-            this.dropDownControl1.Name = "dropDownControl1";
-            this.dropDownControl1.Size = new System.Drawing.Size(183, 26);
-            this.dropDownControl1.TabIndex = 15;
-            this.dropDownControl1.Text = "crownDropDownList1";
+            this.materialFlatButton3.Click += new System.EventHandler(this.materialFlatButton3_Click);
             // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1004, 667);
+            this.ClientSize = new System.Drawing.Size(1067, 636);
             this.Controls.Add(this.materialFlatButton3);
             this.Controls.Add(this.hopeTabPage1);
             this.Controls.Add(this.materialFlatButton1);
+            this.ForeColor = System.Drawing.Color.White;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(261, 61);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.MinimumSize = new System.Drawing.Size(261, 62);
             this.Name = "FormMain";
             this.Text = "Code Test Generator";
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
             this.hopeTabPage1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).EndInit();
+            this.lostBorderPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.lostBorderPanel1.ResumeLayout(false);
+            this.lostBorderPanel1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.ResumeLayout(false);
@@ -355,23 +672,41 @@
         #endregion
 
         private MaterialSkin.Controls.MaterialFlatButton materialFlatButton1;
-        private ReaLTaiizor.Controls.HopeTabPage hopeTabPage1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private ReaLTaiizor.Controls.MetroLabel metroLabel1;
+        public ReaLTaiizor.Controls.HopeTabPage hopeTabPage1;
+        public System.Windows.Forms.TabPage tabPage1;
+        public System.Windows.Forms.TabPage tabPage2;
         private MaterialSkin.Controls.MaterialLabel materialLabel1;
         public MaterialSkin.Controls.MaterialSingleLineTextField materialSingleLineTextField1;
         private MaterialSkin.Controls.MaterialLabel materialLabel2;
-        private ReaLTaiizor.Controls.MetroLabel metroLabel2;
-        private MaterialSkin.Controls.MaterialFlatButton materialFlatButton2;
         private MaterialSkin.Controls.MaterialFlatButton materialFlatButton3;
-        private ReaLTaiizor.Controls.MetroLabel metroLabel3;
         public MaterialSkin.Controls.MaterialCheckBox materialCheckBox1;
         public MaterialSkin.Controls.MaterialSingleLineTextField materialSingleLineTextField3;
         private MaterialSkin.Controls.MaterialLabel materialLabel5;
         public MaterialSkin.Controls.MaterialSingleLineTextField materialSingleLineTextField2;
         private MaterialSkin.Controls.MaterialLabel materialLabel4;
         public ReaLTaiizor.Controls.CrownDropDownList dropDownControl1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private FastColoredTextBoxNS.FastColoredTextBox fastColoredTextBox1;
+        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton2;
+        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton1;
+        private ReaLTaiizor.Controls.LostBorderPanel lostBorderPanel1;
+        private MaterialSkin.Controls.MaterialLabel materialLabel3;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private ReaLTaiizor.Docking.Crown.CrownDockPanel crownDockPanel1;
+        private MaterialSkin.Controls.MaterialLabel materialLabel6;
+        private ReaLTaiizor.Controls.LostBorderPanel lostBorderPanel2;
+        private MaterialSkin.Controls.MaterialLabel materialLabel7;
+        private ReaLTaiizor.Controls.CrownDropDownList crownDropDownList1;
+        private System.Windows.Forms.Label label4;
+        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton3;
+        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton4;
+        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton5;
+        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton6;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
     }
 }
 

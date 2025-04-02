@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeTestGenV1
+namespace TestMaker
 {
     internal class BienDich
     {

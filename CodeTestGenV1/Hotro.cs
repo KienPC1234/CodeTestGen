@@ -10,5 +10,6 @@ namespace CodeTestGenV1
     internal class Hotro
     {
         public static readonly string AppPath = Directory.GetCurrentDirectory();
+        public const float version = 1F;
     }
 }
