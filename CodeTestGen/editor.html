@@ -1,0 +1,405 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monaco Editor</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        var require = { paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs' } };
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.js"></script>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            background-color: #f8f9fa;
+            color: #212529;
+            transition: background 0.3s, color 0.3s;
+            overflow: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+            html::-webkit-scrollbar, body::-webkit-scrollbar {
+                display: none;
+            }
+
+        .dark-mode {
+            background-color: #1e1e1e;
+            color: #ffffff;
+        }
+
+        .container-full {
+            width: 100%;
+            max-width: none;
+            padding: 0;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .controls {
+            padding: 1rem 1rem 0.5rem;
+            flex-shrink: 0;
+        }
+
+        .editor-container {
+            width: 100%;
+            flex-grow: 1;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+        }
+
+        .dark-mode .editor-container {
+            border-color: #444;
+        }
+
+        .form-select {
+            background-color: #ffffff;
+            color: #000000;
+            border: 1px solid #ccc;
+        }
+
+        .dark-mode .form-select {
+            background-color: #2e2e2e;
+            color: #ffffff;
+            border: 1px solid #555;
+        }
+
+        .monaco-editor .suggest-widget {
+            background: #ffffff !important;
+            color: #000000 !important;
+            transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        .dark-mode .monaco-editor .suggest-widget {
+            background: #2e2e2e !important;
+            color: #ffffff !important;
+        }
+
+        .monaco-editor .suggest-widget[style*="display: block"] {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="container-full">
+        <div class="controls d-flex justify-content-between align-items-center">
+            <div>
+                <label class="fw-bold me-2">Language</label>
+                <select id="language" class="form-select d-inline-block w-auto">
+                    <option value="python" selected>Python</option>
+                    <option value="cpp">C++</option>
+                </select>
+            </div>
+            <div class="d-flex align-items-center">
+                <label class="fw-bold me-2">Dark Mode</label>
+                <input id="themeToggle" class="form-check-input" type="checkbox">
+            </div>
+        </div>
+        <div id="editor" class="editor-container"></div>
+    </div>
+
+    <script>
+        let editor;
+
+        function setText(content) {
+            editor.setValue(content);
+        }
+
+        function clearText() {
+            editor.setValue("");
+        }
+
+        function getText() {
+            return editor.getValue();
+        }
+
+        function toggleDarkMode(enable) {
+            document.getElementById('themeToggle').checked = enable;
+            document.getElementById('themeToggle').dispatchEvent(new Event('change'));
+        }
+
+        require(['vs/editor/editor.main'], function () {
+            const cppSuggestions = [
+                {
+                    label: 'if',
+                    kind: monaco.languages.CompletionItemKind.Keyword,
+                    insertText: 'if (${1:condition}) {\n\t$0\n}',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'else',
+                    kind: monaco.languages.CompletionItemKind.Keyword,
+                    insertText: 'else {\n\t$0\n}',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'for',
+                    kind: monaco.languages.CompletionItemKind.Keyword,
+                    insertText: 'for (${1:init}; ${2:condition}; ${3:increment}) {\n\t$0\n}',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'while',
+                    kind: monaco.languages.CompletionItemKind.Keyword,
+                    insertText: 'while (${1:condition}) {\n\t$0\n}',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'do',
+                    kind: monaco.languages.CompletionItemKind.Keyword,
+                    insertText: 'do {\n\t$0\n} while (${1:condition});',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'switch',
+                    kind: monaco.languages.CompletionItemKind.Keyword,
+                    insertText: 'switch (${1:variable}) {\n\tcase ${2:value}:\n\t\t$0\n\t\tbreak;\n\tdefault:\n\t\tbreak;\n}',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'cout',
+                    kind: monaco.languages.CompletionItemKind.Function,
+                    insertText: 'std::cout << ${1:message} << std::endl;',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'cin',
+                    kind: monaco.languages.CompletionItemKind.Function,
+                    insertText: 'std::cin >> ${1:variable};',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'main',
+                    kind: monaco.languages.CompletionItemKind.Function,
+                    insertText: 'int main() {\n\t$0\n\treturn 0;\n}',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'include bits/stdc++.h',
+                    kind: monaco.languages.CompletionItemKind.Module,
+                    insertText: '#include <bits/stdc++.h>',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'include iostream',
+                    kind: monaco.languages.CompletionItemKind.Module,
+                    insertText: '#include <iostream>',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'include vector',
+                    kind: monaco.languages.CompletionItemKind.Module,
+                    insertText: '#include <vector>',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'include string',
+                    kind: monaco.languages.CompletionItemKind.Module,
+                    insertText: '#include <string>',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'include algorithm',
+                    kind: monaco.languages.CompletionItemKind.Module,
+                    insertText: '#include <algorithm>',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'include cmath',
+                    kind: monaco.languages.CompletionItemKind.Module,
+                    insertText: '#include <cmath>',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'include cstdlib',
+                    kind: monaco.languages.CompletionItemKind.Module,
+                    insertText: '#include <cstdlib>',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'include cstdio',
+                    kind: monaco.languages.CompletionItemKind.Module,
+                    insertText: '#include <cstdio>',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'include cstring',
+                    kind: monaco.languages.CompletionItemKind.Module,
+                    insertText: '#include <cstring>',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'using namespace std',
+                    kind: monaco.languages.CompletionItemKind.Snippet,
+                    insertText: 'using namespace std;',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                }
+            ];
+
+            const pythonSuggestions = [
+                {
+                    label: 'if',
+                    kind: monaco.languages.CompletionItemKind.Keyword,
+                    insertText: 'if ${1:condition}:\n\t$0',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'elif',
+                    kind: monaco.languages.CompletionItemKind.Keyword,
+                    insertText: 'elif ${1:condition}:\n\t$0',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'else',
+                    kind: monaco.languages.CompletionItemKind.Keyword,
+                    insertText: 'else:\n\t$0',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'for',
+                    kind: monaco.languages.CompletionItemKind.Keyword,
+                    insertText: 'for ${1:item} in ${2:iterable}:\n\t$0',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'while',
+                    kind: monaco.languages.CompletionItemKind.Keyword,
+                    insertText: 'while ${1:condition}:\n\t$0',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'def',
+                    kind: monaco.languages.CompletionItemKind.Keyword,
+                    insertText: 'def ${1:functionName}(${2:parameters}):\n\t$0',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'class',
+                    kind: monaco.languages.CompletionItemKind.Keyword,
+                    insertText: 'class ${1:ClassName}:\n\tdef __init__(self${2:, parameters}):\n\t\t$0',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'print',
+                    kind: monaco.languages.CompletionItemKind.Function,
+                    insertText: 'print(${1:message})',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'len',
+                    kind: monaco.languages.CompletionItemKind.Function,
+                    insertText: 'len(${1:iterable})',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'range',
+                    kind: monaco.languages.CompletionItemKind.Function,
+                    insertText: 'range(${1:start}, ${2:stop}${3:, step})',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'import math',
+                    kind: monaco.languages.CompletionItemKind.Module,
+                    insertText: 'import math',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'import sys',
+                    kind: monaco.languages.CompletionItemKind.Module,
+                    insertText: 'import sys',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'import os',
+                    kind: monaco.languages.CompletionItemKind.Module,
+                    insertText: 'import os',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'import random',
+                    kind: monaco.languages.CompletionItemKind.Module,
+                    insertText: 'import random',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'from datetime import datetime',
+                    kind: monaco.languages.CompletionItemKind.Module,
+                    insertText: 'from datetime import datetime',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                },
+                {
+                    label: 'import numpy as np',
+                    kind: monaco.languages.CompletionItemKind.Module,
+                    insertText: 'import numpy as np',
+                    insertTextRules: monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet
+                }
+            ];
+
+            editor = monaco.editor.create(document.getElementById('editor'), {
+                value: `#Bạn Có Thể Dán Code Bài Test Vào Đây!`,
+                language: "python",
+                theme: "vs",
+                automaticLayout: true
+            });
+
+            monaco.languages.registerCompletionItemProvider('cpp', {
+                provideCompletionItems: (model, position) => {
+                    const word = model.getWordUntilPosition(position);
+                    const range = {
+                        startLineNumber: position.lineNumber,
+                        endLineNumber: position.lineNumber,
+                        startColumn: word.startColumn,
+                        endColumn: word.endColumn
+                    };
+                    const suggestionsWithRange = cppSuggestions.map(suggestion => ({
+                        ...suggestion,
+                        range: range
+                    }));
+                    return { suggestions: suggestionsWithRange };
+                }
+            });
+
+            monaco.languages.registerCompletionItemProvider('python', {
+                provideCompletionItems: (model, position) => {
+                    const word = model.getWordUntilPosition(position);
+                    const range = {
+                        startLineNumber: position.lineNumber,
+                        endLineNumber: position.lineNumber,
+                        startColumn: word.startColumn,
+                        endColumn: word.endColumn
+                    };
+                    const suggestionsWithRange = pythonSuggestions.map(suggestion => ({
+                        ...suggestion,
+                        range: range
+                    }));
+                    return { suggestions: suggestionsWithRange };
+                }
+            });
+
+            document.getElementById('language').addEventListener('change', function () {
+                monaco.editor.setModelLanguage(editor.getModel(), this.value);
+            });
+
+            document.getElementById('themeToggle').addEventListener('change', function () {
+                if (this.checked) {
+                    document.body.classList.add("dark-mode");
+                    monaco.editor.setTheme("vs-dark");
+                } else {
+                    document.body.classList.remove("dark-mode");
+                    monaco.editor.setTheme("vs");
+                }
+            });
+
+            
+        });
+    </script>
+</body>
+</html>

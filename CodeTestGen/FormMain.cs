@@ -16,28 +16,67 @@ using ReaLTaiizor.Child.Crown;
 
 namespace CodeTestGenV1
 {
-    public partial class FormMain : MaterialForm
+    public partial class FormMain :  MaterialForm
     {
-        private Settings appSettings;
         private readonly MaterialSkinManager materialSkinManager;
+        private Settings appSettings;
 
         public FormMain()
         {
             InitializeComponent();
+            materialFlatButton3.Visible = false;
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             this.MinimumSize = new Size(1000, 600);
-            materialFlatButton3.Visible = false;
             materialSkinManager = MaterialSkinManager.Instance;
             materialSkinManager.AddFormToManage(this);
 
-            appSettings = Settings.LoadSettings(materialSkinManager,this);
-
             dropDownControl1.Items.Add(new CrownDropDownItem { Text = "Light" });
             dropDownControl1.Items.Add(new CrownDropDownItem { Text = "Dark" });
-
-            appSettings.ApplyToForm();
-
+            
+            InitializeWebViewAsync();
+            
         }
+
+        private async void InitializeWebViewAsync()
+        {
+            await webView21.EnsureCoreWebView2Async(null);
+
+            string htmlPath = Path.Combine(Hotro.AppPath, "editor.html");
+            if (!File.Exists(htmlPath))
+            {
+                MessageBox.Show("Không tìm thấy file editor.html!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            webView21.Source = new Uri($"file:///{htmlPath.Replace("\\", "/")}");
+            var tcs = new TaskCompletionSource<bool>();
+
+            webView21.CoreWebView2.NavigationCompleted += (sender, e) =>
+            {
+                if (e.IsSuccess)
+                {
+                    tcs.SetResult(true); 
+                }
+                else
+                {
+                    tcs.SetResult(false); 
+                }
+            };
+
+            bool isLoaded = await tcs.Task;
+
+            if (isLoaded)
+            {
+
+                appSettings = Settings.LoadSettings(materialSkinManager, this);
+                appSettings.ApplyToForm();
+            }
+            else
+            {
+                MessageBox.Show("Editor không thể tải thành công.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
 
         #region event
 
@@ -89,7 +128,6 @@ namespace CodeTestGenV1
             MessageBox.Show("Cài đặt đã được lưu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         #endregion
-
         private void materialFlatButton3_Click(object sender, EventArgs e)
         {
             appSettings.RefreshSettings();
@@ -119,6 +157,12 @@ namespace CodeTestGenV1
         private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private async void materialRaisedButton9_Click(object sender, EventArgs e)
+        {
+            string clipboardText = Clipboard.GetText();
+            await webView21.CoreWebView2.ExecuteScriptAsync($"setText({JsonSerializer.Serialize(clipboardText)});");
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
+using System.IO;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Serialization.Formatters;
@@ -17,7 +17,44 @@ namespace CodeTestGenV1
         public FormCode(string Code)
         {
             InitializeComponent();
-            fastColoredTextBox1.Text = Code;
+            InitializeWebViewAsync();
+        }
+        private async void InitializeWebViewAsync()
+        {
+            await webView21.EnsureCoreWebView2Async(null);
+
+            string htmlPath = Path.Combine(Hotro.AppPath, "editor.html");
+            if (!File.Exists(htmlPath))
+            {
+                MessageBox.Show("Không tìm thấy file editor.html!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            webView21.Source = new Uri($"file:///{htmlPath.Replace("\\", "/")}");
+            var tcs = new TaskCompletionSource<bool>();
+
+            webView21.CoreWebView2.NavigationCompleted += (sender, e) =>
+            {
+                if (e.IsSuccess)
+                {
+                    tcs.SetResult(true);
+                }
+                else
+                {
+                    tcs.SetResult(false);
+                }
+            };
+
+            bool isLoaded = await tcs.Task;
+
+            if (isLoaded)
+            {
+                await webView21.CoreWebView2.ExecuteScriptAsync($"toggleDarkMode(true);");
+            }
+            else
+            {
+                MessageBox.Show("Editor không thể tải thành công.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

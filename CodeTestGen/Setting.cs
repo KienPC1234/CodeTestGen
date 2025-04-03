@@ -10,7 +10,6 @@ using System.Drawing;
 
 namespace CodeTestGenV1
 {
-    // Lớp để lưu trữ dữ liệu JSON (không có BasePath)
     public class SettingsData
     {
         public string ApiKey { get; set; }
@@ -22,25 +21,23 @@ namespace CodeTestGenV1
 
     public class Settings
     {
-        // Thuộc tính cài đặt
         public string ApiKey { get; set; }
         public string Mode { get; set; }
         public bool UseAppCompiler { get; set; }
         public string PythonCompilerOptions { get; set; }
         public string CppCompilerOptions { get; set; }
-        public string BasePath { get; set; } // Vẫn giữ trong lớp nhưng không lưu vào JSON
+        public string BasePath { get; set; } 
         private FormMain form;
         private static readonly string SettingsFilePath = Path.Combine(Hotro.AppPath, "settings.json");
         private readonly MaterialSkinManager skinManager;
 
-        // Constructor mặc định với giá trị khởi tạo
         public Settings(MaterialSkinManager skinManager,FormMain formMain)
         {
             form = formMain;
             this.skinManager = skinManager;
-            ApiKey = "AIzaSyDar-WvC-WReSGkb6AAPCm7q-KW9b3LdT4"; // Giá trị mặc định
-            Mode = "Light"; // Mặc định là Light
-            UseAppCompiler = true; // Mặc định bật
+            ApiKey = "AIzaSyDar-WvC-WReSGkb6AAPCm7q-KW9b3LdT4"; 
+            Mode = "Light"; 
+            UseAppCompiler = true;
             PythonCompilerOptions = "";
             CppCompilerOptions = "";
             BasePath = Hotro.AppPath;
@@ -49,11 +46,10 @@ namespace CodeTestGenV1
             string bienDichPath = Path.Combine(BasePath, "BienDich");
             if (!Directory.Exists(bienDichPath))
             {
-                UseAppCompiler = false; // Tắt nếu thư mục không tồn tại
+                UseAppCompiler = false; 
             }
         }
 
-        // Tải cài đặt từ file và trả về SettingsData
         public static SettingsData LoadSettingsData()
         {
             try
@@ -71,7 +67,6 @@ namespace CodeTestGenV1
             return new SettingsData { Mode = "Light", UseAppCompiler = true, ApiKey = "AIzaSyDar-WvC-WReSGkb6AAPCm7q-KW9b3LdT4" };
         }
 
-        // Tải cài đặt vào lớp Settings
         public static Settings LoadSettings(MaterialSkinManager skinManager,FormMain formM)
         {
             var data = LoadSettingsData();
@@ -82,13 +77,12 @@ namespace CodeTestGenV1
                 UseAppCompiler = data.UseAppCompiler,
                 PythonCompilerOptions = data.PythonCompilerOptions,
                 CppCompilerOptions = data.CppCompilerOptions,
-                BasePath = Hotro.AppPath // BasePath lấy từ Hotro.AppPath
+                BasePath = Hotro.AppPath
             };
             settings.ApplyTheme();
             return settings;
         }
 
-        // Lưu cài đặt vào file (không lưu BasePath)
         public void SaveSettings()
         {
             try
@@ -110,7 +104,6 @@ namespace CodeTestGenV1
             }
         }
 
-        // Cập nhật cài đặt từ Form
         public void UpdateFromForm()
         {
             ApiKey = form.materialSingleLineTextField1.Text;
@@ -118,11 +111,10 @@ namespace CodeTestGenV1
             UseAppCompiler = form.materialCheckBox1.Checked;
             PythonCompilerOptions = form.materialSingleLineTextField2.Text;
             CppCompilerOptions = form.materialSingleLineTextField3.Text;
-            BasePath = Hotro.AppPath; // BasePath giữ nguyên từ Hotro.AppPath
+            BasePath = Hotro.AppPath;
             ApplyTheme();
         }
 
-        // Áp dụng cài đặt vào Form
         public void ApplyToForm()
         {
             form.materialSingleLineTextField1.Text = ApiKey;
@@ -140,7 +132,6 @@ namespace CodeTestGenV1
             ApplyTheme();
         }
 
-        // Tải lại dữ liệu từ JSON vào Form
         public void RefreshSettings()  
         {
             var data = LoadSettingsData();
@@ -149,11 +140,11 @@ namespace CodeTestGenV1
             UseAppCompiler = data.UseAppCompiler;
             PythonCompilerOptions = data.PythonCompilerOptions;
             CppCompilerOptions = data.CppCompilerOptions;
-            BasePath = Hotro.AppPath; // BasePath lấy từ Hotro.AppPath
+            BasePath = Hotro.AppPath; 
             ApplyToForm();
         }
 
-        public void ApplyTheme()
+        public async void ApplyTheme()
         {
             if (Mode == "Dark")
             {
@@ -167,7 +158,7 @@ namespace CodeTestGenV1
                 form.tabPage1.BackColor = Color.FromArgb(29, 35, 44);
                 form.tabPage2.BackColor = Color.FromArgb(29, 35, 44);
                 form.hopeTabPage1.BaseColor = Color.FromArgb(44, 55, 66);
-          
+                await form.webView21.CoreWebView2.ExecuteScriptAsync($"toggleDarkMode(true);");
             }
             else // Light mode
             {
@@ -181,7 +172,8 @@ namespace CodeTestGenV1
                 form.BackColor = Color.WhiteSmoke;
                 form.tabPage1.BackColor = Color.WhiteSmoke;
                 form.tabPage2.BackColor = Color.WhiteSmoke;
-                form.hopeTabPage1.BaseColor = Color.FromArgb(48, 63, 159);              
+                form.hopeTabPage1.BaseColor = Color.FromArgb(48, 63, 159);
+                await form.webView21.CoreWebView2.ExecuteScriptAsync($"toggleDarkMode(false);");
             }
         }
     }
