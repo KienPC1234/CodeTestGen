@@ -93,6 +93,10 @@ namespace CodeTestGenV1
             }
         }
 
+        //csv Loader
+
+
+
 
         #region event
 
@@ -109,26 +113,6 @@ namespace CodeTestGenV1
             {
                 materialFlatButton3.Visible = true;
             }
-        }
-
-        private void tabPage1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void metroLabel1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void tabPage2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void materialLabel3_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void materialCheckBox1_CheckedChanged(object sender, EventArgs e)
@@ -170,37 +154,13 @@ namespace CodeTestGenV1
                 MessageBox.Show("Cài đặt đã được lưu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-        #endregion
+        
         private void materialFlatButton3_Click(object sender, EventArgs e)
         {
             appSettings.RefreshSettings();
             MessageBox.Show("Đã tải lại cài đặt từ file!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void lostBorderPanel1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void materialLabel3_Click_1(object sender, EventArgs e)
-        {
-
-        }
-
-        private void materialRaisedButton5_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void splitContainer1_Panel2_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
 
         private async void materialRaisedButton9_Click(object sender, EventArgs e)
         {
@@ -231,6 +191,104 @@ namespace CodeTestGenV1
                 }
 
                 await webView21.ExecuteScriptAsync($"changeLanguage({JsonSerializer.Serialize(language)})");
+            }
+        }
+
+        private void materialRaisedButton7_Click(object sender, EventArgs e)
+        {
+
+        }
+        #endregion
+
+        private void materialRaisedButton10_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void materialRaisedButton5_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.Rows.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu để xuất.");
+                return;
+            }
+
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "CSV files (*.csv)|*.csv";
+            saveFileDialog.Title = "Lưu dữ liệu CSV";
+
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                StringBuilder csvContent = new StringBuilder();
+
+                csvContent.AppendLine($"{materialLabel11.Text},{crownNumeric1.Value}");
+
+                var header1 = dataGridView1.Columns[0].HeaderText;
+                var header2 = dataGridView1.Columns[1].HeaderText;
+                csvContent.AppendLine($"{header1},{header2}");
+
+                foreach (DataGridViewRow row in dataGridView1.Rows)
+                {
+                    if (!row.IsNewRow)
+                    {
+                        var val1 = row.Cells[0].Value?.ToString() ?? "";
+                        var val2 = row.Cells[1].Value?.ToString() ?? "";
+                        csvContent.AppendLine($"{val1},{val2}");
+                    }
+                }
+
+                File.WriteAllText(saveFileDialog.FileName, csvContent.ToString(), Encoding.UTF8);
+                MessageBox.Show("Đã lưu thành công!");
+            }
+        }
+
+        private void materialRaisedButton8_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "CSV files (*.csv)|*.csv";
+            openFileDialog.Title = "Mở file CSV";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var lines = File.ReadAllLines(openFileDialog.FileName, Encoding.UTF8);
+
+                if (lines.Length < 2)
+                {
+                    MessageBox.Show("File không hợp lệ.");
+                    return;
+                }
+
+                var firstLine = lines[0].Split(',');
+                materialLabel11.Text = firstLine[0];
+                if (decimal.TryParse(firstLine[1], out decimal value))
+                {
+                    crownNumeric1.Value = value;
+                }
+
+                var headerLine = lines[1].Split(',');
+                if (dataGridView1.Columns.Count < 2)
+                {
+                    dataGridView1.Columns.Clear();
+                    dataGridView1.Columns.Add("col1", headerLine[0]);
+                    dataGridView1.Columns.Add("col2", headerLine[1]);
+                }
+                else
+                {
+                    dataGridView1.Columns[0].HeaderText = headerLine[0];
+                    dataGridView1.Columns[1].HeaderText = headerLine[1];
+                }
+
+                dataGridView1.Rows.Clear();
+                for (int i = 2; i < lines.Length; i++)
+                {
+                    var data = lines[i].Split(',');
+                    if (data.Length >= 2)
+                    {
+                        dataGridView1.Rows.Add(data[0], data[1]);
+                    }
+                }
+
+                MessageBox.Show("Đã tải dữ liệu thành công.");
             }
         }
     }

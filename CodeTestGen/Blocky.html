@@ -1,0 +1,632 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+
+
+    <meta charset="UTF-8">
+    <title>Website Sinh Test Case Online với Blockly</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blockly/9.0.0/blockly_compressed.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blockly/9.0.0/blocks_compressed.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blockly/9.0.0/javascript_compressed.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/blockly/9.0.0/msg/en.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        #blocklyDiv {
+            height: 480px;
+            width: 100%;
+            max-width: 800px;
+            border: 1px solid #ccc;
+        }
+
+        #output {
+            width: 100%;
+            max-width: 800px;
+            height: 200px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            background-color: #f9f9f9;
+        }
+
+        #runButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+            #runButton:hover {
+                background-color: #45a049;
+            }
+    </style>
+</head>
+<body>
+    <h1>Website Sinh Test Case Online với Blockly</h1>
+    <div id="blocklyDiv"></div>
+    <button id="runButton" onclick="runCode()">Chạy</button>
+    <h2>Kết quả Test Case:</h2>
+    <div id="output"></div>
+
+    <script>
+        // Khởi tạo khu vực Blockly
+        const workspace = Blockly.inject('blocklyDiv', {
+            toolbox: `
+                    <xml id="toolbox" style="display: none">
+                        <!-- Container Test -->
+                        <category name="Test Containers" colour="160">
+                            <block type="test_container"></block>
+                            <block type="test_subcontainer"></block>
+                        </category>
+
+                        <!-- Block cơ bản -->
+                        <category name="Inputs" colour="290">
+                            <block type="math_number"></block>
+                            <block type="text"></block>
+                            <block type="logic_boolean"></block>
+                        </category>
+
+                        <!-- Block toán học -->
+                        <category name="Math" colour="260">
+                            <block type="math_arithmetic"></block>
+                            <block type="math_number"></block>
+                            <block type="power"></block>
+                            <block type="math_sin"></block>
+                            <block type="math_cos"></block>
+                            <block type="math_tan"></block>
+                            <block type="math_log"></block>
+                            <block type="math_sqrt"></block>
+                            <block type="math_exp"></block>
+                            <block type="math_abs"></block>
+                            <block type="math_round"></block>
+                        </category>
+
+                        <!-- Block chuỗi -->
+                        <category name="Strings" colour="180">
+                            <block type="string_join"></block>
+                            <block type="string_split"></block>
+                            <block type="string_length"></block>
+                            <block type="string_substring"></block>
+                            <block type="string_to_upper"></block>
+                            <block type="string_to_lower"></block>
+                            <block type="string_char_at"></block>
+                        </category>
+
+                        <!-- Block logic -->
+                        <category name="Logic" colour="210">
+                            <block type="logic_compare"></block>
+                            <block type="logic_operation"></block>
+                            <block type="logic_negate"></block>
+                            <block type="logic_and"></block>
+                            <block type="logic_or"></block>
+                            <block type="logic_not"></block>
+                            <block type="logic_xor"></block>
+                            <block type="logic_imply"></block>
+                            <block type="logic_equiv"></block>
+                        </category>
+
+                        <!-- Block điều khiển -->
+                        <category name="Control" colour="120">
+                            <block type="controls_if"></block>
+                            <block type="controls_whileUntil"></block>
+                            <block type="controls_for"></block>
+                            <block type="controls_repeat_ext"></block>
+                        </category>
+
+                        <!-- Block biến -->
+                        <category name="Variables" colour="330" custom="VARIABLE"></category>
+
+                        <!-- Block hàm đặc thù -->
+                        <category name="Functions" colour="230">
+                            <block type="print"></block>
+                            <block type="space"></block>
+                            <block type="newline"></block>
+                            <block type="random_number"></block>
+                            <block type="random_string"></block>
+                            <block type="random_list"></block>
+                            <block type="random_matrix"></block>
+                            <block type="random_regex"></block>
+                            <block type="random_uppercase"></block>
+                            <block type="random_lowercase"></block>
+                            <block type="custom_js_function"></block>
+                        </category>
+                    </xml>
+                `,
+            scrollbars: true,
+            trashcan: true
+        });
+
+        // Định nghĩa các block tùy chỉnh
+        Blockly.Blocks['test_container'] = {
+            init: function () {
+                this.appendValueInput("NUM_TESTS")
+                    .setCheck("Number")
+                    .appendField("Test (số lượng)");
+                this.appendStatementInput("CONTENT")
+                    .setCheck(null);
+                this.setColour(160);
+                this.setTooltip("Container chính để tạo số lượng test case");
+            }
+        };
+
+        Blockly.Blocks['test_subcontainer'] = {
+            init: function () {
+                this.appendValueInput("START")
+                    .setCheck("Number")
+                    .appendField("Test (từ)");
+                this.appendValueInput("END")
+                    .setCheck("Number")
+                    .appendField("đến");
+                this.appendStatementInput("CONTENT")
+                    .setCheck(null);
+                this.setPreviousStatement(true, null);
+                this.setNextStatement(true, null);
+                this.setColour(160);
+                this.setTooltip("Container con để áp dụng logic cho một khoảng test case");
+            }
+        };
+
+        Blockly.Blocks['print'] = {
+            init: function () {
+                this.appendValueInput("VALUE")
+                    .setCheck(["Number", "String", "Array"])
+                    .appendField("In ra");
+                this.setPreviousStatement(true, null);
+                this.setNextStatement(true, null);
+                this.setColour(230);
+                this.setTooltip("In giá trị ra màn hình");
+            }
+        };
+
+        Blockly.Blocks['space'] = {
+            init: function () {
+                this.appendValueInput("COUNT")
+                    .setCheck("Number")
+                    .appendField("In khoảng trắng");
+                this.setPreviousStatement(true, null);
+                this.setNextStatement(true, null);
+                this.setColour(230);
+                this.setTooltip("In số lượng khoảng trắng");
+            }
+        };
+
+        Blockly.Blocks['newline'] = {
+            init: function () {
+                this.appendDummyInput()
+                    .appendField("Xuống dòng");
+                this.setPreviousStatement(true, null);
+                this.setNextStatement(true, null);
+                this.setColour(230);
+                this.setTooltip("In một dòng mới");
+            }
+        };
+
+        // Hàm chuỗi
+        Blockly.Blocks['string_join'] = {
+            init: function () {
+                this.appendValueInput("ARRAY")
+                    .setCheck("Array")
+                    .appendField("Nối mảng");
+                this.appendValueInput("SEPARATOR")
+                    .setCheck("String")
+                    .appendField("bằng dấu phân cách");
+                this.setOutput(true, "String");
+                this.setColour(180);
+                this.setTooltip("Nối các phần tử mảng thành chuỗi");
+            }
+        };
+
+        Blockly.Blocks['string_split'] = {
+            init: function () {
+                this.appendValueInput("STRING")
+                    .setCheck("String")
+                    .appendField("Chia chuỗi");
+                this.appendValueInput("SEPARATOR")
+                    .setCheck("String")
+                    .appendField("bằng dấu phân cách");
+                this.setOutput(true, "Array");
+                this.setColour(180);
+                this.setTooltip("Chia chuỗi thành mảng");
+            }
+        };
+
+        Blockly.Blocks['string_length'] = {
+            init: function () {
+                this.appendValueInput("STRING")
+                    .setCheck("String")
+                    .appendField("Độ dài chuỗi");
+                this.setOutput(true, "Number");
+                this.setColour(180);
+                this.setTooltip("Trả về độ dài của chuỗi");
+            }
+        };
+
+        Blockly.Blocks['string_substring'] = {
+            init: function () {
+                this.appendValueInput("STRING")
+                    .setCheck("String")
+                    .appendField("Cắt chuỗi");
+                this.appendValueInput("START")
+                    .setCheck("Number")
+                    .appendField("từ vị trí");
+                this.appendValueInput("END")
+                    .setCheck("Number")
+                    .appendField("đến");
+                this.setOutput(true, "String");
+                this.setColour(180);
+                this.setTooltip("Cắt một phần của chuỗi");
+            }
+        };
+
+        Blockly.Blocks['string_to_upper'] = {
+            init: function () {
+                this.appendValueInput("STRING")
+                    .setCheck("String")
+                    .appendField("Chuyển thành chữ in hoa");
+                this.setOutput(true, "String");
+                this.setColour(180);
+                this.setTooltip("Chuyển chuỗi thành chữ in hoa");
+            }
+        };
+
+        Blockly.Blocks['string_to_lower'] = {
+            init: function () {
+                this.appendValueInput("STRING")
+                    .setCheck("String")
+                    .appendField("Chuyển thành chữ thường");
+                this.setOutput(true, "String");
+                this.setColour(180);
+                this.setTooltip("Chuyển chuỗi thành chữ thường");
+            }
+        };
+
+        Blockly.Blocks['string_char_at'] = {
+            init: function () {
+                this.appendValueInput("STRING")
+                    .setCheck("String")
+                    .appendField("Lấy ký tự tại vị trí");
+                this.appendValueInput("INDEX")
+                    .setCheck("Number")
+                    .appendField("vị trí");
+                this.setOutput(true, "String");
+                this.setColour(180);
+                this.setTooltip("Lấy ký tự tại vị trí trong chuỗi");
+            }
+        };
+
+        // Hàm random
+        Blockly.Blocks['random_number'] = {
+            init: function () {
+                this.appendValueInput("DIGITS")
+                    .setCheck("Number")
+                    .appendField("Số ngẫu nhiên với số chữ số");
+                this.appendValueInput("NEGATIVE")
+                    .setCheck("Boolean")
+                    .appendField("cho phép âm");
+                this.setOutput(true, "Number");
+                this.setColour(230);
+                this.setTooltip("Tạo số ngẫu nhiên với số chữ số xác định");
+            }
+        };
+
+        Blockly.Blocks['random_string'] = {
+            init: function () {
+                this.appendValueInput("LENGTH")
+                    .setCheck("Number")
+                    .appendField("Chuỗi ngẫu nhiên độ dài");
+                this.appendValueInput("CHARS")
+                    .setCheck("String")
+                    .appendField("từ ký tự");
+                this.setOutput(true, "String");
+                this.setColour(230);
+                this.setTooltip("Tạo chuỗi ngẫu nhiên từ tập ký tự");
+            }
+        };
+
+        Blockly.Blocks['random_list'] = {
+            init: function () {
+                this.appendValueInput("COUNT")
+                    .setCheck("Number")
+                    .appendField("Danh sách ngẫu nhiên với số phần tử");
+                this.appendValueInput("DIGITS")
+                    .setCheck("Number")
+                    .appendField("số chữ số");
+                this.appendValueInput("NEGATIVE_RATIO")
+                    .setCheck("Number")
+                    .appendField("tỉ lệ âm (%)");
+                this.setOutput(true, "Array");
+                this.setColour(230);
+                this.setTooltip("Tạo danh sách ngẫu nhiên");
+            }
+        };
+
+        Blockly.Blocks['random_matrix'] = {
+            init: function () {
+                this.appendValueInput("ROWS")
+                    .setCheck("Number")
+                    .appendField("Ma trận ngẫu nhiên với số hàng");
+                this.appendValueInput("COLS")
+                    .setCheck("Number")
+                    .appendField("số cột");
+                this.appendValueInput("MAX_VALUE")
+                    .setCheck("Number")
+                    .appendField("giá trị tối đa");
+                this.appendValueInput("NEGATIVE_RATIO")
+                    .setCheck("Number")
+                    .appendField("tỉ lệ âm (%)");
+                this.setOutput(true, "Array");
+                this.setColour(230);
+                this.setTooltip("Tạo ma trận ngẫu nhiên");
+            }
+        };
+
+        Blockly.Blocks['random_regex'] = {
+            init: function () {
+                this.appendValueInput("REGEX")
+                    .setCheck("String")
+                    .appendField("Chuỗi ngẫu nhiên theo regex");
+                this.appendValueInput("LENGTH")
+                    .setCheck("Number")
+                    .appendField("độ dài tối đa");
+                this.setOutput(true, "String");
+                this.setColour(230);
+                this.setTooltip("Tạo chuỗi ngẫu nhiên theo regex");
+            }
+        };
+
+        Blockly.Blocks['random_uppercase'] = {
+            init: function () {
+                this.appendValueInput("LENGTH")
+                    .setCheck("Number")
+                    .appendField("Chuỗi in hoa ngẫu nhiên độ dài");
+                this.setOutput(true, "String");
+                this.setColour(230);
+                this.setTooltip("Tạo chuỗi ngẫu nhiên chỉ chứa chữ in hoa");
+            }
+        };
+
+        Blockly.Blocks['random_lowercase'] = {
+            init: function () {
+                this.appendValueInput("LENGTH")
+                    .setCheck("Number")
+                    .appendField("Chuỗi thường ngẫu nhiên độ dài");
+                this.setOutput(true, "String");
+                this.setColour(230);
+                this.setTooltip("Tạo chuỗi ngẫu nhiên chỉ chứa chữ thường");
+            }
+        };
+
+        // Block custom JavaScript
+        Blockly.Blocks['custom_js_function'] = {
+            init: function () {
+                this.appendDummyInput()
+                    .appendField("Hàm JavaScript tùy chỉnh");
+                this.appendValueInput("INPUT1")
+                    .setCheck(null)
+                    .appendField("Đầu vào 1");
+                this.appendValueInput("INPUT2")
+                    .setCheck(null)
+                    .appendField("Đầu vào 2");
+                this.appendStatementInput("CODE")
+                    .setCheck(null)
+                    .appendField("Mã thực thi");
+                this.setOutput(true, ["String", "Number"]);
+                this.setColour(290);
+                this.setTooltip("Tạo hàm JavaScript tùy chỉnh với đầu vào và mã thực thi");
+            }
+        };
+
+        // Tạo mã JavaScript từ các block
+        Blockly.JavaScript['test_container'] = function (block) {
+            const numTests = Blockly.JavaScript.valueToCode(block, 'NUM_TESTS', Blockly.JavaScript.ORDER_ATOMIC) || '1';
+            const content = Blockly.JavaScript.statementToCode(block, 'CONTENT');
+            return `
+                    for(let testIndex = 1; testIndex <= ${numTests}; testIndex++) {
+                        ${content}
+                    }
+                `;
+        };
+
+        Blockly.JavaScript['test_subcontainer'] = function (block) {
+            const start = Blockly.JavaScript.valueToCode(block, 'START', Blockly.JavaScript.ORDER_ATOMIC) || '1';
+            const end = Blockly.JavaScript.valueToCode(block, 'END', Blockly.JavaScript.ORDER_ATOMIC) || '1';
+            const content = Blockly.JavaScript.statementToCode(block, 'CONTENT');
+            return `
+                    if(testIndex >= ${start} && testIndex <= ${end}) {
+                        ${content}
+                    }
+                `;
+        };
+
+        Blockly.JavaScript['print'] = function (block) {
+            const value = Blockly.JavaScript.valueToCode(block, 'VALUE', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+            return `output += String(${value}) + "\\n";`;
+        };
+
+        Blockly.JavaScript['space'] = function (block) {
+            const count = Blockly.JavaScript.valueToCode(block, 'COUNT', Blockly.JavaScript.ORDER_ATOMIC) || '1';
+            return `output += " ".repeat(${count});`;
+        };
+
+        Blockly.JavaScript['newline'] = function (block) {
+            return `output += "\\n";`;
+        };
+
+        // Hàm chuỗi
+        Blockly.JavaScript['string_join'] = function (block) {
+            const array = Blockly.JavaScript.valueToCode(block, 'ARRAY', Blockly.JavaScript.ORDER_ATOMIC) || '[]';
+            const separator = Blockly.JavaScript.valueToCode(block, 'SEPARATOR', Blockly.JavaScript.ORDER_ATOMIC) || '","';
+            return [`${array}.join(${separator})`, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+        };
+
+        Blockly.JavaScript['string_split'] = function (block) {
+            const string = Blockly.JavaScript.valueToCode(block, 'STRING', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+            const separator = Blockly.JavaScript.valueToCode(block, 'SEPARATOR', Blockly.JavaScript.ORDER_ATOMIC) || '","';
+            return [`${string}.split(${separator})`, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+        };
+
+        Blockly.JavaScript['string_length'] = function (block) {
+            const string = Blockly.JavaScript.valueToCode(block, 'STRING', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+            return [`${string}.length`, Blockly.JavaScript.ORDER_MEMBER];
+        };
+
+        Blockly.JavaScript['string_substring'] = function (block) {
+            const string = Blockly.JavaScript.valueToCode(block, 'STRING', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+            const start = Blockly.JavaScript.valueToCode(block, 'START', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+            const end = Blockly.JavaScript.valueToCode(block, 'END', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+            return [`${string}.substring(${start}, ${end})`, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+        };
+
+        Blockly.JavaScript['string_to_upper'] = function (block) {
+            const string = Blockly.JavaScript.valueToCode(block, 'STRING', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+            return [`${string}.toUpperCase()`, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+        };
+
+        Blockly.JavaScript['string_to_lower'] = function (block) {
+            const string = Blockly.JavaScript.valueToCode(block, 'STRING', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+            return [`${string}.toLowerCase()`, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+        };
+
+        Blockly.JavaScript['string_char_at'] = function (block) {
+            const string = Blockly.JavaScript.valueToCode(block, 'STRING', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+            const index = Blockly.JavaScript.valueToCode(block, 'INDEX', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+            return [`${string}.charAt(${index})`, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+        };
+
+        // Hàm random
+        Blockly.JavaScript['random_number'] = function (block) {
+            const digits = Blockly.JavaScript.valueToCode(block, 'DIGITS', Blockly.JavaScript.ORDER_ATOMIC) || '1';
+            const negative = Blockly.JavaScript.valueToCode(block, 'NEGATIVE', Blockly.JavaScript.ORDER_ATOMIC) || 'false';
+            return [`(function() {
+                    const max = Math.pow(10, ${digits}) - 1;
+                    const min = ${negative} ? -max : 0;
+                    return Math.floor(Math.random() * (max - min + 1)) + min;
+                })()`, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+        };
+
+        Blockly.JavaScript['random_string'] = function (block) {
+            const length = Blockly.JavaScript.valueToCode(block, 'LENGTH', Blockly.JavaScript.ORDER_ATOMIC) || '1';
+            const chars = Blockly.JavaScript.valueToCode(block, 'CHARS', Blockly.JavaScript.ORDER_ATOMIC) || '"abc"';
+            return [`(function() {
+                    let result = '';
+                    const characters = ${chars};
+                    for(let i = 0; i < ${length}; i++) {
+                        result += characters.charAt(Math.floor(Math.random() * characters.length));
+                    }
+                    return result;
+                })()`, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+        };
+
+        Blockly.JavaScript['random_list'] = function (block) {
+            const count = Blockly.JavaScript.valueToCode(block, 'COUNT', Blockly.JavaScript.ORDER_ATOMIC) || '1';
+            const digits = Blockly.JavaScript.valueToCode(block, 'DIGITS', Blockly.JavaScript.ORDER_ATOMIC) || '1';
+            const negativeRatio = Blockly.JavaScript.valueToCode(block, 'NEGATIVE_RATIO', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+            return [`(function() {
+                    const list = [];
+                    for(let i = 0; i < ${count}; i++) {
+                        const max = Math.pow(10, ${digits}) - 1;
+                        const min = Math.random() < ${negativeRatio}/100 ? -max : 0;
+                        list.push(Math.floor(Math.random() * (max - min + 1)) + min);
+                    }
+                    return list.join(" ");
+                })()`, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+        };
+
+        Blockly.JavaScript['random_matrix'] = function (block) {
+            const rows = Blockly.JavaScript.valueToCode(block, 'ROWS', Blockly.JavaScript.ORDER_ATOMIC) || '1';
+            const cols = Blockly.JavaScript.valueToCode(block, 'COLS', Blockly.JavaScript.ORDER_ATOMIC) || '1';
+            const maxValue = Blockly.JavaScript.valueToCode(block, 'MAX_VALUE', Blockly.JavaScript.ORDER_ATOMIC) || '100';
+            const negativeRatio = Blockly.JavaScript.valueToCode(block, 'NEGATIVE_RATIO', Blockly.JavaScript.ORDER_ATOMIC) || '0';
+            return [`(function() {
+                    const matrix = [];
+                    for(let i = 0; i < ${rows}; i++) {
+                        const row = [];
+                        for(let j = 0; j < ${cols}; j++) {
+                            const value = Math.floor(Math.random() * ${maxValue}) + 1;
+                            const sign = Math.random() < ${negativeRatio}/100 ? -1 : 1;
+                            row.push(value * sign);
+                        }
+                        matrix.push(row.join(" "));
+                    }
+                    return matrix.join("\\n");
+                })()`, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+        };
+
+        Blockly.JavaScript['random_regex'] = function (block) {
+            const regex = Blockly.JavaScript.valueToCode(block, 'REGEX', Blockly.JavaScript.ORDER_ATOMIC) || '""';
+            const length = Blockly.JavaScript.valueToCode(block, 'LENGTH', Blockly.JavaScript.ORDER_ATOMIC) || '1';
+            return [`(function() {
+                    const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                    let result = '';
+                    for(let i = 0; i < ${length}; i++) {
+                        result += chars.charAt(Math.floor(Math.random() * chars.length));
+                    }
+                    return result; // Placeholder: Regex thực tế cần thư viện bên ngoài
+                })()`, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+        };
+
+        Blockly.JavaScript['random_uppercase'] = function (block) {
+            const length = Blockly.JavaScript.valueToCode(block, 'LENGTH', Blockly.JavaScript.ORDER_ATOMIC) || '1';
+            return [`(function() {
+                    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    let result = '';
+                    for(let i = 0; i < ${length}; i++) {
+                        result += chars.charAt(Math.floor(Math.random() * chars.length));
+                    }
+                    return result;
+                })()`, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+        };
+
+        Blockly.JavaScript['random_lowercase'] = function (block) {
+            const length = Blockly.JavaScript.valueToCode(block, 'LENGTH', Blockly.JavaScript.ORDER_ATOMIC) || '1';
+            return [`(function() {
+                    const chars = "abcdefghijklmnopqrstuvwxyz";
+                    let result = '';
+                    for(let i = 0; i < ${length}; i++) {
+                        result += chars.charAt(Math.floor(Math.random() * chars.length));
+                    }
+                    return result;
+                })()`, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+        };
+
+        // Custom JavaScript function
+        Blockly.JavaScript['custom_js_function'] = function (block) {
+            const input1 = Blockly.JavaScript.valueToCode(block, 'INPUT1', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+            const input2 = Blockly.JavaScript.valueToCode(block, 'INPUT2', Blockly.JavaScript.ORDER_ATOMIC) || 'null';
+            const code = Blockly.JavaScript.statementToCode(block, 'CODE');
+            return [`(function() {
+                    const arg1 = ${input1};
+                    const arg2 = ${input2};
+                    let result = '';
+                    ${code}
+                    return result;
+                })()`, Blockly.JavaScript.ORDER_FUNCTION_CALL];
+        };
+
+        // Hàm chạy mã
+        function runCode() {
+            const code = Blockly.JavaScript.workspaceToCode(workspace);
+            let output = '';
+            try {
+                eval(`
+                        let output = '';
+                        ${code}
+                        document.getElementById('output').textContent = output;
+                    `);
+            } catch (e) {
+                document.getElementById('output').textContent = 'Lỗi: ' + e.message;
+            }
+        }
+    </script>
+</body>
+</html>
