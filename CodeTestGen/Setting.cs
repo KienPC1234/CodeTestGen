@@ -13,40 +13,60 @@ namespace CodeTestGenV1
     public class SettingsData
     {
         public string ApiKey { get; set; }
+        public string ModelType { get; set; }
         public string Mode { get; set; }
         public bool UseAppCompiler { get; set; }
         public string PythonCompilerOptions { get; set; }
         public string CppCompilerOptions { get; set; }
+        public string PythonCompilerPath { get; set; }
+        public string CppCompilerPath { get; set; }
     }
 
     public class Settings
     {
         public string ApiKey { get; set; }
+        public string ModelType { get; set; }
         public string Mode { get; set; }
         public bool UseAppCompiler { get; set; }
         public string PythonCompilerOptions { get; set; }
         public string CppCompilerOptions { get; set; }
-        public string BasePath { get; set; } 
+        public string BasePath { get; set; }
+        public string PythonCompilerPath { get; set; }
+        public string CppCompilerPath { get; set; }
         private FormMain form;
         private static readonly string SettingsFilePath = Path.Combine(Hotro.AppPath, "settings.json");
         private readonly MaterialSkinManager skinManager;
+
+        public GeminiClient GeminiAI()
+        {
+            var GeminiClient = new GeminiClient(ApiKey, ModelType);
+            return GeminiClient;
+        }
 
         public Settings(MaterialSkinManager skinManager,FormMain formMain)
         {
             form = formMain;
             this.skinManager = skinManager;
-            ApiKey = "AIzaSyDar-WvC-WReSGkb6AAPCm7q-KW9b3LdT4"; 
+            ApiKey = "AIzaSyDar-WvC-WReSGkb6AAPCm7q-KW9b3LdT4";
+            ModelType = "models/gemini-2.0-flash";
             Mode = "Light"; 
             UseAppCompiler = true;
             PythonCompilerOptions = "";
             CppCompilerOptions = "";
             BasePath = Hotro.AppPath;
+            PythonCompilerPath = Path.Combine(BasePath, "python", "python.exe");
+            CppCompilerPath = Path.Combine(BasePath, "mingw64", "bin", "g++.exe");
 
             // Kiểm tra thư mục BasePath/BienDich
             string bienDichPath = Path.Combine(BasePath, "BienDich");
             if (!Directory.Exists(bienDichPath))
             {
                 UseAppCompiler = false; 
+            }
+            else
+            {
+                PythonCompilerPath = "python";
+                CppCompilerPath = "g++.exe";
             }
         }
 
@@ -73,12 +93,16 @@ namespace CodeTestGenV1
             var settings = new Settings(skinManager,formM)
             {
                 ApiKey = data.ApiKey,
+                ModelType = data.ModelType,
                 Mode = data.Mode,
                 UseAppCompiler = data.UseAppCompiler,
                 PythonCompilerOptions = data.PythonCompilerOptions,
                 CppCompilerOptions = data.CppCompilerOptions,
+                PythonCompilerPath = data.PythonCompilerPath,
+                CppCompilerPath = data.CppCompilerPath,
                 BasePath = Hotro.AppPath
             };
+            
             settings.ApplyTheme();
             return settings;
         }
@@ -90,10 +114,13 @@ namespace CodeTestGenV1
                 var data = new SettingsData
                 {
                     ApiKey = this.ApiKey,
+                    ModelType = this.ModelType,
                     Mode = this.Mode,
                     UseAppCompiler = this.UseAppCompiler,
                     PythonCompilerOptions = this.PythonCompilerOptions,
-                    CppCompilerOptions = this.CppCompilerOptions
+                    CppCompilerOptions = this.CppCompilerOptions,
+                    PythonCompilerPath= this.PythonCompilerPath,
+                    CppCompilerPath = this.CppCompilerPath
                 };
                 string jsonString = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(SettingsFilePath, jsonString);
@@ -107,10 +134,13 @@ namespace CodeTestGenV1
         public void UpdateFromForm()
         {
             ApiKey = form.materialSingleLineTextField1.Text;
+            ModelType = form.materialSingleLineTextField6.Text;
             Mode = form.dropDownControl1.SelectedItem != null ? form.dropDownControl1.SelectedItem.Text : "Light";
             UseAppCompiler = form.materialCheckBox1.Checked;
             PythonCompilerOptions = form.materialSingleLineTextField2.Text;
             CppCompilerOptions = form.materialSingleLineTextField3.Text;
+            PythonCompilerPath = form.materialSingleLineTextField5.Text;
+            CppCompilerPath = form.materialSingleLineTextField4.Text;
             BasePath = Hotro.AppPath;
             ApplyTheme();
         }
@@ -118,6 +148,7 @@ namespace CodeTestGenV1
         public void ApplyToForm()
         {
             form.materialSingleLineTextField1.Text = ApiKey;
+            form.materialSingleLineTextField6.Text = ModelType;
             foreach (CrownDropDownItem item in form.dropDownControl1.Items)
             {
                 if (item.Text == Mode)
@@ -129,6 +160,8 @@ namespace CodeTestGenV1
             form.materialCheckBox1.Checked = UseAppCompiler;
             form.materialSingleLineTextField2.Text = PythonCompilerOptions;
             form.materialSingleLineTextField3.Text = CppCompilerOptions;
+            form.materialSingleLineTextField5.Text = PythonCompilerPath;
+            form.materialSingleLineTextField4.Text = CppCompilerPath;
             ApplyTheme();
         }
 
@@ -136,10 +169,13 @@ namespace CodeTestGenV1
         {
             var data = LoadSettingsData();
             ApiKey = data.ApiKey;
+            ModelType = data.ModelType;
             Mode = data.Mode;
             UseAppCompiler = data.UseAppCompiler;
             PythonCompilerOptions = data.PythonCompilerOptions;
             CppCompilerOptions = data.CppCompilerOptions;
+            PythonCompilerPath = data.PythonCompilerPath;
+            CppCompilerPath = data.CppCompilerPath;
             BasePath = Hotro.AppPath; 
             ApplyToForm();
         }
@@ -159,6 +195,7 @@ namespace CodeTestGenV1
                 form.tabPage2.BackColor = Color.FromArgb(29, 35, 44);
                 form.hopeTabPage1.BaseColor = Color.FromArgb(44, 55, 66);
                 await form.webView21.CoreWebView2.ExecuteScriptAsync($"toggleDarkMode(true);");
+                await form.VideoPlayer.CoreWebView2.ExecuteScriptAsync($"toggleDarkMode(true);");
             }
             else // Light mode
             {
@@ -174,7 +211,9 @@ namespace CodeTestGenV1
                 form.tabPage2.BackColor = Color.WhiteSmoke;
                 form.hopeTabPage1.BaseColor = Color.FromArgb(48, 63, 159);
                 await form.webView21.CoreWebView2.ExecuteScriptAsync($"toggleDarkMode(false);");
+                await form.VideoPlayer.CoreWebView2.ExecuteScriptAsync($"toggleDarkMode(false);");
             }
+            
         }
     }
 }

@@ -76,7 +76,6 @@
             opacity: 0;
             transform: translateY(10px);
         }
-
         .dark-mode .monaco-editor .suggest-widget {
             background: #2e2e2e !important;
             color: #ffffff !important;
@@ -86,6 +85,7 @@
             opacity: 1;
             transform: translateY(0);
         }
+     
     </style>
 </head>
 <body>
@@ -125,6 +125,19 @@
             document.getElementById('themeToggle').checked = enable;
             document.getElementById('themeToggle').dispatchEvent(new Event('change'));
         }
+
+        function changeLanguage(language) {
+            let lang = '';
+            if (language === "1") {
+                lang = 'python';  
+                document.getElementById('language').value = 'python';
+            } else if (language === "2") {
+                lang = 'cpp'; 
+                document.getElementById('language').value = 'cpp';
+            }
+            monaco.editor.setModelLanguage(editor.getModel(), lang);
+        }
+
 
         require(['vs/editor/editor.main'], function () {
             const cppSuggestions = [

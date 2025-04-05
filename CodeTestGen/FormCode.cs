@@ -50,6 +50,7 @@ namespace CodeTestGenV1
             if (isLoaded)
             {
                 await webView21.CoreWebView2.ExecuteScriptAsync($"toggleDarkMode(true);");
+                await webView21.CoreWebView2.ExecuteScriptAsync($"toggleDarkMode(true);");
             }
             else
             {

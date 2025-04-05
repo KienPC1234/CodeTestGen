@@ -13,7 +13,6 @@ using System.IO;
 using System.Text.Json;
 using ReaLTaiizor.Controls;
 using ReaLTaiizor.Child.Crown;
-
 namespace CodeTestGenV1
 {
     public partial class FormMain :  MaterialForm
@@ -34,13 +33,22 @@ namespace CodeTestGenV1
             dropDownControl1.Items.Add(new CrownDropDownItem { Text = "Dark" });
             
             InitializeWebViewAsync();
-            
-        }
 
+        }
+      
         private async void InitializeWebViewAsync()
         {
             await webView21.EnsureCoreWebView2Async(null);
-
+            await VideoPlayer.EnsureCoreWebView2Async(null);
+            string VideoPlayerhtmlPath = Path.Combine(Hotro.AppPath, "VideoPlayer.html");
+            //HuongDan
+            if (!File.Exists(VideoPlayerhtmlPath))
+            {
+                MessageBox.Show("Không tìm thấy file VideoPlayer.html!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            VideoPlayer.Source = new Uri($"file:///{VideoPlayerhtmlPath.Replace("\\", "/")}");
+            //Editor
             string htmlPath = Path.Combine(Hotro.AppPath, "editor.html");
             if (!File.Exists(htmlPath))
             {
@@ -67,9 +75,17 @@ namespace CodeTestGenV1
 
             if (isLoaded)
             {
-
-                appSettings = Settings.LoadSettings(materialSkinManager, this);
-                appSettings.ApplyToForm();
+                if (!File.Exists(Path.Combine(Hotro.AppPath, "settings.json")))
+                {
+                    appSettings = new Settings(materialSkinManager,this);
+                    appSettings.ApplyToForm();
+                    appSettings.SaveSettings();
+                }
+                else
+                {
+                    appSettings = Settings.LoadSettings(materialSkinManager, this);
+                    appSettings.ApplyToForm();
+                }
             }
             else
             {
@@ -117,15 +133,42 @@ namespace CodeTestGenV1
 
         private void materialCheckBox1_CheckedChanged(object sender, EventArgs e)
         {
-
+            if (materialCheckBox1.Checked) {
+                if (!Directory.Exists(Path.Combine(Hotro.AppPath, "BienDich")))
+                {
+                    MessageBox.Show("Không tìm thấy thư mục biên dịch của app!","Lỗi",MessageBoxButtons.OK,MessageBoxIcon.Error);
+                    materialCheckBox1.Checked = false;
+                }
+                else
+                {
+                    materialSingleLineTextField5.Text = Path.Combine(Hotro.AppPath, "python", "python.exe");
+                    materialSingleLineTextField4.Text = Path.Combine(Hotro.AppPath, "mingw64", "bin", "g++.exe");
+                }
+            }
+            else
+            {
+                materialSingleLineTextField5.Text = "python";
+                materialSingleLineTextField4.Text = "g++";
+            }
         }
 
 
         private void materialFlatButton2_Click_1(object sender, EventArgs e)
         {
-            appSettings.UpdateFromForm();
-            appSettings.SaveSettings();
-            MessageBox.Show("Cài đặt đã được lưu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            var apikey = materialSingleLineTextField1.Text;
+            var modeltype = materialSingleLineTextField6.Text;
+            var pypath = materialSingleLineTextField5.Text;
+            var cpppath = materialSingleLineTextField4.Text;
+            if (string.IsNullOrEmpty(apikey)|| string.IsNullOrEmpty(modeltype) || string.IsNullOrEmpty(pypath) || string.IsNullOrEmpty(cpppath))
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            else
+            {
+                appSettings.UpdateFromForm();
+                appSettings.SaveSettings();
+                MessageBox.Show("Cài đặt đã được lưu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
         #endregion
         private void materialFlatButton3_Click(object sender, EventArgs e)
@@ -163,6 +206,32 @@ namespace CodeTestGenV1
         {
             string clipboardText = Clipboard.GetText();
             await webView21.CoreWebView2.ExecuteScriptAsync($"setText({JsonSerializer.Serialize(clipboardText)});");
+        }
+
+        private async void materialRaisedButton1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Code Test (*.py;*.cpp)|*.py;*.cpp";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string filePath = openFileDialog.FileName;
+                string fileContent = File.ReadAllText(filePath);
+
+                await webView21.ExecuteScriptAsync($"setText({JsonSerializer.Serialize(fileContent)})");
+
+                string language = "";
+                if (filePath.EndsWith(".py"))
+                {
+                    language = "1";
+                }
+                else if (filePath.EndsWith(".cpp"))
+                {
+                    language = "2";
+                }
+
+                await webView21.ExecuteScriptAsync($"changeLanguage({JsonSerializer.Serialize(language)})");
+            }
         }
     }
 }

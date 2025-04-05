@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("CodeTestGen")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("ReviOS 11 24.06")]
+[assembly: AssemblyCompany("KCD Dev 2025")]
 [assembly: AssemblyProduct("CodeTestGen")]
-[assembly: AssemblyCopyright("Copyright © ReviOS 11 24.06 2025")]
+[assembly: AssemblyCopyright("Copyright © KCD Dev 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Player</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+        }
+
+        .label-header {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: inherit;
+            transition: background-color 0.5s ease-in-out, color 0.5s ease-in-out;
+        }
+
+        .container-fluid {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        iframe, img#content-frame, video#content-frame {
+            width: 100%;
+            height: 80vh;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+            padding: 12px 20px;
+            border-radius: 50px;
+            background: linear-gradient(45deg, #007bff, #00c4ff);
+            border: none;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,123,255,0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+            .nav-btn:hover {
+                transform: translateY(-50%) scale(1.1);
+                box-shadow: 0 6px 15px rgba(0,123,255,0.5);
+                background: linear-gradient(45deg, #0056b3, #009cff);
+            }
+
+        .btn-prev {
+            left: 30px;
+        }
+
+        .btn-next {
+            right: 30px;
+        }
+
+        .dark-mode {
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+
+            .dark-mode iframe, .dark-mode img#content-frame, .dark-mode video#content-frame {
+                box-shadow: 0 4px 15px rgba(255,255,255,0.1);
+            }
+
+            .dark-mode .nav-btn {
+                background: linear-gradient(45deg, #ff6b6b, #ff8e8e);
+            }
+
+                .dark-mode .nav-btn:hover {
+                    background: linear-gradient(45deg, #d9534f, #ff6b6b);
+                    box-shadow: 0 6px 15px rgba(255,107,107,0.5);
+                }
+
+        .toggle-btn {
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+
+            .toggle-btn:hover {
+                transform: scale(1.1);
+            }
+    </style>
+</head>
+<body>
+    <div class="label-header">
+        Bạn có thể dùng 2 nút ở bên trái và phải để chuyển sang hướng dẫn khác!
+    </div>
+    <div class="container-fluid">
+        <button class="btn nav-btn btn-prev" onclick="prevContent()">« Trước</button>
+        <iframe id="content-frame" src="https://www.youtube-nocookie.com/embed/M7lc1UVf-VE?rel=0" allowfullscreen></iframe>
+        <button class="btn nav-btn btn-next" onclick="nextContent()">Tiếp »</button>
+    </div>
+
+    <div class="position-fixed bottom-0 end-0 m-3">
+        <button class="btn btn-secondary toggle-btn" onclick="toggleDarkMode()">☀️</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const contentList = [
+            "youtube:M7lc1UVf-VE",
+            "image:https://picsum.photos/800/600",
+            "youtube:dQw4w9WgXcQ",
+            "video:https://www.w3schools.com/html/mov_bbb.mp4"
+        ];
+        let currentIndex = 0;
+        let isDarkMode = false;
+
+        function changeContent(index) {
+            const frame = document.getElementById('content-frame');
+            const content = contentList[index].split(':');
+            const type = content[0];
+            const src = content[1];
+
+            frame.outerHTML = '';
+
+            if (type === 'youtube') {
+                document.querySelector('.container-fluid').insertAdjacentHTML(
+                    'beforeend',
+                    `<iframe id="content-frame" src="https://www.youtube-nocookie.com/embed/${src}?rel=0" allowfullscreen style="width: 100%; height: 80vh; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"></iframe>`
+                );
+            } else if (type === 'image') {
+                document.querySelector('.container-fluid').insertAdjacentHTML(
+                    'beforeend',
+                    `<img id="content-frame" src="${src}" style="width: 100%; height: 80vh; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);">`
+                );
+            } else if (type === 'video') {
+                document.querySelector('.container-fluid').insertAdjacentHTML(
+                    'beforeend',
+                    `<video id="content-frame" controls style="width: 100%; height: 80vh; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);"><source src="${src}" type="video/mp4">Trình duyệt không hỗ trợ video.</video>`
+                );
+            }
+
+            currentIndex = index;
+            if (isDarkMode) {
+                document.getElementById('content-frame').classList.add('dark-mode');
+            }
+        }
+
+        function nextContent() {
+            const newIndex = (currentIndex + 1) % contentList.length;
+            changeContent(newIndex);
+        }
+
+        function prevContent() {
+            const newIndex = (currentIndex - 1 + contentList.length) % contentList.length;
+            changeContent(newIndex);
+        }
+
+        function toggleDarkMode(forceDark = null) {
+            isDarkMode = forceDark !== null ? forceDark : !isDarkMode;
+            const body = document.body;
+            const toggleBtn = document.querySelector('.toggle-btn');
+            const frame = document.getElementById('content-frame');
+
+            if (isDarkMode) {
+                body.classList.add('dark-mode');
+                toggleBtn.textContent = '🌙';
+                toggleBtn.classList.remove('btn-secondary');
+                toggleBtn.classList.add('btn-dark');
+                frame.classList.add('dark-mode');
+            } else {
+                body.classList.remove('dark-mode');
+                toggleBtn.textContent = '☀️';
+                toggleBtn.classList.remove('btn-dark');
+                toggleBtn.classList.add('btn-secondary');
+                frame.classList.remove('dark-mode');
+            }
+        }
+
+        changeContent(0);
+    </script>
+</body>
+</html>
