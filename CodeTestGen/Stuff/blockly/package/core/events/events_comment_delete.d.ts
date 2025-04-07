@@ -3,25 +3,16 @@
  * Copyright 2018 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Class for comment deletion event.
- *
- * @class
- */
-import type { WorkspaceComment } from '../comments/workspace_comment.js';
-import * as comments from '../serialization/workspace_comments.js';
-import type { Workspace } from '../workspace.js';
+import type { WorkspaceComment } from '../workspace_comment.js';
 import { CommentBase, CommentBaseJson } from './events_comment_base.js';
-import { EventType } from './type.js';
+import type { Workspace } from '../workspace.js';
 /**
  * Notifies listeners that a workspace comment has been deleted.
  */
 export declare class CommentDelete extends CommentBase {
-    type: EventType;
+    type: string;
     /** The XML representation of the deleted workspace comment. */
     xml?: Element;
-    /** The JSON representation of the created workspace comment. */
-    json?: comments.State;
     /**
      * @param opt_comment The deleted comment.
      *     Undefined for a blank event.
@@ -52,6 +43,5 @@ export declare class CommentDelete extends CommentBase {
 }
 export interface CommentDeleteJson extends CommentBaseJson {
     xml: string;
-    json: object;
 }
 //# sourceMappingURL=events_comment_delete.d.ts.map

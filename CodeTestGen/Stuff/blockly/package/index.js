@@ -1,13 +1,13 @@
 /* eslint-disable */
 ;(function(root, factory) {
   if (typeof define === 'function' && define.amd) { // AMD
-    define(['blockly/core', 'blockly/msg/en', 'blockly/blocks'], factory);
+    define(['./browser'], factory);
   } else if (typeof exports === 'object') { // Node.js
-    module.exports = factory(require('blockly/core'), require('blockly/msg/en'), require('blockly/blocks'));
+    module.exports = factory(require('./node'));
   } else { // Browser
-    root.Blockly = factory(root.Blockly, root.Blockly.Msg, root.Blockly.Blocks);
+    root.Blockly = factory(root.Blockly);
   }
-}(this, function(Blockly, en, blocks) {
+}(this, function(Blockly) {
 /**
  * @license
  * Copyright 2019 Google LLC
@@ -15,22 +15,10 @@
  */
 
 /**
- * @file Main entrypoint for blockly package.  Via its UMD wrapper,
- * this module loads blockly/core, blockly/blocks and blockly/msg/en
- * and then calls setLocale(en).
- *
- * This entrypoint previously also loaded one or more generators
- * (JavaScript in browser, all five in node.js environments) but it no
- * longer makes sense to do so because of changes to generators
- * exports (they no longer have the side effect of defining
- * Blockly.JavaScript, etc., when loaded as modules).
+ * @fileoverview Blockly module; this is a wrapper which selects
+ *     either browser.js or node.js, depending on which environment we
+ *     are running in.
  */
-
-/* eslint-disable */
-'use strict';
-
-// Include the EN Locale by default.
-Blockly.setLocale(en);
 
 return Blockly;
 }));

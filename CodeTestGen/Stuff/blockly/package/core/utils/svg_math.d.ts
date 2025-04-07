@@ -24,6 +24,14 @@ export declare function getRelativeXY(element: Element): Coordinate;
  */
 export declare function getInjectionDivXY(element: Element): Coordinate;
 /**
+ * Check if 3D transforms are supported by adding an element
+ * and attempting to set the property.
+ *
+ * @returns True if 3D transforms are supported.
+ * @deprecated No longer provided by Blockly.
+ */
+export declare function is3dSupported(): boolean;
+/**
  * Get the position of the current viewport in window coordinates.  This takes
  * scroll into account.
  *
@@ -48,15 +56,6 @@ export declare function getDocumentScroll(): Coordinate;
  * @returns The workspace coordinates.
  */
 export declare function screenToWsCoordinates(ws: WorkspaceSvg, screenCoordinates: Coordinate): Coordinate;
-/**
- * Converts workspace coordinates to screen coordinates.
- *
- * @param ws The workspace to get the coordinates out of.
- * @param workspaceCoordinates  The workspace coordinates to be converted
- *     to screen coordinates.
- * @returns The screen coordinates.
- */
-export declare function wsToScreenCoordinates(ws: WorkspaceSvg, workspaceCoordinates: Coordinate): Coordinate;
 export declare const TEST_ONLY: {
     XY_REGEX: RegExp;
     XY_STYLE_REGEX: RegExp;

@@ -3,12 +3,6 @@
  * Copyright 2019 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * The class representing a marker.
- * Used primarily for keyboard navigation to show a marked location.
- *
- * @class
- */
 import type { MarkerSvg } from '../renderers/common/marker_svg.js';
 import type { ASTNode } from './ast_node.js';
 /**
@@ -19,12 +13,12 @@ export declare class Marker {
     /** The colour of the marker. */
     colour: string | null;
     /** The current location of the marker. */
-    private curNode;
+    private curNode_;
     /**
      * The object in charge of drawing the visual representation of the current
      * node.
      */
-    private drawer;
+    private drawer_;
     /** The type of the marker. */
     type: string;
     /** Constructs a new Marker instance. */

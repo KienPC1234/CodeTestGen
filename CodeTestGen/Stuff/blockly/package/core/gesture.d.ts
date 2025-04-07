@@ -3,20 +3,13 @@
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * The class representing an in-progress gesture, e.g. a drag,
- * tap, or pinch to zoom.
- *
- * @class
- */
 import './events/events_click.js';
 import type { BlockSvg } from './block_svg.js';
-import { RenderedWorkspaceComment } from './comments.js';
+import { BubbleDragger } from './bubble_dragger.js';
 import type { Field } from './field.js';
+import type { IBlockDragger } from './interfaces/i_block_dragger.js';
 import type { IBubble } from './interfaces/i_bubble.js';
-import { IDragger } from './interfaces/i_dragger.js';
 import type { IFlyout } from './interfaces/i_flyout.js';
-import type { IIcon } from './interfaces/i_icon.js';
 import { Coordinate } from './utils/coordinate.js';
 import { WorkspaceDragger } from './workspace_dragger.js';
 import type { WorkspaceSvg } from './workspace_svg.js';
@@ -30,40 +23,30 @@ export declare class Gesture {
      * pixels, with (0, 0) at the top left of the browser window (pointer event
      * clientX/Y).
      */
-    private mouseDownXY;
-    private currentDragDeltaXY;
+    private mouseDownXY_;
+    private currentDragDeltaXY_;
     /**
      * The bubble that the gesture started on, or null if it did not start on a
      * bubble.
      */
-    private startBubble;
+    private startBubble_;
     /**
      * The field that the gesture started on, or null if it did not start on a
      * field.
      */
-    private startField;
-    /**
-     * The icon that the gesture started on, or null if it did not start on an
-     * icon.
-     */
-    private startIcon;
+    private startField_;
     /**
      * The block that the gesture started on, or null if it did not start on a
      * block.
      */
-    private startBlock;
-    /**
-     * The comment that the gesture started on, or null if it did not start on a
-     * comment.
-     */
-    private startComment;
+    private startBlock_;
     /**
      * The block that this gesture targets.  If the gesture started on a
      * shadow block, this is the first non-shadow parent of the block.  If the
      * gesture started in the flyout, this is the root block of the block group
      * that was clicked or dragged.
      */
-    private targetBlock;
+    private targetBlock_;
     /**
      * The workspace that the gesture started on.  There may be multiple
      * workspaces on a page; this is more accurate than using
@@ -75,33 +58,35 @@ export declare class Gesture {
      * A gesture that exceeds the drag radius is a drag even if it ends exactly
      * at its start point.
      */
-    private hasExceededDragRadius;
+    private hasExceededDragRadius_;
     /**
      * Array holding info needed to unbind events.
      * Used for disposing.
      * Ex: [[node, name, func], [node, name, func]].
      */
     private boundEvents;
-    private dragger;
+    /** The object tracking a bubble drag, or null if none is in progress. */
+    private bubbleDragger_;
+    /** The object tracking a block drag, or null if none is in progress. */
+    private blockDragger_;
     /**
      * The object tracking a workspace or flyout workspace drag, or null if none
      * is in progress.
      */
-    private workspaceDragger;
-    /** Whether the gesture is dragging or not. */
-    private dragging;
+    private workspaceDragger_;
     /** The flyout a gesture started in, if any. */
-    private flyout;
+    private flyout_;
     /** Boolean for sanity-checking that some code is only called once. */
-    private calledUpdateIsDragging;
+    private calledUpdateIsDragging_;
     /** Boolean for sanity-checking that some code is only called once. */
-    private gestureHasStarted;
+    private hasStarted_;
     /** Boolean used internally to break a cycle in disposal. */
     protected isEnding_: boolean;
+    private healStack_;
     /** The event that most recently updated this gesture. */
-    private mostRecentEvent;
+    private mostRecentEvent_;
     /** Boolean for whether or not this gesture is a multi-touch gesture. */
-    private multiTouch;
+    private isMultiTouch_;
     /** A map of cached points used for tracking multi-touch gestures. */
     private cachedPoints;
     /**
@@ -110,11 +95,11 @@ export declare class Gesture {
      * Scales between 0 and 1 mean the most recent zoom was a zoom out.
      * Scales above 1.0 mean the most recent zoom was a zoom in.
      */
-    private previousScale;
+    private previousScale_;
     /** The starting distance between two touch points. */
-    private startDistance;
+    private startDistance_;
     /** Boolean for whether or not the workspace supports pinch-zoom. */
-    private isPinchZoomEnabled;
+    private isPinchZoomEnabled_;
     /**
      * The owner of the dropdownDiv when this gesture first starts.
      * Needed because we'll close the dropdown before fields get to
@@ -139,7 +124,7 @@ export declare class Gesture {
      *
      * @param e The most recent pointer event.
      */
-    private updateFromEvent;
+    private updateFromEvent_;
     /**
      * DO MATH to set currentDragDeltaXY_ based on the most recent pointer
      * position.
@@ -148,7 +133,7 @@ export declare class Gesture {
      *     with (0, 0) at the window's top left corner.
      * @returns True if the drag just exceeded the drag radius for the first time.
      */
-    private updateDragDelta;
+    private updateDragDelta_;
     /**
      * Update this gesture to record whether a block is being dragged from the
      * flyout.
@@ -160,7 +145,31 @@ export declare class Gesture {
      *
      * @returns True if a block is being dragged from the flyout.
      */
-    private updateIsDraggingFromFlyout;
+    private updateIsDraggingFromFlyout_;
+    /**
+     * Update this gesture to record whether a bubble is being dragged.
+     * This function should be called on a pointermove event the first time
+     * the drag radius is exceeded.  It should be called no more than once per
+     * gesture. If a bubble should be dragged this function creates the necessary
+     * BubbleDragger and starts the drag.
+     *
+     * @returns True if a bubble is being dragged.
+     */
+    private updateIsDraggingBubble_;
+    /**
+     * Check whether to start a block drag. If a block should be dragged, either
+     * from the flyout or in the workspace, create the necessary BlockDragger and
+     * start the drag.
+     *
+     * This function should be called on a pointermove event the first time
+     * the drag radius is exceeded.  It should be called no more than once per
+     * gesture. If a block should be dragged, either from the flyout or in the
+     * workspace, this function creates the necessary BlockDragger and starts the
+     * drag.
+     *
+     * @returns True if a block is being dragged.
+     */
+    private updateIsDraggingBlock_;
     /**
      * Check whether to start a workspace drag. If a workspace is being dragged,
      * create the necessary WorkspaceDragger and start the drag.
@@ -170,15 +179,18 @@ export declare class Gesture {
      * gesture. If a workspace is being dragged this function creates the
      * necessary WorkspaceDragger and starts the drag.
      */
-    private updateIsDraggingWorkspace;
+    private updateIsDraggingWorkspace_;
     /**
      * Update this gesture to record whether anything is being dragged.
      * This function should be called on a pointermove event the first time
      * the drag radius is exceeded.  It should be called no more than once per
      * gesture.
      */
-    private updateIsDragging;
-    private createDragger;
+    private updateIsDragging_;
+    /** Create a block dragger and start dragging the selected block. */
+    private startDraggingBlock_;
+    /** Create a bubble dragger and start dragging the selected bubble. */
+    private startDraggingBubble_;
     /**
      * Start a gesture: update the workspace to indicate that a gesture is in
      * progress and bind pointermove and pointerup handlers.
@@ -236,7 +248,7 @@ export declare class Gesture {
      *
      * @param e A pointermove event.
      */
-    private handlePinch;
+    private handlePinch_;
     /**
      * Handle a pointerup event and end the gesture.
      *
@@ -286,7 +298,7 @@ export declare class Gesture {
      *
      * @param ws The workspace that a user clicks on.
      */
-    private fireWorkspaceClick;
+    private fireWorkspaceClick_;
     /**
      * Handle a pointerdown event on a flyout.
      *
@@ -311,32 +323,24 @@ export declare class Gesture {
      * @internal
      */
     handleBubbleStart(e: PointerEvent, bubble: IBubble): void;
-    /**
-     * Handle a pointerdown event on a workspace comment.
-     *
-     * @param e A pointerdown event.
-     * @param comment The comment the event hit.
-     * @internal
-     */
-    handleCommentStart(e: PointerEvent, comment: RenderedWorkspaceComment): void;
+    /** Execute a bubble click. */
+    private doBubbleClick_;
     /** Execute a field click. */
-    private doFieldClick;
-    /** Execute an icon click. */
-    private doIconClick;
+    private doFieldClick_;
     /** Execute a block click. */
-    private doBlockClick;
+    private doBlockClick_;
     /**
      * Execute a workspace click. When in accessibility mode shift clicking will
      * move the cursor.
      *
      * @param _e A pointerup event.
      */
-    private doWorkspaceClick;
+    private doWorkspaceClick_;
     /**
      * Move the dragged/clicked block to the front of the workspace so that it is
      * not occluded by other blocks.
      */
-    private bringBlockToFront;
+    private bringBlockToFront_;
     /**
      * Record the field that a gesture started on.
      *
@@ -345,26 +349,12 @@ export declare class Gesture {
      */
     setStartField<T>(field: Field<T>): void;
     /**
-     * Record the icon that a gesture started on.
-     *
-     * @param icon The icon the gesture started on.
-     * @internal
-     */
-    setStartIcon(icon: IIcon): void;
-    /**
      * Record the bubble that a gesture started on
      *
      * @param bubble The bubble the gesture started on.
      * @internal
      */
     setStartBubble(bubble: IBubble): void;
-    /**
-     * Record the comment that a gesture started on
-     *
-     * @param comment The comment the gesture started on.
-     * @internal
-     */
-    setStartComment(comment: RenderedWorkspaceComment): void;
     /**
      * Record the block that a gesture started on, and set the target block
      * appropriately.
@@ -380,52 +370,47 @@ export declare class Gesture {
      *
      * @param block The block the gesture targets.
      */
-    private setTargetBlock;
+    private setTargetBlock_;
     /**
      * Record the workspace that a gesture started on.
      *
      * @param ws The workspace the gesture started on.
      */
-    private setStartWorkspace;
+    private setStartWorkspace_;
     /**
      * Record the flyout that a gesture started on.
      *
      * @param flyout The flyout the gesture started on.
      */
-    private setStartFlyout;
+    private setStartFlyout_;
     /**
      * Whether this gesture is a click on a bubble.  This should only be called
      * when ending a gesture (pointerup).
      *
      * @returns Whether this gesture was a click on a bubble.
      */
-    private isBubbleClick;
-    private isCommentClick;
+    private isBubbleClick_;
     /**
      * Whether this gesture is a click on a block.  This should only be called
      * when ending a gesture (pointerup).
      *
      * @returns Whether this gesture was a click on a block.
      */
-    private isBlockClick;
+    private isBlockClick_;
     /**
-     * Whether this gesture is a click on a field that should be handled.  This should only be called
+     * Whether this gesture is a click on a field.  This should only be called
      * when ending a gesture (pointerup).
      *
      * @returns Whether this gesture was a click on a field.
      */
-    private isFieldClick;
-    /** @returns Whether this gesture is a click on an icon that should be handled. */
-    private isIconClick;
+    private isFieldClick_;
     /**
      * Whether this gesture is a click on a workspace.  This should only be called
      * when ending a gesture (pointerup).
      *
      * @returns Whether this gesture was a click on a workspace.
      */
-    private isWorkspaceClick;
-    /** Returns the current dragger if the gesture is a drag. */
-    getCurrentDragger(): WorkspaceDragger | IDragger | null;
+    private isWorkspaceClick_;
     /**
      * Whether this gesture is a drag of either a workspace or block.
      * This function is called externally to block actions that cannot be taken
@@ -444,6 +429,22 @@ export declare class Gesture {
      * @internal
      */
     hasStarted(): boolean;
+    /**
+     * Get a list of the insertion markers that currently exist.  Block drags have
+     * 0, 1, or 2 insertion markers.
+     *
+     * @returns A possibly empty list of insertion marker blocks.
+     * @internal
+     */
+    getInsertionMarkers(): BlockSvg[];
+    /**
+     * Gets the current dragger if an item is being dragged. Null if nothing is
+     * being dragged.
+     *
+     * @returns The dragger that is currently in use or null if no drag is in
+     *     progress.
+     */
+    getCurrentDragger(): WorkspaceDragger | BubbleDragger | IBlockDragger | null;
     /**
      * Is a drag or other gesture currently in progress on any workspace?
      *

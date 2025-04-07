@@ -11,8 +11,8 @@ import type { Workspace } from '../workspace.js';
  * Represents the state of a connection.
  */
 export interface ConnectionState {
-    shadow?: State;
-    block?: State;
+    shadow: State | undefined;
+    block: State | undefined;
 }
 /**
  * Represents the state of a given block.
@@ -27,7 +27,6 @@ export interface State {
     movable?: boolean;
     editable?: boolean;
     enabled?: boolean;
-    disabledReasons?: string[];
     inline?: boolean;
     data?: string;
     extraState?: any;
@@ -59,12 +58,11 @@ export interface State {
  * @returns The serialized state of the block, or null if the block could not be
  *     serialied (eg it was an insertion marker).
  */
-export declare function save(block: Block, { addCoordinates, addInputBlocks, addNextBlocks, doFullSerialization, saveIds, }?: {
+export declare function save(block: Block, { addCoordinates, addInputBlocks, addNextBlocks, doFullSerialization, }?: {
     addCoordinates?: boolean;
     addInputBlocks?: boolean;
     addNextBlocks?: boolean;
     doFullSerialization?: boolean;
-    saveIds?: boolean;
 }): State | null;
 /**
  * Loads the block represented by the given state into the given workspace.
@@ -95,7 +93,7 @@ export declare function append(state: State, workspace: Workspace, { recordUndo 
  * @returns The block that was just appended.
  * @internal
  */
-export declare function appendInternal(state: State, workspace: Workspace, { parentConnection, isShadow, recordUndo, }?: {
+export declare function appendInternal(state: State, workspace: Workspace, { parentConnection, isShadow, recordUndo }?: {
     parentConnection?: Connection;
     isShadow?: boolean;
     recordUndo?: boolean;

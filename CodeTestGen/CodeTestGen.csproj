@@ -291,7 +291,8 @@
   </Target>
   <PropertyGroup>
     <PostBuildEvent>if not exist "$(TargetDir)BienDich\" xcopy "$(ProjectDir)BienDich" "$(TargetDir)BienDich" /E /I /Y
-if not exist "$(TargetDir)Stuff\" xcopy "$(ProjectDir)Stuff" "$(TargetDir)Stuff" /E /I /Y</PostBuildEvent>
+robocopy "$(ProjectDir)Stuff" "$(TargetDir)Stuff" /E /XO /XN /XC /NFL /NDL /NJH /NJS /NS /NC || exit /b 0
+</PostBuildEvent>
   </PropertyGroup>
   <Import Project="..\packages\Microsoft.Web.WebView2.1.0.3124.44\build\Microsoft.Web.WebView2.targets" Condition="Exists('..\packages\Microsoft.Web.WebView2.1.0.3124.44\build\Microsoft.Web.WebView2.targets')" />
 </Project>

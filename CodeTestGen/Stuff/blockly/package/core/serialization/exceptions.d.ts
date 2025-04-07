@@ -67,15 +67,4 @@ export declare class RealChildOfShadow extends DeserializationError {
      */
     constructor(state: State);
 }
-export declare class UnregisteredIcon extends DeserializationError {
-    block: Block;
-    state: State;
-    /**
-     * @param iconType The type of the unregistered icon we are attempting to
-     *     deserialize.
-     * @param block The block we are attempting to add the unregistered icon to.
-     * @param state The state object representing the block.
-     */
-    constructor(iconType: string, block: Block, state: State);
-}
 //# sourceMappingURL=exceptions.d.ts.map

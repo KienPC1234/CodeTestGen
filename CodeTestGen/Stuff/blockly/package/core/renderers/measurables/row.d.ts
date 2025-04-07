@@ -69,7 +69,7 @@ export declare class Row {
      */
     hasInlineInput: boolean;
     /**
-     * Whether the row has any dummy inputs or end-row inputs.
+     * Whether the row has any dummy inputs.
      */
     hasDummyInput: boolean;
     /**

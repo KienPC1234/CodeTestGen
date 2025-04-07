@@ -10,7 +10,7 @@ import type { Workspace } from './workspace.js';
  */
 export declare class Names {
     static DEVELOPER_VARIABLE_TYPE: NameType;
-    private readonly variablePrefix;
+    private readonly variablePrefix_;
     /** A set of reserved words. */
     private readonly reservedWords;
     /**
@@ -23,7 +23,7 @@ export declare class Names {
     /**
      * The variable map from the workspace, containing Blockly variable models.
      */
-    private variableMap;
+    private variableMap_;
     /**
      * @param reservedWordsList A comma-separated string of words that are illegal
      *     for use as names in a language (e.g. 'new,if,this,...').
@@ -49,7 +49,7 @@ export declare class Names {
      * @returns The name of the referenced variable, or null if there was no
      *     variable map or the variable was not found in the map.
      */
-    private getNameForUserVariable;
+    private getNameForUserVariable_;
     /**
      * Generate names for user variables, but only ones that are being used.
      *
@@ -99,7 +99,7 @@ export declare class Names {
      * @param name Potentially illegal entity name.
      * @returns Safe entity name.
      */
-    private safeName;
+    private safeName_;
     /**
      * Do the given two entity names refer to the same entity?
      * Blockly names are case-insensitive.

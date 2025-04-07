@@ -4,13 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 /**
- * Utility methods for coordinate manipulation.
- * These methods are not specific to Blockly, and could be factored out into
- * a JavaScript framework such as Closure.
- *
- * @class
- */
-/**
  * Class for representing coordinates and positions.
  */
 export declare class Coordinate {

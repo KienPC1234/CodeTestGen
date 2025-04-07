@@ -3,7 +3,7 @@
  * Copyright 2019 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import type { IIcon as BlocklyIcon } from '../../interfaces/i_icon.js';
+import type { Icon as BlocklyIcon } from '../../icon.js';
 import type { ConstantProvider } from '../common/constants.js';
 import { Measurable } from './base.js';
 /**
@@ -12,6 +12,7 @@ import { Measurable } from './base.js';
  */
 export declare class Icon extends Measurable {
     icon: BlocklyIcon;
+    isVisible: boolean;
     flipRtl: boolean;
     /**
      * An object containing information about the space an icon takes up during

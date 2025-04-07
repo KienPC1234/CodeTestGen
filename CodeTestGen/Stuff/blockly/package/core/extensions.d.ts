@@ -18,7 +18,7 @@ export declare const TEST_ONLY: {
  * @throws {Error} if the extension name is empty, the extension is already
  *     registered, or extensionFn is not a function.
  */
-export declare function register<T extends Block>(name: string, initFn: (this: T) => void): void;
+export declare function register(name: string, initFn: Function): void;
 /**
  * Registers a new extension function that adds all key/value of mixinObj.
  *
@@ -77,6 +77,16 @@ export declare function runAfterPageLoad(fn: () => void): void;
  * Builds an extension function that will map a dropdown value to a tooltip
  * string.
  *
+ * This method includes multiple checks to ensure tooltips, dropdown options,
+ * and message references are aligned. This aims to catch errors as early as
+ * possible, without requiring developers to manually test tooltips under each
+ * option. After the page is loaded, each tooltip text string will be checked
+ * for matching message keys in the internationalized string table. Deferring
+ * this until the page is loaded decouples loading dependencies. Later, upon
+ * loading the first block of any given type, the extension will validate every
+ * dropdown option has a matching tooltip in the lookupTable.  Errors are
+ * reported as warnings in the console, and are never fatal.
+ *
  * @param dropdownName The name of the field whose value is the key to the
  *     lookup table.
  * @param lookupTable The table of field values to tooltip text.
@@ -84,7 +94,7 @@ export declare function runAfterPageLoad(fn: () => void): void;
  */
 export declare function buildTooltipForDropdown(dropdownName: string, lookupTable: {
     [key: string]: string;
-}): (this: Block) => void;
+}): Function;
 /**
  * Builds an extension function that will install a dynamic tooltip. The
  * tooltip message should include the string '%1' and that string will be
@@ -95,5 +105,5 @@ export declare function buildTooltipForDropdown(dropdownName: string, lookupTabl
  * @param fieldName The field with the replacement text.
  * @returns The extension function.
  */
-export declare function buildTooltipWithFieldText(msgTemplate: string, fieldName: string): (this: Block) => void;
+export declare function buildTooltipWithFieldText(msgTemplate: string, fieldName: string): Function;
 //# sourceMappingURL=extensions.d.ts.map

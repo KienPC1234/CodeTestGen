@@ -14,7 +14,7 @@ import type { ConstantProvider as ZelosConstantProvider } from './constants.js';
  */
 export declare class MarkerSvg extends BaseMarkerSvg {
     constants_: ZelosConstantProvider;
-    private markerCircle;
+    private markerCircle_;
     /**
      * @param workspace The workspace the marker belongs to.
      * @param constants The constants for the renderer.
@@ -26,7 +26,7 @@ export declare class MarkerSvg extends BaseMarkerSvg {
      *
      * @param curNode The node to draw the marker for.
      */
-    private showWithInputOutput;
+    private showWithInputOutput_;
     showWithOutput_(curNode: ASTNode): void;
     showWithInput_(curNode: ASTNode): void;
     /**
@@ -41,7 +41,7 @@ export declare class MarkerSvg extends BaseMarkerSvg {
      * @param x The x position of the circle.
      * @param y The y position of the circle.
      */
-    private positionCircle;
+    private positionCircle_;
     hide(): void;
     createDomInternal_(): SVGGElement;
     applyColour_(curNode: ASTNode): void;

@@ -3,17 +3,10 @@
  * Copyright 2019 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * The class representing an AST node.
- * Used to traverse the Blockly AST.
- *
- * @class
- */
-import { Block } from '../block.js';
+import type { Block } from '../block.js';
 import type { Connection } from '../connection.js';
 import type { Field } from '../field.js';
-import { FlyoutButton } from '../flyout_button.js';
-import type { Input } from '../inputs/input.js';
+import type { Input } from '../input.js';
 import type { IASTNodeLocation } from '../interfaces/i_ast_node_location.js';
 import { Coordinate } from '../utils/coordinate.js';
 import type { Workspace } from '../workspace.js';
@@ -32,11 +25,11 @@ export declare class ASTNode {
      * workspace.
      */
     private static readonly DEFAULT_OFFSET_Y;
-    private readonly type;
-    private readonly isConnectionLocation;
-    private readonly location;
+    private readonly type_;
+    private readonly isConnection_;
+    private readonly location_;
     /** The coordinate on the workspace. */
-    private wsCoordinate;
+    private wsCoordinate_;
     /**
      * @param type The type of the location.
      *     Must be in ASTNode.types.
@@ -49,7 +42,7 @@ export declare class ASTNode {
      *
      * @param params The user specified parameters.
      */
-    private processParams;
+    private processParams_;
     /**
      * Gets the value pointed to by this node.
      * It is the callers responsibility to check the node type to figure out what
@@ -88,7 +81,7 @@ export declare class ASTNode {
      * @returns The AST node holding the next field or connection or null if there
      *     is no editable field or input connection after the given input.
      */
-    private findNextForInput;
+    private findNextForInput_;
     /**
      * Given a field find the next editable field or an input with a non null
      * connection in the same block. The current location must be a field.
@@ -96,7 +89,7 @@ export declare class ASTNode {
      * @returns The AST node pointing to the next field or connection or null if
      *     there is no editable field or input connection after the given input.
      */
-    private findNextForField;
+    private findNextForField_;
     /**
      * Given an input find the previous editable field or an input with a non null
      * connection in the same block. The current location must be an input
@@ -104,14 +97,14 @@ export declare class ASTNode {
      *
      * @returns The AST node holding the previous field or connection.
      */
-    private findPrevForInput;
+    private findPrevForInput_;
     /**
      * Given a field find the previous editable field or an input with a non null
      * connection in the same block. The current location must be a field.
      *
      * @returns The AST node holding the previous input or field.
      */
-    private findPrevForField;
+    private findPrevForField_;
     /**
      * Navigate between stacks of blocks on the workspace.
      *
@@ -119,23 +112,7 @@ export declare class ASTNode {
      * @returns The first block of the next stack or null if there are no blocks
      *     on the workspace.
      */
-    private navigateBetweenStacks;
-    /**
-     * Navigate between buttons and stacks of blocks on the flyout workspace.
-     *
-     * @param forward True to go forward. False to go backwards.
-     * @returns The next button, or next stack's first block, or null
-     */
-    private navigateFlyoutContents;
-    /**
-     * Finds the next (or previous if navigating backward) item in the flyout that should be navigated to.
-     *
-     * @param flyoutContents Contents of the current flyout.
-     * @param currentLocation Current ASTNode location.
-     * @param forward True if we're navigating forward, else false.
-     * @returns The next (or previous) FlyoutItem, or null if there is none.
-     */
-    private findNextLocationInFlyout;
+    private navigateBetweenStacks_;
     /**
      * Finds the top most AST node for a given block.
      * This is either the previous connection, output connection or block
@@ -144,7 +121,7 @@ export declare class ASTNode {
      * @param block The block that we want to find the top connection on.
      * @returns The AST node containing the top connection.
      */
-    private findTopASTNodeForBlock;
+    private findTopASTNodeForBlock_;
     /**
      * Get the AST node pointing to the input that the block is nested under or if
      * the block is not nested then get the stack AST node.
@@ -153,7 +130,7 @@ export declare class ASTNode {
      * @returns The AST node pointing to the input connection or the top block of
      *     the stack this block is in.
      */
-    private getOutAstNodeForBlock;
+    private getOutAstNodeForBlock_;
     /**
      * Find the first editable field or input with a connection on a given block.
      *
@@ -162,12 +139,12 @@ export declare class ASTNode {
      * Null if there are no editable fields or inputs with connections on the
      * block.
      */
-    private findFirstFieldOrInput;
+    private findFirstFieldOrInput_;
     /**
      * Finds the source block of the location of this node.
      *
      * @returns The source block of the location, or null if the node is of type
-     *     workspace or button.
+     *     workspace.
      */
     getSourceBlock(): Block | null;
     /**
@@ -206,7 +183,7 @@ export declare class ASTNode {
      * @param type The type to check.  One of ASTNode.types.
      * @returns True if a node of the given type points to a connection.
      */
-    private static isConnectionType;
+    private static isConnectionType_;
     /**
      * Create an AST node pointing to a field.
      *
@@ -250,16 +227,6 @@ export declare class ASTNode {
      */
     static createStackNode(topBlock: Block): ASTNode | null;
     /**
-     * Create an AST node of type button. A button in this case refers
-     * specifically to a button in a flyout.
-     *
-     * @param button A top block has no parent and can be found in the list
-     *     returned by workspace.getTopBlocks().
-     * @returns An AST node of type stack that points to the top block on the
-     *     stack.
-     */
-    static createButtonNode(button: FlyoutButton): ASTNode | null;
-    /**
      * Creates an AST node pointing to a workspace.
      *
      * @param workspace The workspace that we are on.
@@ -289,8 +256,7 @@ export declare namespace ASTNode {
         NEXT = "next",
         PREVIOUS = "previous",
         STACK = "stack",
-        WORKSPACE = "workspace",
-        BUTTON = "button"
+        WORKSPACE = "workspace"
     }
 }
 export type Params = ASTNode.Params;

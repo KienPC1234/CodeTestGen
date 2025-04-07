@@ -3,8 +3,8 @@
  * Copyright 2011 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import { DeleteArea } from './delete_area.js';
 import './events/events_trashcan_open.js';
+import { DeleteArea } from './delete_area.js';
 import type { IAutoHideable } from './interfaces/i_autohideable.js';
 import type { IDraggable } from './interfaces/i_draggable.js';
 import type { IFlyout } from './interfaces/i_flyout.js';
@@ -25,7 +25,7 @@ export declare class Trashcan extends DeleteArea implements IAutoHideable, IPosi
     /**
      * A list of JSON (stored as strings) representing blocks in the trashcan.
      */
-    private readonly contents;
+    private readonly contents_;
     /**
      * The trashcan flyout.
      *
@@ -38,21 +38,21 @@ export declare class Trashcan extends DeleteArea implements IAutoHideable, IPosi
      * The minimum openness of the lid. Used to indicate if the trashcan
      * contains blocks.
      */
-    private minOpenness;
+    private minOpenness_;
     /** The SVG group containing the trash can. */
-    private svgGroup;
+    private svgGroup_;
     /** The SVG image element of the trash can lid. */
-    private svgLid;
+    private svgLid_;
     /** Task ID of opening/closing animation. */
-    private lidTask;
+    private lidTask_;
     /** Current state of lid opening (0.0 = closed, 1.0 = open). */
-    private lidOpen;
+    private lidOpen_;
     /** Left coordinate of the trash can. */
-    private left;
+    private left_;
     /** Top coordinate of the trash can. */
-    private top;
+    private top_;
     /** Whether this trash can has been initialized. */
-    private initialized;
+    private initialized_;
     /** @param workspace The workspace to sit in. */
     constructor(workspace: WorkspaceSvg);
     /**
@@ -66,6 +66,8 @@ export declare class Trashcan extends DeleteArea implements IAutoHideable, IPosi
     /**
      * Dispose of this trash can.
      * Unlink from all DOM elements to prevent memory leaks.
+     *
+     * @suppress {checkTypes}
      */
     dispose(): void;
     /**
@@ -73,7 +75,7 @@ export declare class Trashcan extends DeleteArea implements IAutoHideable, IPosi
      *
      * @returns True if the trashcan has contents.
      */
-    private hasContents;
+    private hasContents_;
     /**
      * Returns true if the trashcan contents-flyout is currently open.
      *
@@ -149,13 +151,13 @@ export declare class Trashcan extends DeleteArea implements IAutoHideable, IPosi
      */
     setLidOpen(state: boolean): void;
     /** Rotate the lid open or closed by one step.  Then wait and recurse. */
-    private animateLid;
+    private animateLid_;
     /**
      * Set the angle of the trashcan's lid.
      *
      * @param lidAngle The angle at which to set the lid.
      */
-    private setLidAngle;
+    private setLidAngle_;
     /**
      * Sets the minimum openness of the trashcan lid. If the lid is currently
      * closed, this will update lid's position.
@@ -163,7 +165,7 @@ export declare class Trashcan extends DeleteArea implements IAutoHideable, IPosi
      * @param newMin The new minimum openness of the lid. Should be between 0
      *     and 1.
      */
-    private setMinOpenness;
+    private setMinOpenness_;
     /**
      * Flip the lid shut.
      * Called externally after a drag.
@@ -176,29 +178,29 @@ export declare class Trashcan extends DeleteArea implements IAutoHideable, IPosi
      *
      * @param trashcanOpen Whether the flyout is opening.
      */
-    private fireUiEvent;
+    private fireUiEvent_;
     /**
      * Prevents a workspace scroll and click event if the trashcan has blocks.
      *
      * @param e A mouse down event.
      */
-    private blockMouseDownWhenOpenable;
+    private blockMouseDownWhenOpenable_;
     /**
      * Indicate that the trashcan can be clicked (by opening it) if it has blocks.
      */
-    private mouseOver;
+    private mouseOver_;
     /**
      * Close the lid of the trashcan if it was open (Vis. it was indicating it had
      *    blocks).
      */
-    private mouseOut;
+    private mouseOut_;
     /**
      * Handle a BLOCK_DELETE event. Adds deleted blocks oldXml to the content
      * array.
      *
      * @param event Workspace event.
      */
-    private onDelete;
+    private onDelete_;
     /**
      * Converts JSON representing a block into text that can be stored in the
      * content array.
@@ -207,6 +209,6 @@ export declare class Trashcan extends DeleteArea implements IAutoHideable, IPosi
      * @returns A BlockInfo object corresponding to the JSON, cleaned of all
      *     unnecessary attributes.
      */
-    private cleanBlockJson;
+    private cleanBlockJson_;
 }
 //# sourceMappingURL=trashcan.d.ts.map

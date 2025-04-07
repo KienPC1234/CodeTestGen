@@ -3,13 +3,6 @@
  * Copyright 2019 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Non-editable, serializable text field. Behaves like a
- *    normal label but is serialized to XML. It may only be
- *    edited programmatically.
- *
- * @class
- */
 import { FieldLabel, FieldLabelConfig, FieldLabelFromJsonConfig } from './field_label.js';
 /**
  * Class for a non-editable, serializable text field.

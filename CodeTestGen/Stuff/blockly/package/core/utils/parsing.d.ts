@@ -8,8 +8,7 @@
  * It will also replace string table references (e.g., %{bky_my_msg} and
  * %{BKY_MY_MSG} will both be replaced with the value in
  * Msg['MY_MSG']). Percentage sign characters '%' may be self-escaped
- * (e.g., '%%'). Newline characters will also be output as string tokens
- * containing a single newline character.
+ * (e.g., '%%').
  *
  * @param message Text which might contain string table references and
  *     interpolation tokens.

@@ -5,7 +5,6 @@
  */
 import type { Rect } from './utils/rect.js';
 import type { Size } from './utils/size.js';
-import type { WorkspaceSvg } from './workspace_svg.js';
 /**
  * Returns the HTML container for editor widgets.
  *
@@ -30,9 +29,8 @@ export declare function createDom(): void;
  * @param rtl Right-to-left (true) or left-to-right (false).
  * @param newDispose Optional cleanup function to be run when the widget is
  *     closed.
- * @param workspace The workspace associated with the widget owner.
  */
-export declare function show(newOwner: unknown, rtl: boolean, newDispose: () => void, workspace?: WorkspaceSvg | null): void;
+export declare function show(newOwner: unknown, rtl: boolean, newDispose: () => void): void;
 /**
  * Destroy the widget and hide the div.
  */
@@ -51,13 +49,6 @@ export declare function isVisible(): boolean;
  */
 export declare function hideIfOwner(oldOwner: unknown): void;
 /**
- * Destroy the widget and hide the div if it is being used by an object in the
- * specified workspace, or if it is used by an unknown workspace.
- *
- * @param oldOwnerWorkspace The workspace that was using this container.
- */
-export declare function hideIfOwnerIsInWorkspace(oldOwnerWorkspace: WorkspaceSvg): void;
-/**
  * Position the widget div based on an anchor rectangle.
  * The widget should be placed adjacent to but not overlapping the anchor
  * rectangle.  The preferred position is directly below and aligned to the left
@@ -74,9 +65,4 @@ export declare function hideIfOwnerIsInWorkspace(oldOwnerWorkspace: WorkspaceSvg
  * @internal
  */
 export declare function positionWithAnchor(viewportBBox: Rect, anchorBBox: Rect, widgetSize: Size, rtl: boolean): void;
-/**
- * Reposition the widget div if the owner of it says to.
- * If the owner isn't a field, just give up and hide it.
- */
-export declare function repositionForWindowResize(): void;
 //# sourceMappingURL=widgetdiv.d.ts.map

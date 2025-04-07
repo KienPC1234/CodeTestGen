@@ -3,11 +3,6 @@
  * Copyright 2012 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Text input field.
- *
- * @class
- */
 import './events/events_block_change.js';
 import { Field } from './field.js';
 import { FieldInput, FieldInputConfig, FieldInputValidator } from './field_input.js';

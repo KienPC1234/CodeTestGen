@@ -36,6 +36,12 @@ export declare abstract class Abstract {
      */
     toJson(): AbstractEventJson;
     /**
+     * Decode the JSON event.
+     *
+     * @param json JSON representation.
+     */
+    fromJson(json: AbstractEventJson): void;
+    /**
      * Deserializes the JSON event.
      *
      * @param event The event to append new properties to. Should be a subclass
@@ -62,6 +68,7 @@ export declare abstract class Abstract {
      *
      * @returns The workspace the event belongs to.
      * @throws {Error} if workspace is null.
+     * @internal
      */
     getEventWorkspace_(): Workspace;
 }

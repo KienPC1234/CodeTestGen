@@ -3,13 +3,11 @@
  * Copyright 2011 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import { BlockSvg } from './block_svg.js';
+import type { BlockSvg } from './block_svg.js';
 import { DeleteArea } from './delete_area.js';
 import { FlyoutButton } from './flyout_button.js';
-import { IAutoHideable } from './interfaces/i_autohideable.js';
 import type { IFlyout } from './interfaces/i_flyout.js';
 import type { Options } from './options.js';
-import * as blocks from './serialization/blocks.js';
 import { Coordinate } from './utils/coordinate.js';
 import { Svg } from './utils/svg.js';
 import * as toolbox from './utils/toolbox.js';
@@ -21,7 +19,7 @@ declare enum FlyoutItemType {
 /**
  * Class for a flyout.
  */
-export declare abstract class Flyout extends DeleteArea implements IAutoHideable, IFlyout {
+export declare abstract class Flyout extends DeleteArea implements IFlyout {
     /**
      * Position the flyout.
      */
@@ -104,34 +102,30 @@ export declare abstract class Flyout extends DeleteArea implements IAutoHideable
      * Function that will be registered as a change listener on the workspace
      * to reflow when blocks in the flyout workspace change.
      */
-    private reflowWrapper;
+    private reflowWrapper_;
     /**
      * Function that disables blocks in the flyout based on max block counts
      * allowed in the target workspace. Registered as a change listener on the
      * target workspace.
      */
-    private filterWrapper;
+    private filterWrapper_;
     /**
      * List of background mats that lurk behind each block to catch clicks
      * landing in the blocks' lakes and bays.
      */
-    private mats;
+    private mats_;
     /**
      * List of visible buttons.
      */
     protected buttons_: FlyoutButton[];
     /**
-     * List of visible buttons and blocks.
-     */
-    protected contents: FlyoutItem[];
-    /**
      * List of event listeners.
      */
-    private listeners;
+    private listeners_;
     /**
      * List of blocks that should always be disabled.
      */
-    private permanentlyDisabled;
+    private permanentlyDisabled_;
     protected readonly tabWidth_: number;
     /**
      * The target workspace.
@@ -142,7 +136,7 @@ export declare abstract class Flyout extends DeleteArea implements IAutoHideable
     /**
      * A list of blocks that can be reused.
      */
-    private recycledBlocks;
+    private recycledBlocks_;
     /**
      * Does the flyout automatically close when a block is created?
      */
@@ -150,11 +144,11 @@ export declare abstract class Flyout extends DeleteArea implements IAutoHideable
     /**
      * Whether the flyout is visible.
      */
-    private visible;
+    private isVisible_;
     /**
      * Whether the workspace containing this flyout is visible.
      */
-    private containerVisible;
+    private containerVisible_;
     protected rectMap_: WeakMap<BlockSvg, SVGElement>;
     /**
      * Corner radius of the flyout background.
@@ -230,6 +224,8 @@ export declare abstract class Flyout extends DeleteArea implements IAutoHideable
     /**
      * Dispose of this flyout.
      * Unlink from all DOM elements to prevent memory leaks.
+     *
+     * @suppress {checkTypes}
      */
     dispose(): void;
     /**
@@ -258,19 +254,6 @@ export declare abstract class Flyout extends DeleteArea implements IAutoHideable
      */
     getWorkspace(): WorkspaceSvg;
     /**
-     * Sets whether this flyout automatically closes when blocks are dragged out,
-     * the workspace is clicked, etc, or not.
-     */
-    setAutoClose(autoClose: boolean): void;
-    /** Automatically hides the flyout if it is an autoclosing flyout. */
-    autoHide(onlyClosePopups: boolean): void;
-    /**
-     * Get the target workspace inside the flyout.
-     *
-     * @returns The target workspace inside the flyout.
-     */
-    getTargetWorkspace(): WorkspaceSvg;
-    /**
      * Is the flyout visible?
      *
      * @returns True if visible.
@@ -291,22 +274,10 @@ export declare abstract class Flyout extends DeleteArea implements IAutoHideable
      */
     setContainerVisible(visible: boolean): void;
     /**
-     * Get the list of buttons and blocks of the current flyout.
-     *
-     * @returns The array of flyout buttons and blocks.
-     */
-    getContents(): FlyoutItem[];
-    /**
-     * Store the list of buttons and blocks on the flyout.
-     *
-     * @param contents - The array of items for the flyout.
-     */
-    setContents(contents: FlyoutItem[]): void;
-    /**
      * Update the display property of the flyout based whether it thinks it should
      * be visible and whether its containing workspace is visible.
      */
-    private updateDisplay;
+    private updateDisplay_;
     /**
      * Update the view based on coordinates calculated in position().
      *
@@ -336,7 +307,7 @@ export declare abstract class Flyout extends DeleteArea implements IAutoHideable
      *     of objects to show in the flyout.
      * @returns The list of contents and gaps needed to lay out the flyout.
      */
-    private createFlyoutInfo;
+    private createFlyoutInfo_;
     /**
      * Gets the flyout definition for the dynamic category.
      *
@@ -344,7 +315,7 @@ export declare abstract class Flyout extends DeleteArea implements IAutoHideable
      * @returns The definition of the
      *     flyout in one of its many forms.
      */
-    private getDynamicCategoryContents;
+    private getDynamicCategoryContents_;
     /**
      * Creates a flyout button or a flyout label.
      *
@@ -353,7 +324,7 @@ export declare abstract class Flyout extends DeleteArea implements IAutoHideable
      * @returns The object used to display the button in the
      *    flyout.
      */
-    private createButton;
+    private createButton_;
     /**
      * Create a block from the xml and permanently disable any blocks that were
      * defined as disabled.
@@ -361,7 +332,7 @@ export declare abstract class Flyout extends DeleteArea implements IAutoHideable
      * @param blockInfo The info of the block.
      * @returns The block created from the blockInfo.
      */
-    private createFlyoutBlock;
+    private createFlyoutBlock_;
     /**
      * Returns a block from the array of recycled blocks with the given type, or
      * undefined if one cannot be found.
@@ -370,7 +341,7 @@ export declare abstract class Flyout extends DeleteArea implements IAutoHideable
      * @returns The recycled block, or undefined if
      *     one could not be recycled.
      */
-    private getRecycledBlock;
+    private getRecycledBlock_;
     /**
      * Adds a gap in the flyout based on block info.
      *
@@ -379,7 +350,7 @@ export declare abstract class Flyout extends DeleteArea implements IAutoHideable
      * @param defaultGap The default gap between one element and the
      *     next.
      */
-    private addBlockGap;
+    private addBlockGap_;
     /**
      * Add the necessary gap in the flyout for a separator.
      *
@@ -389,15 +360,15 @@ export declare abstract class Flyout extends DeleteArea implements IAutoHideable
      * @param defaultGap The default gap between the button and next
      *     element.
      */
-    private addSeparatorGap;
+    private addSeparatorGap_;
     /**
      * Delete blocks, mats and buttons from a previous showing of the flyout.
      */
-    private clearOldBlocks;
+    private clearOldBlocks_;
     /**
      * Empties all of the recycled blocks, properly disposing of them.
      */
-    private emptyRecycledBlocks;
+    private emptyRecycledBlocks_;
     /**
      * Returns whether the given block can be recycled or not.
      *
@@ -412,7 +383,7 @@ export declare abstract class Flyout extends DeleteArea implements IAutoHideable
      *
      * @param block The block to recycle.
      */
-    private recycleBlock;
+    private recycleBlock_;
     /**
      * Add listeners to a block that has been added to the flyout.
      *
@@ -428,13 +399,13 @@ export declare abstract class Flyout extends DeleteArea implements IAutoHideable
      * @param block The flyout block to copy.
      * @returns Function to call when block is clicked.
      */
-    private blockMouseDown;
+    private blockMouseDown_;
     /**
      * Pointer down on the flyout background.  Start a vertical scroll drag.
      *
      * @param e Pointer down event.
      */
-    private onMouseDown;
+    private onMouseDown_;
     /**
      * Does this flyout allow you to create a new instance of the given block?
      * Used for deciding if a block can be "dragged out of" the flyout.
@@ -494,7 +465,7 @@ export declare abstract class Flyout extends DeleteArea implements IAutoHideable
      * on the workspace, an "a + b" block that has two shadow blocks would be
      * disabled.
      */
-    private filterForCapacity;
+    private filterForCapacity_;
     /**
      * Reflow blocks and their mats.
      */
@@ -511,21 +482,14 @@ export declare abstract class Flyout extends DeleteArea implements IAutoHideable
      * @param oldBlock The flyout block to copy.
      * @returns The new block in the main workspace.
      */
-    private placeNewBlock;
-    /**
-     * Serialize a block to JSON.
-     *
-     * @param block The block to serialize.
-     * @returns A serialized representation of the block.
-     */
-    protected serializeBlock(block: BlockSvg): blocks.State;
+    private placeNewBlock_;
     /**
      * Positions a block on the target workspace.
      *
      * @param oldBlock The flyout block being copied.
      * @param block The block to posiiton.
      */
-    private positionNewBlock;
+    private positionNewBlock_;
 }
 /**
  * A flyout content item.

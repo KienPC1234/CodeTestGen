@@ -23,7 +23,8 @@ export declare const XLINK_NS = "http://www.w3.org/1999/xlink";
 export declare enum NodeType {
     ELEMENT_NODE = 1,
     TEXT_NODE = 3,
-    COMMENT_NODE = 8
+    COMMENT_NODE = 8,
+    DOCUMENT_POSITION_CONTAINED_BY = 16
 }
 /**
  * Helper method for creating SVG elements.
@@ -86,6 +87,14 @@ export declare function removeNode(node: Node | null): Node | null;
  * @param refNode Existing element to precede new node.
  */
 export declare function insertAfter(newNode: Element, refNode: Element): void;
+/**
+ * Whether a node contains another node.
+ *
+ * @param parent The node that should contain the other node.
+ * @param descendant The node to test presence of.
+ * @returns Whether the parent node contains the descendant node.
+ */
+export declare function containsNode(parent: Node, descendant: Node): boolean;
 /**
  * Sets the CSS transform property on an element. This function sets the
  * non-vendor-prefixed and vendor-prefixed versions for backwards compatibility

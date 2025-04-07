@@ -3,12 +3,6 @@
  * Copyright 2020 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Base class for events fired as a result of UI actions in
- * Blockly's editor.
- *
- * @class
- */
 import { Abstract as AbstractEvent } from './events_abstract.js';
 /**
  * Base class for a UI event.

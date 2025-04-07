@@ -3,9 +3,9 @@
  * Copyright 2020 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
+import '../events/events_toolbox_item_select.js';
 import * as browserEvents from '../browser_events.js';
 import { DeleteArea } from '../delete_area.js';
-import '../events/events_toolbox_item_select.js';
 import type { IAutoHideable } from '../interfaces/i_autohideable.js';
 import type { IDraggable } from '../interfaces/i_draggable.js';
 import type { IFlyout } from '../interfaces/i_flyout.js';
@@ -29,7 +29,7 @@ export declare class Toolbox extends DeleteArea implements IAutoHideable, IKeybo
      */
     id: string;
     protected toolboxDef_: toolbox.ToolboxInfo;
-    private readonly horizontalLayout;
+    private readonly horizontalLayout_;
     /** The HTML container for the toolbox. */
     HtmlDiv: HTMLDivElement | null;
     /** The HTML container for the contents of a toolbox. */
@@ -44,7 +44,7 @@ export declare class Toolbox extends DeleteArea implements IAutoHideable, IKeybo
     protected height_: number;
     RTL: boolean;
     /** The flyout for the toolbox. */
-    private flyout;
+    private flyout_;
     protected contentMap_: {
         [key: string]: IToolboxItem;
     };
@@ -140,7 +140,7 @@ export declare class Toolbox extends DeleteArea implements IAutoHideable, IKeybo
      *     the toolbox.
      * @param fragment The document fragment to add the child toolbox elements to.
      */
-    private createToolboxItem;
+    private createToolboxItem_;
     /**
      * Adds an item to the toolbox.
      *
@@ -182,10 +182,11 @@ export declare class Toolbox extends DeleteArea implements IAutoHideable, IKeybo
      * before onDragEnter/onDragOver/onDragExit.
      *
      * @param element The block or bubble currently being dragged.
+     * @param _couldConnect Whether the element could could connect to another.
      * @returns Whether the element provided would be deleted if dropped on this
      *     area.
      */
-    wouldDelete(element: IDraggable): boolean;
+    wouldDelete(element: IDraggable, _couldConnect: boolean): boolean;
     /**
      * Handles when a cursor with a block or bubble enters this drag target.
      *
@@ -364,32 +365,32 @@ export declare class Toolbox extends DeleteArea implements IAutoHideable, IKeybo
      * @param oldItem The previously selected toolbox item.
      * @param newItem The newly selected toolbox item.
      */
-    private fireSelectEvent;
+    private fireSelectEvent_;
     /**
      * Closes the current item if it is expanded, or selects the parent.
      *
      * @returns True if a parent category was selected, false otherwise.
      */
-    private selectParent;
+    private selectParent_;
     /**
      * Selects the first child of the currently selected item, or nothing if the
      * toolbox item has no children.
      *
      * @returns True if a child category was selected, false otherwise.
      */
-    private selectChild;
+    private selectChild_;
     /**
      * Selects the next visible toolbox item.
      *
      * @returns True if a next category was selected, false otherwise.
      */
-    private selectNext;
+    private selectNext_;
     /**
      * Selects the previous visible toolbox item.
      *
      * @returns True if a previous category was selected, false otherwise.
      */
-    private selectPrevious;
+    private selectPrevious_;
     /** Disposes of this toolbox. */
     dispose(): void;
 }

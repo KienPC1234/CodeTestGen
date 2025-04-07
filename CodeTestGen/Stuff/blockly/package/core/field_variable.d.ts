@@ -3,11 +3,6 @@
  * Copyright 2012 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Variable input field.
- *
- * @class
- */
 import './events/events_block_change.js';
 import type { Block } from './block.js';
 import { Field, FieldConfig } from './field.js';
@@ -23,7 +18,7 @@ export declare class FieldVariable extends FieldDropdown {
     protected menuGenerator_: MenuGenerator | undefined;
     defaultVariableName: string;
     /** The type of the default variable for this field. */
-    private defaultType;
+    private defaultType_;
     /**
      * All of the types of variables that will be available in this field's
      * dropdown.
@@ -31,7 +26,7 @@ export declare class FieldVariable extends FieldDropdown {
     variableTypes: string[] | null;
     protected size_: Size;
     /** The variable model associated with this field. */
-    private variable;
+    private variable_;
     /**
      * Serializable fields are saved by the serializer, non-serializable fields
      * are not. Editable fields should also be serializable.
@@ -67,6 +62,8 @@ export declare class FieldVariable extends FieldDropdown {
      * Initialize the model for this field if it has not already been initialized.
      * If the value has not been set to a variable by the first render, we make up
      * a variable rather than let the value be invalid.
+     *
+     * @internal
      */
     initModel(): void;
     shouldAddBorderRect_(): boolean;
@@ -161,14 +158,14 @@ export declare class FieldVariable extends FieldDropdown {
      * @param type The type to check.
      * @returns True if the type is in the list of allowed types.
      */
-    private typeIsAllowed;
+    private typeIsAllowed_;
     /**
      * Return a list of variable types to include in the dropdown.
      *
      * @returns Array of variable types.
      * @throws {Error} if variableTypes is an empty array.
      */
-    private getVariableTypes;
+    private getVariableTypes_;
     /**
      * Parse the optional arguments representing the allowed variable types and
      * the default variable type.
@@ -179,7 +176,7 @@ export declare class FieldVariable extends FieldDropdown {
      * @param defaultType The type of the variable to create if this field's
      *     value is not explicitly set.  Defaults to ''.
      */
-    private setTypes;
+    private setTypes_;
     /**
      * Refreshes the name of the variable by grabbing the name of the model.
      * Used when a variable gets renamed, but the ID stays the same. Should only

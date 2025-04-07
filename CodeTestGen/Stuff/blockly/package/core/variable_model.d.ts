@@ -3,11 +3,6 @@
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Components for the variable model.
- *
- * @class
- */
 import './events/events_var_create.js';
 import type { Workspace } from './workspace.js';
 /**
@@ -20,7 +15,7 @@ export declare class VariableModel {
     workspace: Workspace;
     name: string;
     type: string;
-    private readonly id;
+    private readonly id_;
     /**
      * @param workspace The variable's workspace.
      * @param name The name of the variable.  This is the user-visible name (e.g.

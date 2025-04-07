@@ -3,11 +3,6 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Components for creating connections between blocks.
- *
- * @class
- */
 import type { Block } from './block.js';
 import type { BlockSvg } from './block_svg.js';
 import { Connection } from './connection.js';
@@ -17,11 +12,11 @@ import { Coordinate } from './utils/coordinate.js';
  */
 export declare class RenderedConnection extends Connection {
     sourceBlock_: BlockSvg;
-    private readonly db;
-    private readonly dbOpposite;
-    private readonly offsetInBlock;
-    private trackedState;
-    private highlighted;
+    private readonly db_;
+    private readonly dbOpposite_;
+    private readonly offsetInBlock_;
+    private trackedState_;
+    private highlightPath;
     /** Connection this connection connects to.  Null if not connected. */
     targetConnection: RenderedConnection | null;
     /**
@@ -60,21 +55,16 @@ export declare class RenderedConnection extends Connection {
      * Move the block(s) belonging to the connection to a point where they don't
      * visually interfere with the specified connection.
      *
-     * @param superiorConnection The connection to move away from. The provided
-     *     connection should be the superior connection and should not be
-     *     connected to this connection.
-     * @param initiatedByThis Whether or not the block group that was manipulated
-     *     recently causing bump checks is associated with the inferior
-     *     connection. Defaults to false.
+     * @param staticConnection The connection to move away from.
      * @internal
      */
-    bumpAwayFrom(superiorConnection: RenderedConnection, initiatedByThis?: boolean): void;
+    bumpAwayFrom(staticConnection: RenderedConnection): void;
     /**
      * Change the connection's coordinates.
      *
      * @param x New absolute x coordinate, in workspace coordinates.
      * @param y New absolute y coordinate, in workspace coordinates.
-     * @returns True if the position of the connection in the connection db
+     * @return True if the position of the connection in the connection db
      *     was updated.
      */
     moveTo(x: number, y: number): boolean;
@@ -83,7 +73,7 @@ export declare class RenderedConnection extends Connection {
      *
      * @param dx Change to x coordinate, in workspace units.
      * @param dy Change to y coordinate, in workspace units.
-     * @returns True if the position of the connection in the connection db
+     * @return True if the position of the connection in the connection db
      *     was updated.
      */
     moveBy(dx: number, dy: number): boolean;
@@ -93,7 +83,7 @@ export declare class RenderedConnection extends Connection {
      *
      * @param blockTL The location of the top left corner of the block, in
      *     workspace coordinates.
-     * @returns True if the position of the connection in the connection db
+     * @return True if the position of the connection in the connection db
      *     was updated.
      */
     moveToOffset(blockTL: Coordinate): boolean;
@@ -108,8 +98,15 @@ export declare class RenderedConnection extends Connection {
      * Get the offset of this connection relative to the top left of its block.
      *
      * @returns The offset of the connection.
+     * @internal
      */
     getOffsetInBlock(): Coordinate;
+    /**
+     * Move the blocks on either side of this connection right next to each other.
+     *
+     * @internal
+     */
+    tighten(): void;
     /**
      * Moves the blocks on either side of this connection right next to
      * each other, based on their local offsets, not global positions.
@@ -135,8 +132,6 @@ export declare class RenderedConnection extends Connection {
     highlight(): void;
     /** Remove the highlighting around this connection. */
     unhighlight(): void;
-    /** Returns true if this connection is highlighted, false otherwise. */
-    isHighlighted(): boolean;
     /**
      * Set whether this connections is tracked in the database or not.
      *
@@ -167,11 +162,11 @@ export declare class RenderedConnection extends Connection {
      * Bumps this connection away from the other connection. Called when an
      * attempted connection fails.
      *
-     * @param superiorConnection Connection that this connection failed to connect
-     *     to. The provided connection should be the superior connection.
+     * @param otherConnection Connection that this connection failed to connect
+     *     to.
      * @internal
      */
-    onFailedConnect(superiorConnection: Connection): void;
+    onFailedConnect(otherConnection: Connection): void;
     /**
      * Disconnect two blocks that are connected by this connection.
      *
@@ -207,15 +202,6 @@ export declare class RenderedConnection extends Connection {
      * Function to be called when this connection's compatible types have changed.
      */
     protected onCheckChanged_(): void;
-    /**
-     * Change a connection's compatibility.
-     * Rerender blocks as needed.
-     *
-     * @param check Compatible value type or list of value types. Null if all
-     *     types are compatible.
-     * @returns The connection being modified (to allow chaining).
-     */
-    setCheck(check: string | string[] | null): RenderedConnection;
 }
 export declare namespace RenderedConnection {
     /**

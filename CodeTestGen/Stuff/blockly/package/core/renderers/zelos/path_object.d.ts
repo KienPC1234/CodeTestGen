@@ -14,7 +14,7 @@ import type { ConstantProvider } from './constants.js';
  */
 export declare class PathObject extends BasePathObject {
     /** The selected path of the block. */
-    private svgPathSelected;
+    private svgPathSelected_;
     /** The outline paths on the block. */
     private readonly outlines;
     /**
@@ -64,12 +64,12 @@ export declare class PathObject extends BasePathObject {
      * @param name The input name.
      * @returns The SVG outline path.
      */
-    private getOutlinePath;
+    private getOutlinePath_;
     /**
      * Remove an outline path that is associated with the specified input.
      *
      * @param name The input name.
      */
-    private removeOutlinePath;
+    private removeOutlinePath_;
 }
 //# sourceMappingURL=path_object.d.ts.map

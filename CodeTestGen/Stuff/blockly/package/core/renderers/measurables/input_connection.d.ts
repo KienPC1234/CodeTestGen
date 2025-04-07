@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import type { BlockSvg } from '../../block_svg.js';
-import type { Input } from '../../inputs/input.js';
+import type { Input } from '../../input.js';
 import type { ConstantProvider } from '../common/constants.js';
 import { Connection } from './connection.js';
 /**

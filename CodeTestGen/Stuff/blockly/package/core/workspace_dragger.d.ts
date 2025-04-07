@@ -8,18 +8,21 @@ import type { WorkspaceSvg } from './workspace_svg.js';
 /**
  * Class for a workspace dragger.  It moves the workspace around when it is
  * being dragged by a mouse or touch.
- *
+ * Note that the workspace itself manages whether or not it has a drag surface
+ * and how to do translations based on that.  This simply passes the right
+ * commands based on events.
  */
 export declare class WorkspaceDragger {
     private workspace;
-    private readonly horizontalScrollEnabled;
-    private readonly verticalScrollEnabled;
+    private readonly horizontalScrollEnabled_;
+    private readonly verticalScrollEnabled_;
     protected startScrollXY_: Coordinate;
     /** @param workspace The workspace to drag. */
     constructor(workspace: WorkspaceSvg);
     /**
      * Sever all links from this object.
      *
+     * @suppress {checkTypes}
      * @internal
      */
     dispose(): void;

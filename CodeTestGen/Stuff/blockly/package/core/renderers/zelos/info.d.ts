@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import type { BlockSvg } from '../../block_svg.js';
-import { Input } from '../../inputs/input.js';
+import { Input } from '../../input.js';
 import { RenderInfo as BaseRenderInfo } from '../common/info.js';
 import type { Measurable } from '../measurables/base.js';
 import type { Row } from '../measurables/row.js';
@@ -29,7 +29,7 @@ export declare class RenderInfo extends BaseRenderInfo {
     isMultiRow: boolean;
     hasStatementInput: boolean;
     rightSide: RightConnectionShape | null;
-    private readonly rightAlignedDummyInputs;
+    private readonly rightAlignedDummyInputs_;
     /**
      * @param renderer The renderer in use.
      * @param block The block to measure.
@@ -42,7 +42,7 @@ export declare class RenderInfo extends BaseRenderInfo {
      */
     getRenderer(): Renderer;
     measure(): void;
-    shouldStartNewRow_(currInput: Input, prevInput: Input): boolean;
+    shouldStartNewRow_(input: Input, lastInput: Input): boolean;
     getDesiredRowWidth_(row: Row): number;
     getInRowSpacing_(prev: Measurable | null, next: Measurable | null): number;
     getSpacerRowHeight_(prev: Row, next: Row): number;

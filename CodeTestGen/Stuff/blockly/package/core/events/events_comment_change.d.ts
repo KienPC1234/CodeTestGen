@@ -3,20 +3,14 @@
  * Copyright 2018 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Class for comment change event.
- *
- * @class
- */
-import type { WorkspaceComment } from '../comments/workspace_comment.js';
-import type { Workspace } from '../workspace.js';
+import type { WorkspaceComment } from '../workspace_comment.js';
 import { CommentBase, CommentBaseJson } from './events_comment_base.js';
-import { EventType } from './type.js';
+import type { Workspace } from '../workspace.js';
 /**
  * Notifies listeners that the contents of a workspace comment has changed.
  */
 export declare class CommentChange extends CommentBase {
-    type: EventType;
+    type: string;
     /** The previous contents of the comment. */
     oldContents_?: string;
     /** The new contents of the comment. */
@@ -34,6 +28,12 @@ export declare class CommentChange extends CommentBase {
      * @returns JSON representation.
      */
     toJson(): CommentChangeJson;
+    /**
+     * Decode the JSON event.
+     *
+     * @param json JSON representation.
+     */
+    fromJson(json: CommentChangeJson): void;
     /**
      * Deserializes the JSON event.
      *

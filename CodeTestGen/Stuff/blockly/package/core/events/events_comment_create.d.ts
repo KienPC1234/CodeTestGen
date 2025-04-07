@@ -3,25 +3,16 @@
  * Copyright 2018 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Class for comment creation event.
- *
- * @class
- */
-import type { WorkspaceComment } from '../comments/workspace_comment.js';
-import * as comments from '../serialization/workspace_comments.js';
-import type { Workspace } from '../workspace.js';
+import type { WorkspaceComment } from '../workspace_comment.js';
 import { CommentBase, CommentBaseJson } from './events_comment_base.js';
-import { EventType } from './type.js';
+import type { Workspace } from '../workspace.js';
 /**
  * Notifies listeners that a workspace comment was created.
  */
 export declare class CommentCreate extends CommentBase {
-    type: EventType;
+    type: string;
     /** The XML representation of the created workspace comment. */
     xml?: Element | DocumentFragment;
-    /** The JSON representation of the created workspace comment. */
-    json?: comments.State;
     /**
      * @param opt_comment The created comment.
      *     Undefined for a blank event.
@@ -33,6 +24,12 @@ export declare class CommentCreate extends CommentBase {
      * @returns JSON representation.
      */
     toJson(): CommentCreateJson;
+    /**
+     * Decode the JSON event.
+     *
+     * @param json JSON representation.
+     */
+    fromJson(json: CommentCreateJson): void;
     /**
      * Deserializes the JSON event.
      *
@@ -52,6 +49,5 @@ export declare class CommentCreate extends CommentBase {
 }
 export interface CommentCreateJson extends CommentBaseJson {
     xml: string;
-    json: object;
 }
 //# sourceMappingURL=events_comment_create.d.ts.map

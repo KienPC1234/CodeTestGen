@@ -3,23 +3,18 @@
  * Copyright 2012 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Object representing a workspace.
- *
- * @class
- */
 import './connection_checker.js';
 import type { Block } from './block.js';
-import { WorkspaceComment } from './comments/workspace_comment.js';
 import type { ConnectionDB } from './connection_db.js';
 import type { Abstract } from './events/events_abstract.js';
 import type { IASTNodeLocation } from './interfaces/i_ast_node_location.js';
 import type { IConnectionChecker } from './interfaces/i_connection_checker.js';
-import { IProcedureMap } from './interfaces/i_procedure_map.js';
 import { Options } from './options.js';
 import type * as toolbox from './utils/toolbox.js';
 import { VariableMap } from './variable_map.js';
 import type { VariableModel } from './variable_model.js';
+import type { WorkspaceComment } from './workspace_comment.js';
+import { IProcedureMap } from './interfaces/i_procedure_map.js';
 /**
  * Class for a workspace.  This is a data structure that contains blocks.
  * There is no UI, and can be created headlessly.
@@ -96,6 +91,8 @@ export declare class Workspace implements IASTNodeLocation {
     /**
      * Dispose of this workspace.
      * Unlink from all DOM elements to prevent memory leaks.
+     *
+     * @suppress {checkTypes}
      */
     dispose(): void;
     /**
@@ -107,7 +104,7 @@ export declare class Workspace implements IASTNodeLocation {
      * @returns The comparison value. This tells Array.sort() how to change object
      *     a's index.
      */
-    private sortObjects;
+    private sortObjects_;
     /**
      * Adds a block to the list of top blocks.
      *
@@ -127,7 +124,7 @@ export declare class Workspace implements IASTNodeLocation {
      * @param ordered Sort the list if true.
      * @returns The top-level block objects.
      */
-    getTopBlocks(ordered?: boolean): Block[];
+    getTopBlocks(ordered: boolean): Block[];
     /**
      * Add a block to the list of blocks keyed by type.
      *
@@ -148,7 +145,7 @@ export declare class Workspace implements IASTNodeLocation {
      * @param ordered Sort the list if true.
      * @returns The blocks of the given type.
      */
-    getBlocksByType(type: string, ordered?: boolean): Block[];
+    getBlocksByType(type: string, ordered: boolean): Block[];
     /**
      * Adds a comment to the list of top comments.
      *
@@ -171,7 +168,7 @@ export declare class Workspace implements IASTNodeLocation {
      * @returns The top-level comment objects.
      * @internal
      */
-    getTopComments(ordered?: boolean): WorkspaceComment[];
+    getTopComments(ordered: boolean): WorkspaceComment[];
     /**
      * Find all blocks in workspace.  Blocks are optionally sorted
      * by position; top to bottom (with slight LTR or RTL bias).
@@ -179,7 +176,7 @@ export declare class Workspace implements IASTNodeLocation {
      * @param ordered Sort the list if true.
      * @returns Array of blocks.
      */
-    getAllBlocks(ordered?: boolean): Block[];
+    getAllBlocks(ordered: boolean): Block[];
     /** Dispose of all blocks and comments in workspace. */
     clear(): void;
     /**
@@ -280,14 +277,6 @@ export declare class Workspace implements IASTNodeLocation {
      */
     newBlock(prototypeName: string, opt_id?: string): Block;
     /**
-     * Obtain a newly created comment.
-     *
-     * @param id Optional ID.  Use this ID if provided, otherwise create a new
-     *     ID.
-     * @returns The created comment.
-     */
-    newComment(id?: string): WorkspaceComment;
-    /**
      * The number of blocks that may be added to the workspace before reaching
      *     the maxBlocks.
      *
@@ -353,13 +342,13 @@ export declare class Workspace implements IASTNodeLocation {
      * @param func Function to call.
      * @returns Obsolete return value, ignore.
      */
-    addChangeListener(func: (e: Abstract) => void): (e: Abstract) => void;
+    addChangeListener(func: Function): Function;
     /**
      * Stop listening for this workspace's changes.
      *
      * @param func Function to stop calling.
      */
-    removeChangeListener(func: (e: Abstract) => void): void;
+    removeChangeListener(func: Function): void;
     /**
      * Fire a change event.
      *
@@ -393,6 +382,7 @@ export declare class Workspace implements IASTNodeLocation {
      *
      * @param id ID of comment to find.
      * @returns The sought after comment, or null if not found.
+     * @internal
      */
     getCommentById(id: string): WorkspaceComment | null;
     /**
@@ -433,14 +423,6 @@ export declare class Workspace implements IASTNodeLocation {
     setVariableMap(variableMap: VariableMap): void;
     /** Returns the map of all procedures on the workpace. */
     getProcedureMap(): IProcedureMap;
-    /**
-     * Returns the root workspace of this workspace if the workspace has
-     * parent(s).
-     *
-     * E.g. workspaces in flyouts and mini workspace bubbles have parent
-     * workspaces.
-     */
-    getRootWorkspace(): Workspace | null;
     /**
      * Find the workspace with the specified ID.
      *

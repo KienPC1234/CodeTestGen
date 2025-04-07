@@ -3,11 +3,6 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Object that controls settings for the workspace.
- *
- * @class
- */
 import type { BlocklyOptions } from './blockly_options.js';
 import { Theme } from './theme.js';
 import type { Metrics } from './utils/metrics.js';
@@ -32,7 +27,6 @@ export declare class Options {
     pathToMedia: string;
     hasCategories: boolean;
     moveOptions: MoveOptions;
-    /** @deprecated  January 2019 */
     hasScrollbars: boolean;
     hasTrashcan: boolean;
     maxTrashcanContents: number;
@@ -64,15 +58,15 @@ export declare class Options {
      *     argument Contains an x and/or y property which is a float between 0
      *     and 1 specifying the degree of scrolling.
      */
-    setMetrics?: (p1: {
+    setMetrics?: ((p1: {
         x?: number;
         y?: number;
-    }) => void;
+    }) => void);
     /**
      * A function that returns a metrics
      *     object that describes the current workspace.
      */
-    getMetrics?: () => Metrics;
+    getMetrics?: (() => Metrics);
     /**
      * @param options Dictionary of options.
      *     Specification:
@@ -87,7 +81,7 @@ export declare class Options {
      * @param hasCategories Whether the workspace has categories or not.
      * @returns Normalized move options.
      */
-    private static parseMoveOptions;
+    private static parseMoveOptions_;
     /**
      * Parse the user-specified zoom options, using reasonable defaults where
      * behaviour is unspecified.  See zoom documentation:
@@ -96,7 +90,7 @@ export declare class Options {
      * @param options Dictionary of options.
      * @returns Normalized zoom options.
      */
-    private static parseZoomOptions;
+    private static parseZoomOptions_;
     /**
      * Parse the user-specified grid options, using reasonable defaults where
      * behaviour is unspecified. See grid documentation:
@@ -105,7 +99,7 @@ export declare class Options {
      * @param options Dictionary of options.
      * @returns Normalized grid options.
      */
-    private static parseGridOptions;
+    private static parseGridOptions_;
     /**
      * Parse the user-specified theme options, using the classic theme as a
      * default. https://developers.google.com/blockly/guides/configure/web/themes
@@ -113,7 +107,7 @@ export declare class Options {
      * @param options Dictionary of options.
      * @returns A Blockly Theme.
      */
-    private static parseThemeOptions;
+    private static parseThemeOptions_;
 }
 export declare namespace Options {
     interface GridOptions {

@@ -83,7 +83,7 @@ export declare class BasicCursor extends Cursor {
      * @param node The current position in the AST.
      * @returns The parent AST node or null if there are no valid parents.
      */
-    private findSiblingOrParent;
+    private findSiblingOrParent_;
     /**
      * Get the right most child of a node.
      *
@@ -91,6 +91,6 @@ export declare class BasicCursor extends Cursor {
      * @returns The right most child of the given node, or the node if no child
      *     exists.
      */
-    private getRightMostChild;
+    private getRightMostChild_;
 }
 //# sourceMappingURL=basic_cursor.d.ts.map

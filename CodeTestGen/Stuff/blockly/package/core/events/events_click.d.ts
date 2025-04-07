@@ -3,18 +3,12 @@
  * Copyright 2020 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Events fired as a result of UI click in Blockly's editor.
- *
- * @class
- */
 import type { Block } from '../block.js';
-import { Workspace } from '../workspace.js';
 import { AbstractEventJson } from './events_abstract.js';
 import { UiBase } from './events_ui_base.js';
-import { EventType } from './type.js';
+import { Workspace } from '../workspace.js';
 /**
- * Notifies listeners that some blockly element was clicked.
+ * Notifies listeners that ome blockly element was clicked.
  */
 export declare class Click extends UiBase {
     /** The ID of the block that was clicked, if a block was clicked. */
@@ -24,7 +18,7 @@ export declare class Click extends UiBase {
      * or 'zoom_controls'.
      */
     targetType?: ClickTarget;
-    type: EventType;
+    type: string;
     /**
      * @param opt_block The affected block. Null for click events that do not have
      *     an associated block (i.e. workspace click). Undefined for a blank
@@ -41,6 +35,12 @@ export declare class Click extends UiBase {
      * @returns JSON representation.
      */
     toJson(): ClickJson;
+    /**
+     * Decode the JSON event.
+     *
+     * @param json JSON representation.
+     */
+    fromJson(json: ClickJson): void;
     /**
      * Deserializes the JSON event.
      *

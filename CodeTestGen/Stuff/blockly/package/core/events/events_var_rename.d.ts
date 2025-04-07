@@ -4,16 +4,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import type { VariableModel } from '../variable_model.js';
-import type { Workspace } from '../workspace.js';
 import { VarBase, VarBaseJson } from './events_var_base.js';
-import { EventType } from './type.js';
+import type { Workspace } from '../workspace.js';
 /**
  * Notifies listeners that a variable model was renamed.
  *
  * @class
  */
 export declare class VarRename extends VarBase {
-    type: EventType;
+    type: string;
     /** The previous name of the variable. */
     oldName?: string;
     /** The new name of the variable. */
@@ -29,6 +28,12 @@ export declare class VarRename extends VarBase {
      * @returns JSON representation.
      */
     toJson(): VarRenameJson;
+    /**
+     * Decode the JSON event.
+     *
+     * @param json JSON representation.
+     */
+    fromJson(json: VarRenameJson): void;
     /**
      * Deserializes the JSON event.
      *

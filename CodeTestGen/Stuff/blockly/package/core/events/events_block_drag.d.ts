@@ -3,16 +3,10 @@
  * Copyright 2020 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Events fired as a block drag.
- *
- * @class
- */
 import type { Block } from '../block.js';
-import { Workspace } from '../workspace.js';
 import { AbstractEventJson } from './events_abstract.js';
 import { UiBase } from './events_ui_base.js';
-import { EventType } from './type.js';
+import { Workspace } from '../workspace.js';
 /**
  * Notifies listeners when a block is being manually dragged/dropped.
  */
@@ -26,7 +20,7 @@ export declare class BlockDrag extends UiBase {
      * with the block ID) being dragged.
      */
     blocks?: Block[];
-    type: EventType;
+    type: string;
     /**
      * @param opt_block The top block in the stack that is being dragged.
      *     Undefined for a blank event.
@@ -42,6 +36,12 @@ export declare class BlockDrag extends UiBase {
      * @returns JSON representation.
      */
     toJson(): BlockDragJson;
+    /**
+     * Decode the JSON event.
+     *
+     * @param json JSON representation.
+     */
+    fromJson(json: BlockDragJson): void;
     /**
      * Deserializes the JSON event.
      *

@@ -3,11 +3,6 @@
  * Copyright 2015 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Object representing a zoom icons.
- *
- * @class
- */
 import './events/events_click.js';
 import type { IPositionable } from './interfaces/i_positionable.js';
 import type { UiMetrics } from './metrics_manager.js';

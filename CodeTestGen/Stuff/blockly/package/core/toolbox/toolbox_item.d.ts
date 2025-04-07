@@ -3,11 +3,6 @@
  * Copyright 2020 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * An item in the toolbox.
- *
- * @class
- */
 import type { ICollapsibleToolboxItem } from '../interfaces/i_collapsible_toolbox_item.js';
 import type { IToolbox } from '../interfaces/i_toolbox.js';
 import type { IToolboxItem } from '../interfaces/i_toolbox_item.js';

@@ -3,56 +3,23 @@
  * Copyright 2012 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Utility functions for generating executable code from
- * Blockly code.
- *
- * @class
- */
 import type { Block } from './block.js';
 import { Names } from './names.js';
 import type { Workspace } from './workspace.js';
 /**
- * Deprecated, no-longer used type declaration for per-block-type generator
- * functions.
- *
- * @deprecated
- * @see {@link https://developers.google.com/blockly/guides/create-custom-blocks/generating-code}
- * @param block The Block instance to generate code for.
- * @param generator The CodeGenerator calling the function.
- * @returns A string containing the generated code (for statement blocks),
- *     or a [code, precedence] tuple (for value/expression blocks), or
- *     null if no code should be emitted for block.
- */
-export type BlockGenerator = (block: Block, generator: CodeGenerator) => [string, number] | string | null;
-/**
  * Class for a code generator that translates the blocks into a language.
+ *
+ * @unrestricted
  */
 export declare class CodeGenerator {
     name_: string;
-    /**
-     * A dictionary of block generator functions, keyed by block type.
-     * Each block generator function takes two parameters:
-     *
-     * - the Block to generate code for, and
-     * - the calling CodeGenerator (or subclass) instance, so the
-     *   function can call methods defined below (e.g. blockToCode) or
-     *   on the relevant subclass (e.g. JavascripGenerator),
-     *
-     * and returns:
-     *
-     * - a [code, precedence] tuple (for value/expression blocks), or
-     * - a string containing the generated code (for statement blocks), or
-     * - null if no code should be emitted for block.
-     */
-    forBlock: Record<string, (block: Block, generator: this) => [string, number] | string | null>;
     /**
      * This is used as a placeholder in functions defined using
      * CodeGenerator.provideFunction_.  It must not be legal code that could
      * legitimately appear in a function definition (or comment), and it must
      * not confuse the regular expression parser.
      */
-    FUNCTION_NAME_PLACEHOLDER_: string;
+    protected FUNCTION_NAME_PLACEHOLDER_: string;
     FUNCTION_NAME_PLACEHOLDER_REGEXP_: RegExp;
     /**
      * Arbitrary code to inject into locations that risk causing infinite loops.
@@ -105,7 +72,7 @@ export declare class CodeGenerator {
         [key: string]: string;
     };
     /** A database of variable and procedure names. */
-    nameDB_?: Names;
+    protected nameDB_?: Names;
     /** @param name Language name of this generator. */
     constructor(name: string);
     /**
@@ -149,8 +116,8 @@ export declare class CodeGenerator {
      * @param name The name of the input.
      * @param outerOrder The maximum binding strength (minimum order value) of any
      *     operators adjacent to "block".
-     * @returns Generated code or '' if no blocks are connected.
-     * @throws ReferenceError if the specified input does not exist.
+     * @returns Generated code or '' if no blocks are connected or the specified
+     *     input does not exist.
      */
     valueToCode(block: Block, name: string, outerOrder: number): string;
     /**
@@ -162,7 +129,6 @@ export declare class CodeGenerator {
      * @param block The block containing the input.
      * @param name The name of the input.
      * @returns Generated code or '' if no blocks are connected.
-     * @throws ReferenceError if the specified input does not exist.
      */
     statementToCode(block: Block, name: string): string;
     /**
@@ -212,29 +178,7 @@ export declare class CodeGenerator {
      * @returns The actual name of the new function.  This may differ from
      *     desiredName if the former has already been taken by the user.
      */
-    provideFunction_(desiredName: string, code: string[] | string): string;
-    /**
-     * Gets a unique, legal name for a user-defined variable.
-     * Before calling this method, the `nameDB_` property of the class
-     * must have been initialized already. This is typically done in
-     * the `init` function of the code generator class.
-     *
-     * @param nameOrId The ID of the variable to get a name for,
-     *    or the proposed name for a variable not associated with an id.
-     * @returns A unique, legal name for the variable.
-     */
-    getVariableName(nameOrId: string): string;
-    /**
-     * Gets a unique, legal name for a user-defined procedure.
-     * Before calling this method, the `nameDB_` property of the class
-     * must have been initialized already. This is typically done in
-     * the `init` function of the code generator class.
-     *
-     * @param name The proposed name for a procedure.
-     * @returns A unique, legal name for the procedure.
-     */
-    getProcedureName(name: string): string;
-    private getName;
+    protected provideFunction_(desiredName: string, code: string[] | string): string;
     /**
      * Hook for code to run before code generation starts.
      * Subclasses may override this, e.g. to initialise the database of variable
@@ -255,7 +199,7 @@ export declare class CodeGenerator {
      * @param _opt_thisOnly True to generate code for only this statement.
      * @returns Code with comments and subsequent blocks added.
      */
-    scrub_(_block: Block, code: string, _opt_thisOnly?: boolean): string;
+    protected scrub_(_block: Block, code: string, _opt_thisOnly?: boolean): string;
     /**
      * Hook for code to run at end of code generation.
      * Subclasses may override this, e.g. to prepend the generated code with

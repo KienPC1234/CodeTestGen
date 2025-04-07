@@ -28,7 +28,7 @@ export declare class Highlighter {
     RTL_: boolean;
     constants_: ConstantProvider;
     highlightConstants_: HighlightConstantProvider;
-    private readonly highlightOffset;
+    private readonly highlightOffset_;
     outsideCornerPaths_: OutsideCorner;
     insideCornerPaths_: InsideCorner;
     puzzleTabPaths_: PuzzleTab;

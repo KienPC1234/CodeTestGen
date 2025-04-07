@@ -3,12 +3,6 @@
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * The abstract class for a component with custom behaviour when a
- * block or bubble is dragged over or dropped on top of it.
- *
- * @class
- */
 import type { IDragTarget } from './interfaces/i_drag_target.js';
 import type { IDraggable } from './interfaces/i_draggable.js';
 import type { Rect } from './utils/rect.js';

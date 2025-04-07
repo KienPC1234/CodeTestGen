@@ -3,11 +3,6 @@
  * Copyright 2020 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * A toolbox category used to organize blocks in the toolbox.
- *
- * @class
- */
 import type { ICollapsibleToolboxItem } from '../interfaces/i_collapsible_toolbox_item.js';
 import type { IToolbox } from '../interfaces/i_toolbox.js';
 import type { IToolboxItem } from '../interfaces/i_toolbox_item.js';
@@ -40,7 +35,7 @@ export declare class CollapsibleToolboxCategory extends ToolboxCategory implemen
      *
      * @param itemDef The information needed to create a toolbox item.
      */
-    private createToolboxItem;
+    private createToolboxItem_;
     init(): void;
     createDom_(): HTMLDivElement;
     createIconDom_(): HTMLSpanElement;
@@ -52,7 +47,7 @@ export declare class CollapsibleToolboxCategory extends ToolboxCategory implemen
      */
     protected createSubCategoriesDom_(subcategories: IToolboxItem[]): HTMLDivElement;
     /**
-     * Opens or closes the current category and the associated flyout.
+     * Opens or closes the current category.
      *
      * @param isExpanded True to expand the category, false to close.
      */

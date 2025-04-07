@@ -3,12 +3,6 @@
  * Copyright 2019 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Object in charge of storing and updating a workspace theme
- *     and UI components.
- *
- * @class
- */
 import type { Theme } from './theme.js';
 import type { Workspace } from './workspace.js';
 import type { WorkspaceSvg } from './workspace_svg.js';
@@ -19,7 +13,7 @@ export declare class ThemeManager {
     private readonly workspace;
     private theme;
     /** A list of workspaces that are subscribed to this theme. */
-    private subscribedWorkspaces;
+    private subscribedWorkspaces_;
     private componentDB;
     /**
      * @param workspace The main workspace.
@@ -77,6 +71,7 @@ export declare class ThemeManager {
     /**
      * Dispose of this theme manager.
      *
+     * @suppress {checkTypes}
      * @internal
      */
     dispose(): void;

@@ -39,8 +39,8 @@ export interface PuzzleTab {
     type: number;
     width: number;
     height: number;
-    pathDown: string;
-    pathUp: string;
+    pathDown: string | ((p1: number) => string);
+    pathUp: string | ((p1: number) => string);
 }
 /**
  * An object containing sizing and path information about collapsed block
@@ -78,10 +78,6 @@ export type Shape = BaseShape | DynamicShape;
  * @returns Whether the shape is a dynamic shape or not.
  */
 export declare function isDynamicShape(shape: Shape): shape is DynamicShape;
-/** Returns whether the shape is a puzzle tab or not. */
-export declare function isPuzzleTab(shape: Shape): shape is PuzzleTab;
-/** Returns whether the shape is a notch or not. */
-export declare function isNotch(shape: Shape): shape is Notch;
 /**
  * An object that provides constants for rendering blocks.
  */
@@ -221,13 +217,13 @@ export declare class ConstantProvider {
      * The defs tag that contains all filters and patterns for this Blockly
      * instance.
      */
-    private defs;
+    private defs_;
     /**
      * The ID of the emboss filter, or the empty string if no filter is set.
      */
     embossFilterId: string;
     /** The <filter> element to use for highlighting, or null if not set. */
-    private embossFilter;
+    private embossFilter_;
     /**
      * The ID of the disabled pattern, or the empty string if no pattern is set.
      */
@@ -235,7 +231,7 @@ export declare class ConstantProvider {
     /**
      * The <pattern> element to use for disabled blocks, or null if not set.
      */
-    private disabledPattern;
+    private disabledPattern_;
     /**
      * The ID of the debug filter, or the empty string if no pattern is set.
      */
@@ -243,9 +239,9 @@ export declare class ConstantProvider {
     /**
      * The <filter> element to use for a debug highlight, or null if not set.
      */
-    private debugFilter;
+    private debugFilter_;
     /** The <style> element to use for injecting renderer specific CSS. */
-    private cssNode;
+    private cssNode_;
     /**
      * Cursor colour.
      */
@@ -424,6 +420,8 @@ export declare class ConstantProvider {
      * @param svg The root of the workspace's SVG.
      * @param tagName The name to use for the CSS style tag.
      * @param selector The CSS selector to use.
+     * @suppress {strictModuleDepCheck} Debug renderer only included in
+     * playground.
      */
     createDom(svg: SVGElement, tagName: string, selector: string): void;
     /**

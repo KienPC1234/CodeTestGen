@@ -4,7 +4,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import type { BlockSvg } from '../../block_svg.js';
-import type { Input } from '../../inputs/input.js';
+import type { Input } from '../../input.js';
 import { RenderInfo as BaseRenderInfo } from '../common/info.js';
 import type { Measurable } from '../measurables/base.js';
 import type { Row } from '../measurables/row.js';

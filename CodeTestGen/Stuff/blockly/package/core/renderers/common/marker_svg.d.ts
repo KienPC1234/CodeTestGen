@@ -15,13 +15,13 @@ import type { ConstantProvider, Notch, PuzzleTab } from './constants.js';
  * SVG.
  */
 export declare class MarkerSvg {
-    protected readonly workspace: WorkspaceSvg;
-    protected readonly marker: Marker;
+    private readonly workspace;
+    private readonly marker;
     /**
      * The workspace, field, or block that the marker SVG element should be
      * attached to.
      */
-    protected parent: IASTNodeLocationSvg | null;
+    private parent_;
     /** The current SVG element for the marker. */
     currentMarkerSvg: SVGElement | null;
     colour_: string;
@@ -94,7 +94,7 @@ export declare class MarkerSvg {
      *
      * @param curNode The node to draw the marker for.
      */
-    protected showWithBlockPrevOutput(curNode: ASTNode): void;
+    private showWithBlockPrevOutput_;
     /**
      * Position and display the marker for a block.
      *
@@ -148,13 +148,6 @@ export declare class MarkerSvg {
      * @param curNode The node to draw the marker for.
      */
     protected showWithStack_(curNode: ASTNode): void;
-    /**
-     * Position and display the marker for a flyout button.
-     * This is a box with extra padding around the button.
-     *
-     * @param curNode The node to draw the marker for.
-     */
-    protected showWithButton_(curNode: ASTNode): void;
     /** Show the current marker. */
     protected showCurrent_(): void;
     /**************************
@@ -220,7 +213,7 @@ export declare class MarkerSvg {
      *
      * @param markerSvg The marker that we want to flip.
      */
-    private flipRtl;
+    private flipRtl_;
     /** Hide the marker. */
     hide(): void;
     /**
@@ -229,7 +222,7 @@ export declare class MarkerSvg {
      * @param oldNode The old node the marker used to be on.
      * @param curNode The new node the marker is currently on.
      */
-    protected fireMarkerEvent(oldNode: ASTNode, curNode: ASTNode): void;
+    private fireMarkerEvent_;
     /**
      * Get the properties to make a marker blink.
      *

@@ -22,7 +22,7 @@ import { PathObject } from './path_object.js';
  */
 export declare class Renderer extends BaseRenderer {
     /** The renderer's highlight constant provider. */
-    private highlightConstants;
+    private highlightConstants_;
     /**
      * @param name The renderer name.
      */

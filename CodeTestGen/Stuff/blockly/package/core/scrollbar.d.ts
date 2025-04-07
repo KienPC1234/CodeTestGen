@@ -3,11 +3,6 @@
  * Copyright 2011 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Object representing a scrollbar.
- *
- * @class
- */
 import * as browserEvents from './browser_events.js';
 import { Coordinate } from './utils/coordinate.js';
 import type { Metrics } from './utils/metrics.js';
@@ -131,6 +126,8 @@ export declare class Scrollbar {
     /**
      * Dispose of this scrollbar. Remove DOM elements, event listeners,
      * and theme subscriptions.
+     *
+     * @suppress {checkTypes}
      */
     dispose(): void;
     /**
@@ -264,15 +261,6 @@ export declare class Scrollbar {
      * @param visible True if visible.
      */
     setVisible(visible: boolean): void;
-    /**
-     * Set whether the scrollbar is visible. Bypasses checking whether this
-     * scrollbar is part of a pair so that it can be toggled by the scrollbar
-     * pair.
-     *
-     * @param visible True if visible.
-     * @internal
-     */
-    setVisibleInternal(visible: boolean): void;
     /**
      * Update visibility of scrollbar based on whether it thinks it should
      * be visible and whether its containing workspace is visible.

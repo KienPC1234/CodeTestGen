@@ -4,14 +4,13 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import type { VariableModel } from '../variable_model.js';
-import type { Workspace } from '../workspace.js';
 import { VarBase, VarBaseJson } from './events_var_base.js';
-import { EventType } from './type.js';
+import type { Workspace } from '../workspace.js';
 /**
  * Notifies listeners that a variable model has been created.
  */
 export declare class VarCreate extends VarBase {
-    type: EventType;
+    type: string;
     /** The type of the variable that was created. */
     varType?: string;
     /** The name of the variable that was created. */
@@ -26,6 +25,12 @@ export declare class VarCreate extends VarBase {
      * @returns JSON representation.
      */
     toJson(): VarCreateJson;
+    /**
+     * Decode the JSON event.
+     *
+     * @param json JSON representation.
+     */
+    fromJson(json: VarCreateJson): void;
     /**
      * Deserializes the JSON event.
      *

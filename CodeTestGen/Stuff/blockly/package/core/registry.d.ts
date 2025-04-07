@@ -5,15 +5,10 @@
  */
 import type { Abstract } from './events/events_abstract.js';
 import type { Field } from './field.js';
-import type { Input } from './inputs/input.js';
+import type { IBlockDragger } from './interfaces/i_block_dragger.js';
 import type { IConnectionChecker } from './interfaces/i_connection_checker.js';
-import type { IConnectionPreviewer } from './interfaces/i_connection_previewer.js';
-import type { ICopyable } from './interfaces/i_copyable.js';
-import type { IDragger } from './interfaces/i_dragger.js';
 import type { IFlyout } from './interfaces/i_flyout.js';
-import type { IIcon } from './interfaces/i_icon.js';
 import type { IMetricsManager } from './interfaces/i_metrics_manager.js';
-import type { IPaster } from './interfaces/i_paster.js';
 import type { ISerializer } from './interfaces/i_serializer.js';
 import type { IToolbox } from './interfaces/i_toolbox.js';
 import type { Cursor } from './keyboard_nav/cursor.js';
@@ -46,11 +41,9 @@ export declare class Type<_T> {
      */
     toString(): string;
     static CONNECTION_CHECKER: Type<IConnectionChecker>;
-    static CONNECTION_PREVIEWER: Type<IConnectionPreviewer>;
     static CURSOR: Type<Cursor>;
     static EVENT: Type<Abstract>;
     static FIELD: Type<Field<any>>;
-    static INPUT: Type<Input>;
     static RENDERER: Type<Renderer>;
     static TOOLBOX: Type<IToolbox>;
     static THEME: Type<Theme>;
@@ -58,17 +51,9 @@ export declare class Type<_T> {
     static FLYOUTS_VERTICAL_TOOLBOX: Type<IFlyout>;
     static FLYOUTS_HORIZONTAL_TOOLBOX: Type<IFlyout>;
     static METRICS_MANAGER: Type<IMetricsManager>;
-    /**
-     * Type for an IDragger. Formerly behavior was mostly covered by
-     * BlockDraggeers, which is why the name is inaccurate.
-     */
-    static BLOCK_DRAGGER: Type<IDragger>;
+    static BLOCK_DRAGGER: Type<IBlockDragger>;
     /** @internal */
     static SERIALIZER: Type<ISerializer>;
-    /** @internal */
-    static ICON: Type<IIcon>;
-    /** @internal */
-    static PASTER: Type<IPaster<ICopyable.ICopyData, ICopyable<ICopyable.ICopyData>>>;
 }
 /**
  * Registers a class based on a type and name.

@@ -3,32 +3,26 @@
  * Copyright 2014 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Object representing a workspace rendered as SVG.
- *
- * @class
- */
 import './events/events_block_create.js';
 import './events/events_theme_change.js';
 import './events/events_viewport.js';
 import type { Block } from './block.js';
+import type { BlockDragSurfaceSvg } from './block_drag_surface.js';
 import type { BlockSvg } from './block_svg.js';
 import * as browserEvents from './browser_events.js';
-import { WorkspaceComment } from './comments/workspace_comment.js';
 import { ComponentManager } from './component_manager.js';
-import { ContextMenuOption } from './contextmenu_registry.js';
 import type { FlyoutButton } from './flyout_button.js';
 import { Gesture } from './gesture.js';
 import { Grid } from './grid.js';
 import type { IASTNodeLocationSvg } from './interfaces/i_ast_node_location_svg.js';
 import type { IBoundedElement } from './interfaces/i_bounded_element.js';
+import type { ICopyable } from './interfaces/i_copyable.js';
 import type { IDragTarget } from './interfaces/i_drag_target.js';
 import type { IFlyout } from './interfaces/i_flyout.js';
 import type { IMetricsManager } from './interfaces/i_metrics_manager.js';
 import type { IToolbox } from './interfaces/i_toolbox.js';
 import type { Cursor } from './keyboard_nav/cursor.js';
 import type { Marker } from './keyboard_nav/marker.js';
-import { LayerManager } from './layer_manager.js';
 import { MarkerManager } from './marker_manager.js';
 import { Options } from './options.js';
 import type { Renderer } from './renderers/common/renderer.js';
@@ -45,7 +39,10 @@ import * as toolbox from './utils/toolbox.js';
 import type { VariableModel } from './variable_model.js';
 import { Workspace } from './workspace.js';
 import { WorkspaceAudio } from './workspace_audio.js';
+import { WorkspaceComment } from './workspace_comment.js';
+import type { WorkspaceDragSurfaceSvg } from './workspace_drag_surface_svg.js';
 import { ZoomControls } from './zoom_controls.js';
+import { ContextMenuOption } from './contextmenu_registry.js';
 /**
  * Class for a workspace.  This is an onscreen area with optional trashcan,
  * scrollbars, bubbles, and dragging.
@@ -66,7 +63,7 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      * Whether the workspace is visible.  False if the workspace has been hidden
      * by calling `setVisible(false)`.
      */
-    private visible;
+    private isVisible_;
     /**
      * Whether this workspace has resizes enabled.
      * Disable during batch operations for a performance improvement.
@@ -138,6 +135,8 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
     startScrollX: number;
     /** Vertical scroll value when scrolling started in pixel units. */
     startScrollY: number;
+    /** Distance from mouse to object being dragged. */
+    private dragDeltaXY;
     /** Current scale. */
     scale: number;
     /** Cached scale value. Used to detect changes in viewport. */
@@ -158,13 +157,29 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      * Category-based toolbox providing blocks which may be dragged into this
      * workspace.
      */
-    private toolbox;
+    private toolbox_;
     /**
      * The current gesture in progress on this workspace, if any.
      *
      * @internal
      */
     currentGesture_: Gesture | null;
+    /** This workspace's surface for dragging blocks, if it exists. */
+    private readonly blockDragSurface;
+    /** This workspace's drag surface, if it exists. */
+    private readonly workspaceDragSurface;
+    /**
+     * Whether to move workspace to the drag surface when it is dragged.
+     * True if it should move, false if it should be translated directly.
+     */
+    private readonly useWorkspaceDragSurface;
+    /**
+     * Whether the drag surface is actively in use. When true, calls to
+     * translate will translate the drag surface instead of the translating the
+     * workspace directly.
+     * This is set to true in setupDragSurface and to false in resetDragSurface.
+     */
+    private isDragSurfaceActive;
     /**
      * The first parent div with 'injectionDiv' in the name, or null if not set.
      * Access this with getInjectionDiv.
@@ -185,11 +200,6 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      * @param e The right-click event that triggered the context menu.
      */
     configureContextMenu: ((menuOptions: ContextMenuOption[], e: Event) => void) | null;
-    /**
-     * A dummy wheel event listener used as a workaround for a Safari scrolling issue.
-     * Set in createDom and used for removal in dispose to ensure proper cleanup.
-     */
-    private dummyWheelListener;
     /**
      * In a flyout, the target workspace where blocks should be placed after a
      * drag. Otherwise null.
@@ -239,7 +249,6 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
     /** The recorded drag targets. */
     private dragTargetAreas;
     private readonly cachedParentSvgSize;
-    private layerManager;
     svgGroup_: SVGElement;
     svgBackground_: SVGElement;
     svgBlockCanvas_: SVGElement;
@@ -247,8 +256,10 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
     zoomControls_: ZoomControls | null;
     /**
      * @param options Dictionary of options.
+     * @param opt_blockDragSurface Drag surface for blocks.
+     * @param opt_wsDragSurface Drag surface for the workspace.
      */
-    constructor(options: Options);
+    constructor(options: Options, opt_blockDragSurface?: BlockDragSurfaceSvg, opt_wsDragSurface?: WorkspaceDragSurfaceSvg);
     /**
      * Get the marker manager for this workspace.
      *
@@ -340,7 +351,7 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      *
      * @param blocks List of blocks to update the style on.
      */
-    private updateBlockStyles;
+    private updateBlockStyles_;
     /**
      * Getter for the inverted screen CTM.
      *
@@ -394,12 +405,6 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      */
     getInjectionDiv(): Element;
     /**
-     * Returns the SVG group for the workspace.
-     *
-     * @returns The SVG group for the workspace.
-     */
-    getSvgGroup(): Element;
-    /**
      * Get the SVG block canvas for the workspace.
      *
      * @returns The SVG group for the workspace.
@@ -419,10 +424,12 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      *     'blocklyMutatorBackground'.
      * @returns The workspace's SVG group.
      */
-    createDom(opt_backgroundClass?: string, injectionDiv?: Element): Element;
+    createDom(opt_backgroundClass?: string): Element;
     /**
      * Dispose of this workspace.
      * Unlink from all DOM elements to prevent memory leaks.
+     *
+     * @suppress {checkTypes}
      */
     dispose(): void;
     /**
@@ -469,7 +476,7 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      * Update items that use screen coordinate calculations
      * because something has changed (e.g. scroll position, window size).
      */
-    private updateScreenCalculations;
+    private updateScreenCalculations_;
     /**
      * If enabled, resize the parts of the workspace that change when the
      * workspace contents (e.g. block positions) change.  This will also scroll
@@ -493,10 +500,6 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      * @internal
      */
     updateScreenCalculationsIfScrolled(): void;
-    /**
-     * @returns The layer manager for this workspace.
-     */
-    getLayerManager(): LayerManager | null;
     /**
      * Get the SVG element that forms the drawing surface.
      *
@@ -543,6 +546,29 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      */
     translate(x: number, y: number): void;
     /**
+     * Called at the end of a workspace drag to take the contents
+     * out of the drag surface and put them back into the workspace SVG.
+     * Does nothing if the workspace drag surface is not enabled.
+     *
+     * @internal
+     */
+    resetDragSurface(): void;
+    /**
+     * Called at the beginning of a workspace drag to move contents of
+     * the workspace to the drag surface.
+     * Does nothing if the drag surface is not enabled.
+     *
+     * @internal
+     */
+    setupDragSurface(): void;
+    /**
+     * Gets the drag surface blocks are moved to when a drag is started.
+     *
+     * @returns This workspace's block drag surface, if one is in use.
+     * @internal
+     */
+    getBlockDragSurface(): BlockDragSurfaceSvg | null;
+    /**
      * Returns the horizontal offset of the workspace.
      * Intended for LTR/RTL compatibility in XML.
      *
@@ -556,9 +582,7 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      * @param isVisible True if workspace should be visible.
      */
     setVisible(isVisible: boolean): void;
-    /**
-     * Render all blocks in workspace.
-     */
+    /** Render all blocks in workspace. */
     render(): void;
     /**
      * Highlight or unhighlight a block in the workspace.  Block highlighting is
@@ -571,6 +595,32 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      *     highlight/unhighlight the specified block.
      */
     highlightBlock(id: string | null, opt_state?: boolean): void;
+    /**
+     * Pastes the provided block or workspace comment onto the workspace.
+     * Does not check whether there is remaining capacity for the object, that
+     * should be done before calling this method.
+     *
+     * @param state The representation of the thing to paste.
+     * @returns The pasted thing, or null if the paste was not successful.
+     */
+    paste(state: any | Element | DocumentFragment): ICopyable | null;
+    /**
+     * Paste the provided block onto the workspace.
+     *
+     * @param xmlBlock XML block element.
+     * @param jsonBlock JSON block representation.
+     * @returns The pasted block.
+     */
+    private pasteBlock_;
+    /**
+     * Paste the provided comment onto the workspace.
+     *
+     * @param xmlComment XML workspace comment element.
+     * @returns The pasted workspace comment.
+     * @suppress {checkTypes} Suppress checks while workspace comments are not
+     * bundled in.
+     */
+    private pasteWorkspaceComment_;
     /**
      * Refresh the toolbox unless there's a drag in progress.
      *
@@ -617,14 +667,6 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      */
     newBlock(prototypeName: string, opt_id?: string): BlockSvg;
     /**
-     * Obtain a newly created comment.
-     *
-     * @param id Optional ID.  Use this ID if provided, otherwise create a new
-     *     ID.
-     * @returns The created comment.
-     */
-    newComment(id?: string): WorkspaceComment;
-    /**
      * Returns the drag target the pointer event is over.
      *
      * @param e Pointer move event.
@@ -637,7 +679,7 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      *
      * @param e Pointer down event.
      */
-    private onMouseDown;
+    private onMouseDown_;
     /**
      * Start tracking a drag of an object on this workspace.
      *
@@ -693,7 +735,7 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      *
      * @param e Mouse wheel event.
      */
-    private onMouseWheel;
+    private onMouseWheel_;
     /**
      * Calculate the bounding box for the blocks on the workspace.
      * Coordinate system: workspace coordinates.
@@ -702,7 +744,7 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      *     blocks on the workspace.
      */
     getBlocksBoundingBox(): Rect;
-    /** Clean up the workspace by ordering all the blocks in a column such that none overlap. */
+    /** Clean up the workspace by ordering all the blocks in a column. */
     cleanUp(): void;
     /**
      * Show the context menu for the workspace.
@@ -710,7 +752,7 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      * @param e Mouse event.
      * @internal
      */
-    showContextMenu(e: PointerEvent): void;
+    showContextMenu(e: Event): void;
     /**
      * Modify the block tree on the existing toolbox.
      *
@@ -786,6 +828,7 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      *
      * @param x Target X to scroll to.
      * @param y Target Y to scroll to.
+     * @internal
      */
     scroll(x: number, y: number): void;
     /**
@@ -802,7 +845,7 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      * @param ordered Sort the list if true.
      * @returns Array of blocks.
      */
-    getAllBlocks(ordered?: boolean): BlockSvg[];
+    getAllBlocks(ordered: boolean): BlockSvg[];
     /**
      * Finds the top-level blocks and returns them.  Blocks are optionally sorted
      * by position; top to bottom (with slight LTR or RTL bias).
@@ -810,7 +853,7 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      * @param ordered Sort the list if true.
      * @returns The top-level block objects.
      */
-    getTopBlocks(ordered?: boolean): BlockSvg[];
+    getTopBlocks(ordered: boolean): BlockSvg[];
     /**
      * Adds a block to the list of top blocks.
      *
@@ -835,7 +878,6 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      * @param comment comment to remove.
      */
     removeTopComment(comment: WorkspaceComment): void;
-    getRootWorkspace(): WorkspaceSvg | null;
     /**
      * Adds a bounded element to the list of top bounded elements.
      *
@@ -951,30 +993,22 @@ export declare class WorkspaceSvg extends Workspace implements IASTNodeLocationS
      * Get the grid object for this workspace, or null if there is none.
      *
      * @returns The grid object for this workspace.
+     * @internal
      */
     getGrid(): Grid | null;
     /**
      * Close tooltips, context menus, dropdown selections, etc.
      *
-     * @param onlyClosePopups Whether only popups should be closed. Defaults to
-     *     false.
+     * @param opt_onlyClosePopups Whether only popups should be closed.
      */
-    hideChaff(onlyClosePopups?: boolean): void;
-    /**
-     * Hide any autohideable components (like flyout, trashcan, and any
-     * user-registered components).
-     *
-     * @param onlyClosePopups Whether only popups should be closed. Defaults to
-     *     false.
-     */
-    hideComponents(onlyClosePopups?: boolean): void;
+    hideChaff(opt_onlyClosePopups?: boolean): void;
     /**
      * Sets the X/Y translations of a top level workspace.
      *
      * @param xyRatio Contains an x and/or y property which is a float between 0
      *     and 1 specifying the degree of scrolling.
      */
-    private static setTopLevelWorkspaceMetrics;
+    private static setTopLevelWorkspaceMetrics_;
 }
 /**
  * Size the workspace when the contents change.  This also updates

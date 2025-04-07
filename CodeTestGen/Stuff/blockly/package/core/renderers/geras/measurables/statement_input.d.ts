@@ -3,7 +3,7 @@
  * Copyright 2019 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import type { Input } from '../../../inputs/input.js';
+import type { Input } from '../../../input.js';
 import type { ConstantProvider as BaseConstantProvider } from '../../../renderers/common/constants.js';
 import { StatementInput as BaseStatementInput } from '../../../renderers/measurables/statement_input.js';
 import type { ConstantProvider as GerasConstantProvider } from '../constants.js';

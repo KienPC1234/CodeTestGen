@@ -4,21 +4,17 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import type { Block } from './block.js';
-import { WorkspaceComment } from './comments/workspace_comment.js';
 import type { VariableModel } from './variable_model.js';
 import type { Workspace } from './workspace.js';
-import { WorkspaceSvg } from './workspace_svg.js';
+import type { WorkspaceSvg } from './workspace_svg.js';
 /**
  * Encode a block tree as XML.
  *
  * @param workspace The workspace containing blocks.
- * @param skipId True if the encoder should skip the block IDs. False by
- *     default.
+ * @param opt_noId True if the encoder should skip the block IDs.
  * @returns XML DOM element.
  */
-export declare function workspaceToDom(workspace: Workspace, skipId?: boolean): Element;
-/** Serializes the given workspace comment to XML. */
-export declare function saveWorkspaceComment(comment: WorkspaceComment, skipId?: boolean): Element;
+export declare function workspaceToDom(workspace: Workspace, opt_noId?: boolean): Element;
 /**
  * Encode a list of variables as XML.
  *
@@ -61,6 +57,16 @@ export declare function domToText(dom: Node): string;
  */
 export declare function domToPrettyText(dom: Node): string;
 /**
+ * Converts an XML string into a DOM structure.
+ *
+ * @param text An XML string.
+ * @returns A DOM object representing the singular child of the document
+ *     element.
+ * @throws if the text doesn't parse.
+ * @deprecated Moved to core/utils/xml.js.
+ */
+export declare function textToDom(text: string): Element;
+/**
  * Clear the given workspace then decode an XML DOM and
  * create blocks on the workspace.
  *
@@ -75,10 +81,10 @@ export declare function clearWorkspaceAndLoadFromXml(xml: Element, workspace: Wo
  * @param xml XML DOM.
  * @param workspace The workspace.
  * @returns An array containing new block IDs.
+ * @suppress {strictModuleDepCheck} Suppress module check while workspace
+ * comments are not bundled in.
  */
 export declare function domToWorkspace(xml: Element, workspace: Workspace): string[];
-/** Deserializes the given comment state into the given workspace. */
-export declare function loadWorkspaceComment(elem: Element, workspace: Workspace): WorkspaceComment;
 /**
  * Decode an XML DOM and create blocks on the workspace. Position the new
  * blocks immediately below prior blocks, aligned by their starting edge.
@@ -97,19 +103,6 @@ export declare function appendDomToWorkspace(xml: Element, workspace: WorkspaceS
  * @returns The root block created.
  */
 export declare function domToBlock(xmlBlock: Element, workspace: Workspace): Block;
-/**
- * Decode an XML block tag and create a block (and possibly sub blocks) on the
- * workspace.
- *
- * This is defined internally so that it doesn't trigger an immediate render,
- * which we do want to happen for external calls.
- *
- * @param xmlBlock XML block element.
- * @param workspace The workspace.
- * @returns The root block created.
- * @internal
- */
-export declare function domToBlockInternal(xmlBlock: Element, workspace: Workspace): Block;
 /**
  * Decode an XML list of variables and add the variables to the workspace.
  *

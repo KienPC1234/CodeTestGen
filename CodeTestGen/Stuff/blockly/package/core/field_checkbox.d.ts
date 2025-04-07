@@ -3,11 +3,6 @@
  * Copyright 2012 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Checkbox field.  Checked or not checked.
- *
- * @class
- */
 import './events/events_block_change.js';
 import { Field, FieldConfig, FieldValidator } from './field.js';
 type BoolString = 'TRUE' | 'FALSE';
@@ -18,7 +13,7 @@ type CheckboxBool = BoolString | boolean;
 export declare class FieldCheckbox extends Field<CheckboxBool> {
     /** Default character for the checkmark. */
     static readonly CHECK_CHAR = "\u2713";
-    private checkChar;
+    private checkChar_;
     /**
      * Serializable fields are saved by the serializer, non-serializable fields
      * are not. Editable fields should also be serializable.
@@ -63,6 +58,8 @@ export declare class FieldCheckbox extends Field<CheckboxBool> {
     saveState(): any;
     /**
      * Create the block UI for this checkbox.
+     *
+     * @internal
      */
     initView(): void;
     render_(): void;
@@ -117,7 +114,7 @@ export declare class FieldCheckbox extends Field<CheckboxBool> {
      * @param value The value to convert.
      * @returns The converted value.
      */
-    private convertValueToBool;
+    private convertValueToBool_;
     /**
      * Construct a FieldCheckbox from a JSON arg object.
      *

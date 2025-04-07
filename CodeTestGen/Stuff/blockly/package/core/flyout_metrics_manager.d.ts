@@ -3,11 +3,6 @@
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Calculates and reports flyout workspace metrics.
- *
- * @class
- */
 import type { IFlyout } from './interfaces/i_flyout.js';
 import { ContainerRegion, MetricsManager } from './metrics_manager.js';
 import type { WorkspaceSvg } from './workspace_svg.js';
@@ -29,7 +24,7 @@ export declare class FlyoutMetricsManager extends MetricsManager {
      *
      * @returns The bounding box of the blocks on the workspace.
      */
-    private getBoundingBox;
+    private getBoundingBox_;
     getContentMetrics(opt_getWorkspaceCoordinates?: boolean): {
         height: number;
         width: number;

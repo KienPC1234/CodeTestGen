@@ -45,7 +45,7 @@ export declare class VerticalFlyout extends Flyout {
      * @param width The width of the flyout, not including the rounded corners.
      * @param height The height of the flyout, not including rounded corners.
      */
-    private setBackgroundPath;
+    private setBackgroundPath_;
     /** Scroll the flyout to the top. */
     scrollToStart(): void;
     /**
@@ -69,6 +69,7 @@ export declare class VerticalFlyout extends Flyout {
      * @param currentDragDeltaXY How far the pointer has moved from the position
      *     at mouse down, in pixel units.
      * @returns True if the drag is toward the workspace.
+     * @internal
      */
     isDragTowardWorkspace(currentDragDeltaXY: Coordinate): boolean;
     /**

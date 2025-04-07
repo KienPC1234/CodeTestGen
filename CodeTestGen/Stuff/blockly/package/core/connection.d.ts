@@ -3,13 +3,8 @@
  * Copyright 2011 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Components for creating connections between blocks.
- *
- * @class
- */
 import type { Block } from './block.js';
-import type { Input } from './inputs/input.js';
+import type { Input } from './input.js';
 import type { IASTNodeLocationWithBlock } from './interfaces/i_ast_node_location_with_block.js';
 import type { IConnectionChecker } from './interfaces/i_connection_checker.js';
 import * as blocks from './serialization/blocks.js';
@@ -38,9 +33,9 @@ export declare class Connection implements IASTNodeLocationWithBlock {
      */
     disposed: boolean;
     /** List of compatible value types.  Null if all types are compatible. */
-    private check;
+    private check_;
     /** DOM representation of a shadow block, or null if none. */
-    private shadowDom;
+    private shadowDom_;
     /**
      * Horizontal location of this connection.
      *
@@ -53,7 +48,7 @@ export declare class Connection implements IASTNodeLocationWithBlock {
      * @internal
      */
     y: number;
-    private shadowState;
+    private shadowState_;
     /**
      * @param source The block establishing this connection.
      * @param type The type of the connection.
@@ -102,16 +97,16 @@ export declare class Connection implements IASTNodeLocationWithBlock {
      * Called when an attempted connection fails. NOP by default (i.e. for
      * headless workspaces).
      *
-     * @param _superiorConnection Connection that this connection failed to connect
-     *     to. The provided connection should be the superior connection.
+     * @param _otherConnection Connection that this connection failed to connect
+     *     to.
      * @internal
      */
-    onFailedConnect(_superiorConnection: Connection): void;
+    onFailedConnect(_otherConnection: Connection): void;
     /**
      * Connect this connection to another connection.
      *
      * @param otherConnection Connection to connect to.
-     * @returns Whether the blocks are now connected or not.
+     * @returns Whether the the blocks are now connected or not.
      */
     connect(otherConnection: Connection): boolean;
     /**
@@ -142,16 +137,6 @@ export declare class Connection implements IASTNodeLocationWithBlock {
      * Respawn the shadow block if there was one connected to the this connection.
      */
     protected respawnShadow_(): void;
-    /**
-     * Reconnects this connection to the input with the given name on the given
-     * block. If there is already a connection connected to that input, that
-     * connection is disconnected.
-     *
-     * @param block The block to connect this connection to.
-     * @param inputName The name of the input to connect this connection to.
-     * @returns True if this connection was able to connect, false otherwise.
-     */
-    reconnect(block: Block, inputName: string): boolean;
     /**
      * Returns the block that this connection connects to.
      *
@@ -245,20 +230,20 @@ export declare class Connection implements IASTNodeLocationWithBlock {
      *
      * @returns The state of both the shadowDom_ and shadowState_ properties.
      */
-    private stashShadowState;
+    private stashShadowState_;
     /**
      * Reapplies the stashed state of the shadowDom_ and shadowState_ properties.
      *
      * @param param0 The state to reapply to the shadowDom_ and shadowState_
      *     properties.
      */
-    private applyShadowState;
+    private applyShadowState_;
     /**
      * Sets the state of the shadow of this connection.
      *
      * @param param0 The state to set the shadow of this connection to.
      */
-    private setShadowStateInternal;
+    private setShadowStateInternal_;
     /**
      * Creates a shadow block based on the current shadowState_ or shadowDom_.
      * shadowState_ gets priority.
@@ -268,14 +253,14 @@ export declare class Connection implements IASTNodeLocationWithBlock {
      * @returns The shadow block that was created, or null if both the
      *     shadowState_ and shadowDom_ are null.
      */
-    private createShadowBlock;
+    private createShadowBlock_;
     /**
      * Saves the given shadow block to both the shadowDom_ and shadowState_
      * properties, in their respective serialized forms.
      *
      * @param shadow The shadow to serialize, or null.
      */
-    private serializeShadow;
+    private serializeShadow_;
     /**
      * Returns the connection (starting at the startBlock) which will accept
      * the given connection. This includes compatible connection types and

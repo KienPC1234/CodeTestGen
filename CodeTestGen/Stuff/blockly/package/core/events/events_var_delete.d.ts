@@ -4,16 +4,15 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import type { VariableModel } from '../variable_model.js';
-import type { Workspace } from '../workspace.js';
 import { VarBase, VarBaseJson } from './events_var_base.js';
-import { EventType } from './type.js';
+import type { Workspace } from '../workspace.js';
 /**
  * Notifies listeners that a variable model has been deleted.
  *
  * @class
  */
 export declare class VarDelete extends VarBase {
-    type: EventType;
+    type: string;
     /** The type of the variable that was deleted. */
     varType?: string;
     /** The name of the variable that was deleted. */
@@ -28,6 +27,12 @@ export declare class VarDelete extends VarBase {
      * @returns JSON representation.
      */
     toJson(): VarDeleteJson;
+    /**
+     * Decode the JSON event.
+     *
+     * @param json JSON representation.
+     */
+    fromJson(json: VarDeleteJson): void;
     /**
      * Deserializes the JSON event.
      *

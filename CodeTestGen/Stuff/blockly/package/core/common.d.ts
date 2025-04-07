@@ -4,9 +4,9 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import type { Block } from './block.js';
-import { ISelectable } from './blockly.js';
 import { BlockDefinition } from './blocks.js';
 import type { Connection } from './connection.js';
+import type { ICopyable } from './interfaces/i_copyable.js';
 import type { Workspace } from './workspace.js';
 import type { WorkspaceSvg } from './workspace_svg.js';
 /**
@@ -51,7 +51,7 @@ export declare function setMainWorkspace(workspace: Workspace): void;
 /**
  * Returns the currently selected copyable object.
  */
-export declare function getSelected(): ISelectable | null;
+export declare function getSelected(): ICopyable | null;
 /**
  * Sets the currently selected block. This function does not visually mark the
  * block as selected or fire the required events. If you wish to
@@ -60,7 +60,7 @@ export declare function getSelected(): ISelectable | null;
  * @param newSelection The newly selected block.
  * @internal
  */
-export declare function setSelected(newSelection: ISelectable | null): void;
+export declare function setSelected(newSelection: ICopyable | null): void;
 /**
  * Get the container element in which to render the WidgetDiv, DropDownDiv and
  * Tooltip.

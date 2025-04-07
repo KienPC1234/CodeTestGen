@@ -3,16 +3,10 @@
  * Copyright 2020 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Events fired as a result of bubble open.
- *
- * @class
- */
-import type { BlockSvg } from '../block_svg.js';
-import type { Workspace } from '../workspace.js';
 import type { AbstractEventJson } from './events_abstract.js';
+import type { BlockSvg } from '../block_svg.js';
 import { UiBase } from './events_ui_base.js';
-import { EventType } from './type.js';
+import type { Workspace } from '../workspace.js';
 /**
  * Class for a bubble open event.
  */
@@ -23,7 +17,7 @@ export declare class BubbleOpen extends UiBase {
     isOpen?: boolean;
     /** The type of bubble; one of 'mutator', 'comment', or 'warning'. */
     bubbleType?: BubbleType;
-    type: EventType;
+    type: string;
     /**
      * @param opt_block The associated block. Undefined for a blank event.
      * @param opt_isOpen Whether the bubble is opening (false if closing).
@@ -38,6 +32,12 @@ export declare class BubbleOpen extends UiBase {
      * @returns JSON representation.
      */
     toJson(): BubbleOpenJson;
+    /**
+     * Decode the JSON event.
+     *
+     * @param json JSON representation.
+     */
+    fromJson(json: BubbleOpenJson): void;
     /**
      * Deserializes the JSON event.
      *

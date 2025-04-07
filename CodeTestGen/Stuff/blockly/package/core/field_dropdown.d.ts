@@ -19,17 +19,17 @@ export declare class FieldDropdown extends Field<string> {
     static MAX_MENU_HEIGHT_VH: number;
     static ARROW_CHAR: string;
     /** A reference to the currently selected menu item. */
-    private selectedMenuItem;
+    private selectedMenuItem_;
     /** The dropdown menu. */
     protected menu_: Menu | null;
     /**
      * SVG image element if currently selected option is an image, or null.
      */
-    private imageElement;
+    private imageElement_;
     /** Tspan based arrow element. */
-    private arrow;
+    private arrow_;
     /** SVG based arrow element. */
-    private svgArrow;
+    private svgArrow_;
     /**
      * Serializable fields are saved by the serializer, non-serializable fields
      * are not. Editable fields should also be serializable.
@@ -39,7 +39,7 @@ export declare class FieldDropdown extends Field<string> {
     CURSOR: string;
     protected menuGenerator_?: MenuGenerator;
     /** A cache of the most recently generated options. */
-    private generatedOptions;
+    private generatedOptions_;
     /**
      * The prefix field label, of common words set after options are trimmed.
      *
@@ -52,15 +52,8 @@ export declare class FieldDropdown extends Field<string> {
      * @internal
      */
     suffixField: string | null;
-    private selectedOption;
+    private selectedOption_;
     clickTarget_: SVGElement | null;
-    /**
-     * The y offset from the top of the field to the top of the image, if an image
-     * is selected.
-     */
-    protected static IMAGE_Y_OFFSET: number;
-    /** The total vertical padding above and below an image. */
-    protected static IMAGE_Y_PADDING: number;
     /**
      * @param menuGenerator A non-empty array of options for a dropdown list, or a
      *     function which generates these options. Also accepts Field.SKIP_SETUP
@@ -96,6 +89,8 @@ export declare class FieldDropdown extends Field<string> {
     loadState(state: any): void;
     /**
      * Create the block UI for this dropdown.
+     *
+     * @internal
      */
     initView(): void;
     /**
@@ -116,7 +111,7 @@ export declare class FieldDropdown extends Field<string> {
      */
     protected showEditor_(e?: MouseEvent): void;
     /** Create the dropdown editor. */
-    private dropdownCreate;
+    private dropdownCreate_;
     /**
      * Disposes of events and DOM-references belonging to the dropdown editor.
      */
@@ -126,7 +121,7 @@ export declare class FieldDropdown extends Field<string> {
      *
      * @param menuItem The MenuItem selected within menu.
      */
-    private handleMenuActionEvent;
+    private handleMenuActionEvent_;
     /**
      * Handle the selection of an item in the dropdown menu.
      *
@@ -155,7 +150,6 @@ export declare class FieldDropdown extends Field<string> {
      * @param newValue The input value.
      * @returns A valid language-neutral option, or null if invalid.
      */
-    protected doClassValidation_(newValue: string): string | null | undefined;
     protected doClassValidation_(newValue?: string): string | null;
     /**
      * Update the value of this dropdown field.
@@ -166,6 +160,8 @@ export declare class FieldDropdown extends Field<string> {
     protected doValueUpdate_(newValue: string): void;
     /**
      * Updates the dropdown arrow to match the colour/style of the block.
+     *
+     * @internal
      */
     applyColour(): void;
     /** Draws the border with the correct width. */
@@ -175,9 +171,9 @@ export declare class FieldDropdown extends Field<string> {
      *
      * @param imageJson Selected option that must be an image.
      */
-    private renderSelectedImage;
+    private renderSelectedImage_;
     /** Renders the selected option, which must be text. */
-    private renderSelectedText;
+    private renderSelectedText_;
     /**
      * Position a drop-down arrow at the appropriate location at render-time.
      *
@@ -185,7 +181,7 @@ export declare class FieldDropdown extends Field<string> {
      * @param y Y position the arrow is being rendered at, in px.
      * @returns Amount of space the arrow is taking up, in px.
      */
-    private positionSVGArrow;
+    private positionSVGArrow_;
     /**
      * Use the `getText_` developer hook to override the field's text
      * representation.  Get the selected option text.  If the selected option is
@@ -203,33 +199,6 @@ export declare class FieldDropdown extends Field<string> {
      * @internal
      */
     static fromJson(options: FieldDropdownFromJsonConfig): FieldDropdown;
-    /**
-     * Factor out common words in statically defined options.
-     * Create prefix and/or suffix labels.
-     */
-    protected trimOptions(options: MenuOption[]): {
-        options: MenuOption[];
-        prefix?: string;
-        suffix?: string;
-    };
-    /**
-     * Use the calculated prefix and suffix lengths to trim all of the options in
-     * the given array.
-     *
-     * @param options Array of option tuples:
-     *     (human-readable text or image, language-neutral name).
-     * @param prefixLength The length of the common prefix.
-     * @param suffixLength The length of the common suffix
-     * @returns A new array with all of the option text trimmed.
-     */
-    private applyTrim;
-    /**
-     * Validates the data structure to be processed as an options list.
-     *
-     * @param options The proposed dropdown options.
-     * @throws {TypeError} If proposed options are incorrectly structured.
-     */
-    protected validateOptions(options: MenuOption[]): void;
 }
 /**
  * Definition of a human-readable image dropdown option.

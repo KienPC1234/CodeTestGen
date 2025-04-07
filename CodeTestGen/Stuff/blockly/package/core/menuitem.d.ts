@@ -3,11 +3,6 @@
  * Copyright 2019 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Blockly menu item similar to Closure's goog.ui.MenuItem
- *
- * @class
- */
 import * as aria from './utils/aria.js';
 /**
  * Class representing an item in a menu.

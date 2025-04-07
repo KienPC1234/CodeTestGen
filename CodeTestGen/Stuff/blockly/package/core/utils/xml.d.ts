@@ -47,6 +47,20 @@ export declare function injectDependencies(dependencies: {
  */
 export declare const NAME_SPACE = "https://developers.google.com/blockly/xml";
 /**
+ * Get the document object to use for XML serialization.
+ *
+ * @returns The document object.
+ * @deprecated No longer provided by Blockly.
+ */
+export declare function getDocument(): Document;
+/**
+ * Get the document object to use for XML serialization.
+ *
+ * @param xmlDocument The document object to use.
+ * @deprecated No longer provided by Blockly.
+ */
+export declare function setDocument(xmlDocument: Document): void;
+/**
  * Create DOM element for XML.
  *
  * @param tagName Name of DOM element.
@@ -63,14 +77,6 @@ export declare function createTextNode(text: string): Text;
 /**
  * Converts an XML string into a DOM structure.
  *
- * Control characters should be escaped. (But we will try to best-effort parse
- * unescaped characters.)
- *
- * Note that even when escaped, U+0000 will be parsed as U+FFFD (the
- * "replacement character") because U+0000 is never a valid XML character
- * (even in XML 1.1).
- * https://www.w3.org/TR/xml11/#charsets
- *
  * @param text An XML string.
  * @returns A DOM object representing the singular child of the document
  *     element.
@@ -78,15 +84,16 @@ export declare function createTextNode(text: string): Text;
  */
 export declare function textToDom(text: string): Element;
 /**
+ * Converts an XML string into a DOM tree.
+ *
+ * @param text XML string.
+ * @returns The DOM document.
+ * @throws if XML doesn't parse.
+ */
+export declare function textToDomDocument(text: string): Document;
+/**
  * Converts a DOM structure into plain text.
  * Currently the text format is fairly ugly: all one line with no whitespace.
- *
- * Control characters are escaped using their decimal encodings. This includes
- * U+0000 even though it is technically never a valid XML character (even in
- * XML 1.1).
- * https://www.w3.org/TR/xml11/#charsets
- *
- * When decoded U+0000 will be parsed as U+FFFD (the "replacement character").
  *
  * @param dom A tree of XML nodes.
  * @returns Text representation.

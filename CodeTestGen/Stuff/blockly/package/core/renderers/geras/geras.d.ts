@@ -1,9 +1,4 @@
 /** @file Re-exports of Blockly.geras.* modules. */
-/**
- * @license
- * Copyright 2021 Google LLC
- * SPDX-License-Identifier: Apache-2.0
- */
 import { ConstantProvider } from './constants.js';
 import { Drawer } from './drawer.js';
 import { HighlightConstantProvider } from './highlight_constants.js';

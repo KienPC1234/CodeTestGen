@@ -3,11 +3,6 @@
  * Copyright 2017 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Object representing a map of variables and their types.
- *
- * @class
- */
 import './events/events_var_delete.js';
 import './events/events_var_rename.js';
 import type { Block } from './block.js';
@@ -54,7 +49,7 @@ export declare class VariableMap {
      * @param newName New variable name.
      * @param blocks The list of all blocks in the workspace.
      */
-    private renameVariableAndUses;
+    private renameVariableAndUses_;
     /**
      * Update the name of the given variable to the same name as an existing
      * variable.  The two variables are coalesced into a single variable with the
@@ -66,7 +61,7 @@ export declare class VariableMap {
      * @param conflictVar The variable that was already using newName.
      * @param blocks The list of all blocks in the workspace.
      */
-    private renameVariableWithConflict;
+    private renameVariableWithConflict_;
     /**
      * Create a variable with a given name, optional type, and optional ID.
      *

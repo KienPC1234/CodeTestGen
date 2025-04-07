@@ -4,11 +4,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 import type { BlockSvg } from '../../block_svg.js';
-import { Input } from '../../inputs/input.js';
-import type { RenderedConnection } from '../../rendered_connection.js';
+import { Input } from '../../input.js';
 import type { Measurable } from '../measurables/base.js';
 import { BottomRow } from '../measurables/bottom_row.js';
-import { Connection } from '../measurables/connection.js';
+import { Icon } from '../measurables/icon.js';
 import { InputRow } from '../measurables/input_row.js';
 import { OutputConnection } from '../measurables/output_connection.js';
 import type { Row } from '../measurables/row.js';
@@ -47,6 +46,8 @@ export declare class RenderInfo {
     rows: Row[];
     /** An array of input rows on the block. */
     inputRows: InputRow[];
+    /** An array of measurable objects containing hidden icons. */
+    hiddenIcons: Icon[];
     topRow: TopRow;
     bottomRow: BottomRow;
     startX: number;
@@ -63,7 +64,8 @@ export declare class RenderInfo {
      */
     getRenderer(): Renderer;
     /**
-     * Populate this object with all sizing information needed to draw the block.
+     * Populate and return an object containing all sizing information needed to
+     * draw this block.
      *
      * This measure pass does not propagate changes to the block (although fields
      * may choose to rerender when getSize() is called).  However, calling it
@@ -94,11 +96,11 @@ export declare class RenderInfo {
     /**
      * Decide whether to start a new row between the two Blockly.Inputs.
      *
-     * @param currInput The current input.
-     * @param prevInput The previous input.
-     * @returns True if the current input should be rendered on a new row.
+     * @param input The first input to consider
+     * @param lastInput The input that follows.
+     * @returns True if the next input should be rendered on a new row.
      */
-    protected shouldStartNewRow_(currInput: Input, prevInput?: Input): boolean;
+    protected shouldStartNewRow_(input: Input, lastInput?: Input): boolean;
     /** Add horizontal spacing between and around elements within each row. */
     protected addElemSpacing_(): void;
     /**
@@ -195,7 +197,5 @@ export declare class RenderInfo {
      * store the y position of each row, and record the height of the full block.
      */
     protected finalize_(): void;
-    /** Returns the connection measurable associated with the given connection. */
-    getMeasureableForConnection(conn: RenderedConnection): Connection | null;
 }
 //# sourceMappingURL=info.d.ts.map

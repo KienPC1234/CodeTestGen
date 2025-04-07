@@ -3,11 +3,6 @@
  * Copyright 2019 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Object in charge of managing markers and the cursor.
- *
- * @class
- */
 import type { Cursor } from './keyboard_nav/cursor.js';
 import type { Marker } from './keyboard_nav/marker.js';
 import type { WorkspaceSvg } from './workspace_svg.js';
@@ -19,13 +14,13 @@ export declare class MarkerManager {
     /** The name of the local marker. */
     static readonly LOCAL_MARKER = "local_marker_1";
     /** The cursor. */
-    private cursor;
+    private cursor_;
     /** The cursor's SVG element. */
-    private cursorSvg;
+    private cursorSvg_;
     /** The map of markers for the workspace. */
     private markers;
     /** The marker's SVG element. */
-    private markerSvg;
+    private markerSvg_;
     /**
      * @param workspace The workspace for the marker manager.
      * @internal
@@ -91,6 +86,7 @@ export declare class MarkerManager {
      * Dispose of the marker manager.
      * Go through and delete all markers associated with this marker manager.
      *
+     * @suppress {checkTypes}
      * @internal
      */
     dispose(): void;

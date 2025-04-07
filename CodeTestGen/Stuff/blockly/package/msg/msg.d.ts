@@ -5,7 +5,8 @@
  */
 
 /**
- * Type definitions for Blockly Messages.
+ * @fileoverview Type definitions for Blockly Messages.
+ * @author samelh@google.com (Sam El-Husseini)
  */
 
 

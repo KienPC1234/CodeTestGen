@@ -15,7 +15,7 @@ export declare class ScrollbarPair {
     vScroll: Scrollbar | null;
     corner_: SVGRectElement | null;
     /** Previously recorded metrics from the workspace. */
-    private oldHostMetrics;
+    private oldHostMetrics_;
     /**
      * @param workspace Workspace to bind the scrollbars to.
      * @param addHorizontal Whether to add a horizontal scrollbar.
@@ -28,6 +28,8 @@ export declare class ScrollbarPair {
     /**
      * Dispose of this pair of scrollbars.
      * Unlink from all DOM elements to prevent memory leaks.
+     *
+     * @suppress {checkTypes}
      */
     dispose(): void;
     /**
@@ -95,12 +97,6 @@ export declare class ScrollbarPair {
      * @returns True if visible.
      */
     isVisible(): boolean;
-    /**
-     * Sets the visibility of any existing scrollbars.
-     *
-     * @param visible True if visible.
-     */
-    setVisible(visible: boolean): void;
     /**
      * Recalculates the scrollbars' locations within their path and length.
      * This should be called when the contents of the workspace have changed.

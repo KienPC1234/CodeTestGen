@@ -3,11 +3,6 @@
  * Copyright 2016 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Number input field
- *
- * @class
- */
 import { Field } from './field.js';
 import { FieldInput, FieldInputConfig, FieldInputValidator } from './field_input.js';
 /**
@@ -24,7 +19,7 @@ export declare class FieldNumber extends FieldInput<number> {
      * The number of decimal places to allow, or null to allow any number of
      * decimal digits.
      */
-    private decimalPlaces;
+    private decimalPlaces_;
     /** Don't spellcheck numbers.  Our validator does a better job. */
     protected spellcheck_: boolean;
     /**
@@ -80,7 +75,7 @@ export declare class FieldNumber extends FieldInput<number> {
      *
      * @param min Minimum value.
      */
-    private setMinInternal;
+    private setMinInternal_;
     /**
      * Returns the current minimum value this field can contain. Default is
      * -Infinity.
@@ -101,7 +96,7 @@ export declare class FieldNumber extends FieldInput<number> {
      *
      * @param max Maximum value.
      */
-    private setMaxInternal;
+    private setMaxInternal_;
     /**
      * Returns the current maximum value this field can contain. Default is
      * Infinity.
@@ -122,7 +117,7 @@ export declare class FieldNumber extends FieldInput<number> {
      *
      * @param precision The number to which the field's value is rounded.
      */
-    private setPrecisionInternal;
+    private setPrecisionInternal_;
     /**
      * Returns the current precision of this field. The precision being the
      * number to which the field's value is rounded. A precision of 0 means that

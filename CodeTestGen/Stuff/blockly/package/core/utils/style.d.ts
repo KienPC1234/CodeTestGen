@@ -31,6 +31,18 @@ declare function getSizeInternal(element: Element): Size;
  */
 export declare function getComputedStyle(element: Element, property: string): string;
 /**
+ * Gets the cascaded style value of a node, or null if the value cannot be
+ * computed (only Internet Explorer can do this).
+ *
+ * Copied from Closure's goog.style.getCascadedStyle
+ *
+ * @param element Element to get style of.
+ * @param style Property to get (camel-case).
+ * @returns Style value.
+ * @deprecated No longer provided by Blockly.
+ */
+export declare function getCascadedStyle(element: Element, style: string): string;
+/**
  * Returns a Coordinate object relative to the top-left of the HTML document.
  * Similar to Closure's goog.style.getPageOffset
  *

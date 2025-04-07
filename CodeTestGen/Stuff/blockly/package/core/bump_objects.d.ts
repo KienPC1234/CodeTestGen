@@ -11,14 +11,12 @@ import type { WorkspaceSvg } from './workspace_svg.js';
  * Bumps the given object that has passed out of bounds.
  *
  * @param workspace The workspace containing the object.
- * @param bounds The region to bump an object into. For example, pass
- *     ScrollMetrics to bump a block into the scrollable region of the
- *     workspace, or pass ViewMetrics to bump a block into the visible region of
- *     the workspace. This should be specified in workspace coordinates.
+ * @param scrollMetrics Scroll metrics
+ *    in workspace coordinates.
  * @param object The object to bump.
- * @returns True if object was bumped.
+ * @returns True if block was bumped.
  */
-declare function bumpObjectIntoBounds(workspace: WorkspaceSvg, bounds: ContainerRegion, object: IBoundedElement): boolean;
+declare function bumpObjectIntoBounds(workspace: WorkspaceSvg, scrollMetrics: ContainerRegion, object: IBoundedElement): boolean;
 export declare const bumpIntoBounds: typeof bumpObjectIntoBounds;
 /**
  * Creates a handler for bumping objects when they cross fixed bounds.

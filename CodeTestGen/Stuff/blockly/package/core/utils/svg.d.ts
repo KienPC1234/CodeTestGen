@@ -4,12 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 /**
- * Defines the Svg class. Its constants enumerate
- * all SVG tag names used by Blockly.
- *
- * @class
- */
-/**
  * A name with the type of the SVG element stored in the generic.
  */
 export declare class Svg<_T> {

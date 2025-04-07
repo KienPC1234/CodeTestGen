@@ -3,26 +3,18 @@
  * Copyright 2012 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Non-editable, non-serializable text field.  Used for titles,
- *    labels, etc.
- *
- * @class
- */
 import { Field, FieldConfig } from './field.js';
 /**
  * Class for a non-editable, non-serializable text field.
  */
 export declare class FieldLabel extends Field<string> {
     /** The HTML class name to use for this field. */
-    private class;
+    private class_;
     /**
      * Editable fields usually show some sort of UI indicating they are
      * editable. This field should not.
      */
     EDITABLE: boolean;
-    /** Text labels should not truncate. */
-    maxDisplayLength: number;
     /**
      * @param value The initial value of the field. Should cast to a string.
      *     Defaults to an empty string if null or undefined. Also accepts
@@ -39,6 +31,8 @@ export declare class FieldLabel extends Field<string> {
     protected configure_(config: FieldLabelConfig): void;
     /**
      * Create block UI for this label.
+     *
+     * @internal
      */
     initView(): void;
     /**

@@ -3,11 +3,6 @@
  * Copyright 2012 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Image field.  Used for pictures, icons, etc.
- *
- * @class
- */
 import { Field, FieldConfig } from './field.js';
 import { Size } from './utils/size.js';
 /**
@@ -20,11 +15,11 @@ export declare class FieldImage extends Field<string> {
      */
     private static readonly Y_PADDING;
     protected size_: Size;
-    protected readonly imageHeight: number;
+    private readonly imageHeight_;
     /** The function to be called when this field is clicked. */
-    private clickHandler;
+    private clickHandler_;
     /** The rendered field's image element. */
-    protected imageElement: SVGImageElement | null;
+    private imageElement_;
     /**
      * Editable fields usually show some sort of UI indicating they are
      * editable. This field should not.
@@ -37,9 +32,9 @@ export declare class FieldImage extends Field<string> {
      */
     protected isDirty_: boolean;
     /** Whether to flip this image in RTL. */
-    private flipRtl;
+    private flipRtl_;
     /** Alt text of this image. */
-    private altText;
+    private altText_;
     /**
      * @param src The URL of the image.
      *     Also accepts Field.SKIP_SETUP if you wish to skip setup (only used by
@@ -65,6 +60,8 @@ export declare class FieldImage extends Field<string> {
     protected configure_(config: FieldImageConfig): void;
     /**
      * Create the block UI for this image.
+     *
+     * @internal
      */
     initView(): void;
     updateSize_(): void;
@@ -134,7 +131,7 @@ export interface FieldImageConfig extends FieldConfig {
     alt?: string;
 }
 /**
- * fromJson config options for the image field.
+ * fromJson config options for the colour field.
  */
 export interface FieldImageFromJsonConfig extends FieldImageConfig {
     src?: string;

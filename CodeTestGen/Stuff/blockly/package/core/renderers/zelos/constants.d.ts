@@ -5,8 +5,8 @@
  */
 import type { RenderedConnection } from '../../rendered_connection.js';
 import type { Theme } from '../../theme.js';
-import type { Shape } from '../common/constants.js';
 import { ConstantProvider as BaseConstantProvider } from '../common/constants.js';
+import type { Shape } from '../common/constants.js';
 /** An object containing sizing and path information about inside corners. */
 export interface InsideCorners {
     width: number;
@@ -77,7 +77,7 @@ export declare class ConstantProvider extends BaseConstantProvider {
     /**
      * The <filter> element to use for a selected glow, or null if not set.
      */
-    private selectedGlowFilter;
+    private selectedGlowFilter_;
     /**
      * The ID of the replacement glow filter, or the empty string if no filter
      * is set.
@@ -86,7 +86,7 @@ export declare class ConstantProvider extends BaseConstantProvider {
     /**
      * The <filter> element to use for a replacement glow, or null if not set.
      */
-    private replacementGlowFilter;
+    private replacementGlowFilter_;
     /**
      * The object containing information about the hexagon used for a boolean
      * reporter block. Null before init is called.

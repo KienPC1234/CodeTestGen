@@ -7,11 +7,11 @@ import './events/events_block_change.js';
 import type { Block } from './block.js';
 import type { Abstract } from './events/events_abstract.js';
 import { Field } from './field.js';
-import { ProcedureTuple } from './interfaces/i_legacy_procedure_blocks.js';
 import { IParameterModel } from './interfaces/i_parameter_model.js';
-import { IProcedureBlock, isProcedureBlock } from './interfaces/i_procedure_block.js';
 import { IProcedureMap } from './interfaces/i_procedure_map.js';
 import { IProcedureModel } from './interfaces/i_procedure_model.js';
+import { IProcedureBlock, isProcedureBlock } from './interfaces/i_procedure_block.js';
+import { ProcedureTuple } from './interfaces/i_legacy_procedure_blocks.js';
 import { ObservableProcedureMap } from './observable_procedure_map.js';
 import type { Workspace } from './workspace.js';
 import type { WorkspaceSvg } from './workspace_svg.js';
@@ -35,7 +35,10 @@ export declare const DEFAULT_ARG = "x";
  *     variables, the second with. Each procedure is defined by a three-element
  *     list of name, parameter list, and return value boolean.
  */
-export declare function allProcedures(root: Workspace): [ProcedureTuple[], ProcedureTuple[]];
+export declare function allProcedures(root: Workspace): [
+    ProcedureTuple[],
+    ProcedureTuple[]
+];
 /**
  * Ensure two identically-named procedures don't exist.
  * Take the proposed procedure name, and return a legal name i.e. one that
@@ -101,5 +104,5 @@ export declare function mutateCallers(defBlock: Block): void;
  * @returns The procedure definition block, or null not found.
  */
 export declare function getDefinition(name: string, workspace: Workspace): Block | null;
-export { IParameterModel, IProcedureBlock, IProcedureMap, IProcedureModel, isProcedureBlock, ObservableProcedureMap, ProcedureTuple, };
+export { ObservableProcedureMap, IParameterModel, IProcedureBlock, isProcedureBlock, IProcedureMap, IProcedureModel, ProcedureTuple, };
 //# sourceMappingURL=procedures.d.ts.map

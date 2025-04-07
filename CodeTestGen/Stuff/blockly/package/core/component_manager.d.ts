@@ -3,11 +3,6 @@
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Manager for all items registered with the workspace.
- *
- * @class
- */
 import type { IAutoHideable } from './interfaces/i_autohideable.js';
 import type { IComponent } from './interfaces/i_component.js';
 import type { IDeleteArea } from './interfaces/i_delete_area.js';
@@ -18,7 +13,7 @@ declare class Capability<_T> {
     static DRAG_TARGET: Capability<IDragTarget>;
     static DELETE_AREA: Capability<IDeleteArea>;
     static AUTOHIDEABLE: Capability<IAutoHideable>;
-    private readonly name;
+    private readonly name_;
     /** @param name The name of the component capability. */
     constructor(name: string);
     /**
@@ -92,12 +87,6 @@ export declare class ComponentManager {
     getComponents<T extends IComponent>(capability: string | Capability<T>, sorted: boolean): T[];
 }
 export declare namespace ComponentManager {
-    enum ComponentWeight {
-        TOOLBOX_WEIGHT = 0,
-        FLYOUT_WEIGHT = 1,
-        TRASHCAN_WEIGHT = 2,
-        ZOOM_CONTROLS_WEIGHT = 3
-    }
     /** An object storing component information. */
     interface ComponentDatum {
         component: IComponent;
@@ -105,8 +94,6 @@ export declare namespace ComponentManager {
         weight: number;
     }
 }
-export type ComponentWeight = ComponentManager.ComponentWeight;
-export declare const ComponentWeight: typeof ComponentManager.ComponentWeight;
 export type ComponentDatum = ComponentManager.ComponentDatum;
 export {};
 //# sourceMappingURL=component_manager.d.ts.map

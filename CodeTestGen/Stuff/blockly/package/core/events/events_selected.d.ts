@@ -3,10 +3,9 @@
  * Copyright 2020 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-import type { Workspace } from '../workspace.js';
 import { AbstractEventJson } from './events_abstract.js';
 import { UiBase } from './events_ui_base.js';
-import { EventType } from './type.js';
+import type { Workspace } from '../workspace.js';
 /**
  * Class for a selected event.
  * Notifies listeners that a new element has been selected.
@@ -19,7 +18,7 @@ export declare class Selected extends UiBase {
      * or undefined if unselected.
      */
     newElementId?: string;
-    type: EventType;
+    type: string;
     /**
      * @param opt_oldElementId The ID of the previously selected element. Null if
      *     no element last selected. Undefined for a blank event.
@@ -35,6 +34,12 @@ export declare class Selected extends UiBase {
      * @returns JSON representation.
      */
     toJson(): SelectedJson;
+    /**
+     * Decode the JSON event.
+     *
+     * @param json JSON representation.
+     */
+    fromJson(json: SelectedJson): void;
     /**
      * Deserializes the JSON event.
      *

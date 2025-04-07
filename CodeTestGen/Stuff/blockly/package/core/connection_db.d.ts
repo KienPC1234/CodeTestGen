@@ -14,7 +14,7 @@ import type { Coordinate } from './utils/coordinate.js';
 export declare class ConnectionDB {
     private readonly connectionChecker;
     /** Array of connections sorted by y position in workspace units. */
-    private readonly connections;
+    private readonly connections_;
     /**
      * @param connectionChecker The workspace's connection type checker, used to
      *     decide if connections are valid during a drag.
@@ -39,14 +39,14 @@ export declare class ConnectionDB {
      * @returns The index of the connection, or -1 if the connection was not
      *     found.
      */
-    private findIndexOfConnection;
+    private findIndexOfConnection_;
     /**
      * Finds the correct index for the given y position.
      *
      * @param yPos The y position used to decide where to insert the connection.
      * @returns The candidate index.
      */
-    private calculateIndexForYPos;
+    private calculateIndexForYPos_;
     /**
      * Remove a connection from the database.  Must already exist in DB.
      *
@@ -73,7 +73,7 @@ export declare class ConnectionDB {
      * @param maxRadius The maximum radius to another connection.
      * @returns True if connection is in range.
      */
-    private isInYRange;
+    private isInYRange_;
     /**
      * Find the closest compatible connection to this connection.
      *

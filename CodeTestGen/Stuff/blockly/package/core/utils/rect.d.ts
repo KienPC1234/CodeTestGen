@@ -4,14 +4,6 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 /**
- * Utility methods for rectangle manipulation.
- * These methods are not specific to Blockly, and could be factored out into
- * a JavaScript framework such as Closure.
- *
- * @class
- */
-import { Coordinate } from './coordinate.js';
-/**
  * Class for representing rectangular regions.
  */
 export declare class Rect {
@@ -26,16 +18,6 @@ export declare class Rect {
      * @param right Right.
      */
     constructor(top: number, bottom: number, left: number, right: number);
-    /**
-     * Creates a new copy of this rectangle.
-     *
-     * @returns A copy of this Rect.
-     */
-    clone(): Rect;
-    /** Returns the height of this rectangle. */
-    getHeight(): number;
-    /** Returns the width of this rectangle. */
-    getWidth(): number;
     /**
      * Tests whether this rectangle contains a x/y coordinate.
      *
@@ -52,22 +34,5 @@ export declare class Rect {
      * @returns Whether this rectangle intersects the provided rectangle.
      */
     intersects(other: Rect): boolean;
-    /**
-     * Compares bounding rectangles for equality.
-     *
-     * @param a A Rect.
-     * @param b A Rect.
-     * @returns True iff the bounding rectangles are equal, or if both are null.
-     */
-    static equals(a?: Rect | null, b?: Rect | null): boolean;
-    /**
-     * Creates a new Rect using a position and supplied dimensions.
-     *
-     * @param position The upper left coordinate of the new rectangle.
-     * @param width The width of the rectangle, in pixels.
-     * @param height The height of the rectangle, in pixels.
-     * @returns A newly created Rect using the provided Coordinate and dimensions.
-     */
-    static createFromPoint(position: Coordinate, width: number, height: number): Rect;
 }
 //# sourceMappingURL=rect.d.ts.map

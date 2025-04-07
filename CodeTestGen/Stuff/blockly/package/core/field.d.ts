@@ -3,21 +3,13 @@
  * Copyright 2012 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Field.  Used for editable titles, variables, etc.
- * This is an abstract class that defines the UI on the block.  Actual
- * instances would be FieldTextInput, FieldDropdown, etc.
- *
- * @class
- */
 import './events/events_block_change.js';
 import type { Block } from './block.js';
-import type { Input } from './inputs/input.js';
+import type { Input } from './input.js';
 import type { IASTNodeLocationSvg } from './interfaces/i_ast_node_location_svg.js';
 import type { IASTNodeLocationWithBlock } from './interfaces/i_ast_node_location_with_block.js';
 import type { IKeyboardAccessible } from './interfaces/i_keyboard_accessible.js';
 import type { IRegistrable } from './interfaces/i_registrable.js';
-import { ISerializable } from './interfaces/i_serializable.js';
 import type { ConstantProvider } from './renderers/common/constants.js';
 import type { KeyboardShortcut } from './shortcut_registry.js';
 import * as Tooltip from './tooltip.js';
@@ -45,13 +37,15 @@ export type FieldValidator<T = any> = (newValue: T) => T | null | undefined;
  *
  * @typeParam T - The value stored on the field.
  */
-export declare abstract class Field<T = any> implements IASTNodeLocationSvg, IASTNodeLocationWithBlock, IKeyboardAccessible, IRegistrable, ISerializable {
+export declare abstract class Field<T = any> implements IASTNodeLocationSvg, IASTNodeLocationWithBlock, IKeyboardAccessible, IRegistrable {
     /**
      * To overwrite the default value which is set in **Field**, directly update
      * the prototype.
      *
      * Example:
-     * `FieldImage.prototype.DEFAULT_VALUE = null;`
+     * ```typescript
+     * FieldImage.prototype.DEFAULT_VALUE = null;
+     * ```
      */
     DEFAULT_VALUE: T | null;
     /** Non-breaking space. */
@@ -74,18 +68,18 @@ export declare abstract class Field<T = any> implements IASTNodeLocationSvg, IAS
      * Used to cache the field's tooltip value if setTooltip is called when the
      * field is not yet initialized. Is *not* guaranteed to be accurate.
      */
-    private tooltip;
+    private tooltip_;
     protected size_: Size;
     /**
      * Holds the cursors svg element when the cursor is attached to the field.
      * This is null if there is no cursor on the field.
      */
-    private cursorSvg;
+    private cursorSvg_;
     /**
      * Holds the markers svg element when the marker is attached to the field.
      * This is null if there is no marker on the field.
      */
-    private markerSvg;
+    private markerSvg_;
     /** The rendered field's SVG group element. */
     protected fieldGroup_: SVGGElement | null;
     /** The rendered field's SVG border element. */
@@ -95,7 +89,7 @@ export declare abstract class Field<T = any> implements IASTNodeLocationSvg, IAS
     /** The rendered field's text content element. */
     protected textContent_: Text | null;
     /** Mouse down event listener data. */
-    private mouseDownWrapper;
+    private mouseDownWrapper_;
     /** Constants associated with the source block's renderer. */
     protected constants_: ConstantProvider | null;
     /**
@@ -193,22 +187,17 @@ export declare abstract class Field<T = any> implements IASTNodeLocationSvg, IAS
     init(): void;
     /**
      * Create the block UI for this field.
+     *
+     * @internal
      */
-    protected initView(): void;
+    initView(): void;
     /**
      * Initializes the model of the field after it has been installed on a block.
      * No-op by default.
+     *
+     * @internal
      */
     initModel(): void;
-    /**
-     * Defines whether this field should take up the full block or not.
-     *
-     * Be cautious when overriding this function. It may not work as you expect /
-     * intend because the behavior was kind of hacked in. If you are thinking
-     * about overriding this function, post on the forum with your intended
-     * behavior to see if there's another approach.
-     */
-    protected isFullBlockField(): boolean;
     /**
      * Create a field border rect element. Not to be overridden by subclasses.
      * Instead modify the result of the function inside initView, or create a
@@ -250,9 +239,6 @@ export declare abstract class Field<T = any> implements IASTNodeLocationSvg, IAS
      * @param _doFullSerialization If true, this signals to the field that if it
      *     normally just saves a reference to some state (eg variable fields) it
      *     should instead serialize the full state of the thing being referenced.
-     *     See the
-     *     {@link https://developers.devsite.google.com/blockly/guides/create-custom-blocks/fields/customizing-fields/creating#full_serialization_and_backing_data | field serialization docs}
-     *     for more information.
      * @returns JSON serializable state.
      * @internal
      */
@@ -313,17 +299,6 @@ export declare abstract class Field<T = any> implements IASTNodeLocationSvg, IAS
      * @returns Whether this field is clickable.
      */
     isClickable(): boolean;
-    /**
-     * Check whether the field should be clickable while the block is in a flyout.
-     * The default is that fields are clickable in always-open flyouts such as the
-     * simple toolbox, but not in autoclosing flyouts such as the category toolbox.
-     * Subclasses may override this function to change this behavior. Note that
-     * `isClickable` must also return true for this to have any effect.
-     *
-     * @param autoClosingFlyout true if the containing flyout is an auto-closing one.
-     * @returns Whether the field should be clickable while the block is in a flyout.
-     */
-    isClickableInFlyout(autoClosingFlyout: boolean): boolean;
     /**
      * Check whether this field is currently editable.  Some fields are never
      * EDITABLE (e.g. text labels). Other fields may be EDITABLE but may exist on
@@ -405,16 +380,10 @@ export declare abstract class Field<T = any> implements IASTNodeLocationSvg, IAS
      */
     protected getTextContent(): Text;
     /**
-     * Updates the field to match the colour/style of the block.
+     * Updates the field to match the colour/style of the block. Should only be
+     * called by BlockSvg.applyColour().
      *
-     * Non-abstract sub-classes may wish to implement this if the colour of the
-     * field depends on the colour of the block. It will automatically be called
-     * at relevant times, such as when the parent block or renderer changes.
-     *
-     * See {@link
-     * https://developers.google.com/blockly/guides/create-custom-blocks/fields/customizing-fields/creating#matching_block_colours
-     * | the field documentation} for more information, or FieldDropdown for an
-     * example.
+     * @internal
      */
     applyColour(): void;
     /**
@@ -442,25 +411,6 @@ export declare abstract class Field<T = any> implements IASTNodeLocationSvg, IAS
      *     undefined if triggered programmatically.
      */
     protected showEditor_(_e?: Event): void;
-    /**
-     * A developer hook to reposition the WidgetDiv during a window resize. You
-     * need to define this hook if your field has a WidgetDiv that needs to
-     * reposition itself when the window is resized. For example, text input
-     * fields define this hook so that the input WidgetDiv can reposition itself
-     * on a window resize event. This is especially important when modal inputs
-     * have been disabled, as Android devices will fire a window resize event when
-     * the soft keyboard opens.
-     *
-     * If you want the WidgetDiv to hide itself instead of repositioning, return
-     * false. This is the default behavior.
-     *
-     * DropdownDivs already handle their own positioning logic, so you do not need
-     * to override this function if your field only has a DropdownDiv.
-     *
-     * @returns True if the field should be repositioned,
-     *    false if the WidgetDiv should hide itself instead.
-     */
-    repositionForWindowResize(): boolean;
     /**
      * Updates the size of the field based on the text.
      *
@@ -494,13 +444,6 @@ export declare abstract class Field<T = any> implements IASTNodeLocationSvg, IAS
      * @internal
      */
     getScaledBBox(): Rect;
-    /**
-     * Notifies the field that it has changed locations.
-     *
-     * @param _ The location of this field's block's top-start corner
-     *     in workspace coordinates.
-     */
-    onLocationChange(_: Coordinate): void;
     /**
      * Get the text from this field to display on the block. May differ from
      * `getText` due to ellipsis, and other formatting.
@@ -550,21 +493,17 @@ export declare abstract class Field<T = any> implements IASTNodeLocationSvg, IAS
      * than this method.
      *
      * @param newValue New value.
-     * @param fireChangeEvent Whether to fire a change event. Defaults to true.
-     *     Should usually be true unless the change will be reported some other
-     *     way, e.g. an intermediate field change event.
      * @sealed
      */
-    setValue(newValue: any, fireChangeEvent?: boolean): void;
+    setValue(newValue: any): void;
     /**
      * Process the result of validation.
      *
      * @param newValue New value.
      * @param validatedValue Validated value.
-     * @param fireChangeEvent Whether to fire a change event if the value changes.
      * @returns New value, or an Error object.
      */
-    private processValidation;
+    private processValidation_;
     /**
      * Get the current value of the field.
      *
@@ -606,9 +545,8 @@ export declare abstract class Field<T = any> implements IASTNodeLocationSvg, IAS
      * No-op by default.
      *
      * @param _invalidValue The input value that was determined to be invalid.
-     * @param _fireChangeEvent Whether to fire a change event if the value changes.
      */
-    protected doValueInvalid_(_invalidValue: any, _fireChangeEvent?: boolean): void;
+    protected doValueInvalid_(_invalidValue: any): void;
     /**
      * Handle a pointerdown event on a field.
      *
@@ -708,17 +646,6 @@ export declare abstract class Field<T = any> implements IASTNodeLocationSvg, IAS
      * @internal
      */
     updateMarkers_(): void;
-    /**
-     * Subclasses should reimplement this method to construct their Field
-     * subclass from a JSON arg object.
-     *
-     * It is an error to attempt to register a field subclass in the
-     * FieldRegistry if that subclass has not overridden this method.
-     *
-     * @param _options JSON configuration object with properties needed
-     *    to configure a specific field.
-     */
-    static fromJson(_options: FieldConfig): Field;
 }
 /**
  * Extra configuration options for the base field.
@@ -727,14 +654,12 @@ export interface FieldConfig {
     tooltip?: string;
 }
 /**
- * Represents an object that has all the prototype properties of the `Field`
- * class. This is necessary because constructors can change
+ * For use by Field and descendants of Field. Constructors can change
  * in descendants, though they should contain all of Field's prototype methods.
  *
- * This type should only be used in places where we directly access the prototype
- * of a Field class or subclass.
+ * @internal
  */
-type FieldProto = Pick<typeof Field, 'prototype'>;
+export type FieldProto = Pick<typeof Field, 'prototype'>;
 /**
  * Represents an error where the field is trying to access its block or
  * information about its block before it has actually been attached to said
@@ -744,5 +669,4 @@ export declare class UnattachedFieldError extends Error {
     /** @internal */
     constructor();
 }
-export {};
 //# sourceMappingURL=field.d.ts.map

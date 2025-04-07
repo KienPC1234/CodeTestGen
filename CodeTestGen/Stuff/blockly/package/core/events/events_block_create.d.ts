@@ -3,22 +3,16 @@
  * Copyright 2018 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Class for a block creation event.
- *
- * @class
- */
 import type { Block } from '../block.js';
 import * as blocks from '../serialization/blocks.js';
-import { Workspace } from '../workspace.js';
 import { BlockBase, BlockBaseJson } from './events_block_base.js';
-import { EventType } from './type.js';
+import { Workspace } from '../workspace.js';
 /**
  * Notifies listeners when a block (or connected stack of blocks) is
  * created.
  */
 export declare class BlockCreate extends BlockBase {
-    type: EventType;
+    type: string;
     /** The XML representation of the created block(s). */
     xml?: Element | DocumentFragment;
     /** The JSON respresentation of the created block(s). */
@@ -33,6 +27,12 @@ export declare class BlockCreate extends BlockBase {
      * @returns JSON representation.
      */
     toJson(): BlockCreateJson;
+    /**
+     * Decode the JSON event.
+     *
+     * @param json JSON representation.
+     */
+    fromJson(json: BlockCreateJson): void;
     /**
      * Deserializes the JSON event.
      *

@@ -3,14 +3,8 @@
  * Copyright 2012 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Text input field.
- *
- * @class
- */
 import './events/events_block_change.js';
 import { Field, FieldConfig, FieldValidator } from './field.js';
-import { Size } from './utils/size.js';
 import type { WorkspaceSvg } from './workspace_svg.js';
 /**
  * Supported types for FieldInput subclasses.
@@ -40,21 +34,15 @@ export declare abstract class FieldInput<T extends InputTypes> extends Field<str
      * True if the value currently displayed in the field's editory UI is valid.
      */
     protected isTextValid_: boolean;
-    /**
-     * The intial value of the field when the user opened an editor to change its
-     * value. When the editor is disposed, an event will be fired that uses this
-     * as the event's oldValue.
-     */
-    protected valueWhenEditorWasOpened_: string | T | null;
     /** Key down event data. */
-    private onKeyDownWrapper;
+    private onKeyDownWrapper_;
     /** Key input event data. */
-    private onKeyInputWrapper;
+    private onKeyInputWrapper_;
     /**
      * Whether the field should consider the whole parent block to be its click
      * target.
      */
-    fullBlockClickTarget_: boolean;
+    fullBlockClickTarget_: boolean | null;
     /** The workspace that this field belongs to. */
     protected workspace_: WorkspaceSvg | null;
     /**
@@ -80,19 +68,18 @@ export declare abstract class FieldInput<T extends InputTypes> extends Field<str
      */
     constructor(value?: string | typeof Field.SKIP_SETUP, validator?: FieldInputValidator<T> | null, config?: FieldInputConfig);
     protected configure_(config: FieldInputConfig): void;
+    /** @internal */
     initView(): void;
-    protected isFullBlockField(): boolean;
     /**
      * Called by setValue if the text input is not valid. If the field is
      * currently being edited it reverts value of the field to the previous
      * value while allowing the display text to be handled by the htmlInput_.
      *
      * @param _invalidValue The input value that was determined to be invalid.
-     *     This is not used by the text input because its display value is stored
-     *     on the htmlInput_.
-     * @param fireChangeEvent Whether to fire a change event if the value changes.
+     *    This is not used by the text input because its display value is stored
+     * on the htmlInput_.
      */
-    protected doValueInvalid_(_invalidValue: any, fireChangeEvent?: boolean): void;
+    protected doValueInvalid_(_invalidValue: any): void;
     /**
      * Called by setValue if the text input is valid. Updates the value of the
      * field, and updates the text of the field if it is not currently being
@@ -104,27 +91,13 @@ export declare abstract class FieldInput<T extends InputTypes> extends Field<str
     protected doValueUpdate_(newValue: string | T): void;
     /**
      * Updates text field to match the colour/style of the block.
+     *
+     * @internal
      */
     applyColour(): void;
     /**
-     * Returns the height and width of the field.
-     *
-     * This should *in general* be the only place render_ gets called from.
-     *
-     * @returns Height and width.
-     */
-    getSize(): Size;
-    /**
-     * Notifies the field that it has changed locations. Moves the widget div to
-     * be in the correct place if it is open.
-     */
-    onLocationChange(): void;
-    /**
      * Updates the colour of the htmlInput given the current validity of the
      * field's value.
-     *
-     * Also updates the colour of the block to reflect whether this is a full
-     * block field or not.
      */
     protected render_(): void;
     /**
@@ -150,19 +123,19 @@ export declare abstract class FieldInput<T extends InputTypes> extends Field<str
      * Mobile browsers may have issues with in-line textareas (focus and
      * keyboards).
      */
-    private showPromptEditor;
+    private showPromptEditor_;
     /**
      * Create and show a text input editor that sits directly over the text input.
      *
      * @param quietInput True if editor should be created without focus.
      */
-    private showInlineEditor;
+    private showInlineEditor_;
     /**
      * Create the text input editor widget.
      *
      * @returns The newly created text input editor.
      */
-    protected widgetCreate_(): HTMLInputElement | HTMLTextAreaElement;
+    protected widgetCreate_(): HTMLElement;
     /**
      * Closes the editor, saves the results, and disposes of any events or
      * DOM-references belonging to the editor.
@@ -193,29 +166,17 @@ export declare abstract class FieldInput<T extends InputTypes> extends Field<str
      *
      * @param _e Keyboard event.
      */
-    private onHtmlInputChange;
+    private onHtmlInputChange_;
     /**
      * Set the HTML input value and the field's internal value. The difference
      * between this and `setValue` is that this also updates the HTML input
      * value whilst editing.
      *
      * @param newValue New value.
-     * @param fireChangeEvent Whether to fire a change event. Defaults to true.
-     *     Should usually be true unless the change will be reported some other
-     *     way, e.g. an intermediate field change event.
      */
-    protected setEditorValue_(newValue: any, fireChangeEvent?: boolean): void;
+    protected setEditorValue_(newValue: any): void;
     /** Resize the editor to fit the text. */
     protected resizeEditor_(): void;
-    /**
-     * Handles repositioning the WidgetDiv used for input fields when the
-     * workspace is resized. Will bump the block into the viewport and update the
-     * position of the text input if necessary.
-     *
-     * @returns True for rendered workspaces, as we never want to hide the widget
-     *     div.
-     */
-    repositionForWindowResize(): boolean;
     /**
      * Returns whether or not the field is tab navigable.
      *

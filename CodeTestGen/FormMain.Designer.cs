@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormMain));
             this.materialFlatButton1 = new MaterialSkin.Controls.MaterialFlatButton();
             this.hopeTabPage1 = new ReaLTaiizor.Controls.HopeTabPage();
@@ -45,14 +46,12 @@
             this.lostBorderPanel2 = new ReaLTaiizor.Controls.LostBorderPanel();
             this.crownNumeric1 = new ReaLTaiizor.Controls.CrownNumeric();
             this.materialLabel11 = new MaterialSkin.Controls.MaterialLabel();
-            this.materialRaisedButton7 = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.materialRaisedButton5 = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.materialRaisedButton8 = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.materialRaisedButton6 = new MaterialSkin.Controls.MaterialRaisedButton();
             this.lostBorderPanel1 = new ReaLTaiizor.Controls.LostBorderPanel();
             this.materialLabel12 = new MaterialSkin.Controls.MaterialLabel();
+            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.materialRaisedButton3 = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.materialRaisedButton10 = new MaterialSkin.Controls.MaterialRaisedButton();
             this.crownDropDownList1 = new ReaLTaiizor.Controls.CrownDropDownList();
             this.materialLabel7 = new MaterialSkin.Controls.MaterialLabel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -79,11 +78,11 @@
             this.VideoPlayer = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.materialFlatButton3 = new MaterialSkin.Controls.MaterialFlatButton();
-            this.materialRaisedButton10 = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.materialRaisedButton3 = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.col1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.col2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.webView22 = new Microsoft.Web.WebView2.WinForms.WebView2();
+            this.fastColoredTextBox1 = new FastColoredTextBoxNS.FastColoredTextBox();
+            this.materialLabel13 = new MaterialSkin.Controls.MaterialLabel();
+            this.materialRaisedButton5 = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.hopeTabPage1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -95,13 +94,14 @@
             this.tableLayoutPanel1.SuspendLayout();
             this.lostBorderPanel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.crownNumeric1)).BeginInit();
-            this.tableLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.lostBorderPanel1.SuspendLayout();
+            this.tableLayoutPanel3.SuspendLayout();
             this.tabPage2.SuspendLayout();
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.VideoPlayer)).BeginInit();
-            this.tableLayoutPanel3.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.webView22)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // materialFlatButton1
@@ -332,11 +332,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lostBorderPanel2.BackColor = System.Drawing.Color.DimGray;
             this.lostBorderPanel2.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.lostBorderPanel2.Controls.Add(this.materialRaisedButton5);
+            this.lostBorderPanel2.Controls.Add(this.materialLabel13);
+            this.lostBorderPanel2.Controls.Add(this.fastColoredTextBox1);
             this.lostBorderPanel2.Controls.Add(this.crownNumeric1);
             this.lostBorderPanel2.Controls.Add(this.materialLabel11);
-            this.lostBorderPanel2.Controls.Add(this.materialRaisedButton7);
-            this.lostBorderPanel2.Controls.Add(this.tableLayoutPanel2);
-            this.lostBorderPanel2.Controls.Add(this.dataGridView1);
             this.lostBorderPanel2.Controls.Add(this.materialRaisedButton6);
             this.lostBorderPanel2.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.lostBorderPanel2.ForeColor = System.Drawing.Color.White;
@@ -345,21 +345,21 @@
             this.lostBorderPanel2.Name = "lostBorderPanel2";
             this.lostBorderPanel2.Padding = new System.Windows.Forms.Padding(4);
             this.lostBorderPanel2.ShowText = false;
-            this.lostBorderPanel2.Size = new System.Drawing.Size(317, 345);
+            this.lostBorderPanel2.Size = new System.Drawing.Size(318, 345);
             this.lostBorderPanel2.TabIndex = 2;
             // 
             // crownNumeric1
             // 
             this.crownNumeric1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.crownNumeric1.Location = new System.Drawing.Point(142, 60);
+            this.crownNumeric1.Location = new System.Drawing.Point(140, 20);
             this.crownNumeric1.Maximum = new decimal(new int[] {
             276447232,
             23283,
             0,
             0});
             this.crownNumeric1.Name = "crownNumeric1";
-            this.crownNumeric1.Size = new System.Drawing.Size(161, 29);
+            this.crownNumeric1.Size = new System.Drawing.Size(162, 29);
             this.crownNumeric1.TabIndex = 9;
             // 
             // materialLabel11
@@ -368,91 +368,12 @@
             this.materialLabel11.Depth = 0;
             this.materialLabel11.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel11.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel11.Location = new System.Drawing.Point(11, 65);
+            this.materialLabel11.Location = new System.Drawing.Point(9, 25);
             this.materialLabel11.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel11.Name = "materialLabel11";
             this.materialLabel11.Size = new System.Drawing.Size(125, 19);
             this.materialLabel11.TabIndex = 8;
             this.materialLabel11.Text = "Số Test Cần Tạo:";
-            // 
-            // materialRaisedButton7
-            // 
-            this.materialRaisedButton7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.materialRaisedButton7.Depth = 0;
-            this.materialRaisedButton7.Location = new System.Drawing.Point(13, 247);
-            this.materialRaisedButton7.Margin = new System.Windows.Forms.Padding(2);
-            this.materialRaisedButton7.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialRaisedButton7.Name = "materialRaisedButton7";
-            this.materialRaisedButton7.Primary = true;
-            this.materialRaisedButton7.Size = new System.Drawing.Size(292, 37);
-            this.materialRaisedButton7.TabIndex = 7;
-            this.materialRaisedButton7.Text = "Tạo Điều Khiện (Yêu Cầu) Theo Mẫu";
-            this.materialRaisedButton7.UseVisualStyleBackColor = true;
-            this.materialRaisedButton7.Click += new System.EventHandler(this.materialRaisedButton7_Click);
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Controls.Add(this.materialRaisedButton5, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.materialRaisedButton8, 1, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(13, 20);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(292, 35);
-            this.tableLayoutPanel2.TabIndex = 3;
-            // 
-            // materialRaisedButton5
-            // 
-            this.materialRaisedButton5.Depth = 0;
-            this.materialRaisedButton5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.materialRaisedButton5.Location = new System.Drawing.Point(2, 2);
-            this.materialRaisedButton5.Margin = new System.Windows.Forms.Padding(2);
-            this.materialRaisedButton5.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialRaisedButton5.Name = "materialRaisedButton5";
-            this.materialRaisedButton5.Primary = true;
-            this.materialRaisedButton5.Size = new System.Drawing.Size(142, 31);
-            this.materialRaisedButton5.TabIndex = 7;
-            this.materialRaisedButton5.Text = "Lưu lại";
-            this.materialRaisedButton5.UseVisualStyleBackColor = true;
-            this.materialRaisedButton5.Click += new System.EventHandler(this.materialRaisedButton5_Click);
-            // 
-            // materialRaisedButton8
-            // 
-            this.materialRaisedButton8.Depth = 0;
-            this.materialRaisedButton8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.materialRaisedButton8.Location = new System.Drawing.Point(148, 2);
-            this.materialRaisedButton8.Margin = new System.Windows.Forms.Padding(2);
-            this.materialRaisedButton8.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialRaisedButton8.Name = "materialRaisedButton8";
-            this.materialRaisedButton8.Primary = true;
-            this.materialRaisedButton8.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.materialRaisedButton8.Size = new System.Drawing.Size(142, 31);
-            this.materialRaisedButton8.TabIndex = 8;
-            this.materialRaisedButton8.Text = "Tải Lại";
-            this.materialRaisedButton8.UseVisualStyleBackColor = true;
-            this.materialRaisedButton8.Click += new System.EventHandler(this.materialRaisedButton8_Click);
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.col1,
-            this.col2});
-            this.dataGridView1.Location = new System.Drawing.Point(14, 93);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.Size = new System.Drawing.Size(291, 149);
-            this.dataGridView1.TabIndex = 6;
             // 
             // materialRaisedButton6
             // 
@@ -464,9 +385,9 @@
             this.materialRaisedButton6.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialRaisedButton6.Name = "materialRaisedButton6";
             this.materialRaisedButton6.Primary = true;
-            this.materialRaisedButton6.Size = new System.Drawing.Size(292, 47);
+            this.materialRaisedButton6.Size = new System.Drawing.Size(293, 47);
             this.materialRaisedButton6.TabIndex = 5;
-            this.materialRaisedButton6.Text = "Dùng PDF, Ảnh Của Đề Bài Để Tạo Điều Khiện (Yêu Cầu) Để Sinh Test";
+            this.materialRaisedButton6.Text = "Dùng PDF, Ảnh Của Đề Bài Để Ai Tự Tạo Yêu Cầu";
             this.materialRaisedButton6.UseVisualStyleBackColor = true;
             // 
             // lostBorderPanel1
@@ -486,7 +407,7 @@
             this.lostBorderPanel1.Name = "lostBorderPanel1";
             this.lostBorderPanel1.Padding = new System.Windows.Forms.Padding(4);
             this.lostBorderPanel1.ShowText = false;
-            this.lostBorderPanel1.Size = new System.Drawing.Size(317, 103);
+            this.lostBorderPanel1.Size = new System.Drawing.Size(318, 103);
             this.lostBorderPanel1.TabIndex = 0;
             // 
             // materialLabel12
@@ -502,13 +423,61 @@
             this.materialLabel12.TabIndex = 10;
             this.materialLabel12.Text = "Lưu dưới dạng:";
             // 
+            // tableLayoutPanel3
+            // 
+            this.tableLayoutPanel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel3.ColumnCount = 2;
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Controls.Add(this.materialRaisedButton3, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.materialRaisedButton10, 1, 0);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(13, 51);
+            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
+            this.tableLayoutPanel3.RowCount = 1;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(291, 37);
+            this.tableLayoutPanel3.TabIndex = 11;
+            // 
+            // materialRaisedButton3
+            // 
+            this.materialRaisedButton3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.materialRaisedButton3.Depth = 0;
+            this.materialRaisedButton3.Location = new System.Drawing.Point(3, 3);
+            this.materialRaisedButton3.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton3.Name = "materialRaisedButton3";
+            this.materialRaisedButton3.Primary = true;
+            this.materialRaisedButton3.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.materialRaisedButton3.Size = new System.Drawing.Size(139, 31);
+            this.materialRaisedButton3.TabIndex = 12;
+            this.materialRaisedButton3.Text = "Lưu lại";
+            this.materialRaisedButton3.UseVisualStyleBackColor = true;
+            // 
+            // materialRaisedButton10
+            // 
+            this.materialRaisedButton10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.materialRaisedButton10.Depth = 0;
+            this.materialRaisedButton10.Location = new System.Drawing.Point(148, 3);
+            this.materialRaisedButton10.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton10.Name = "materialRaisedButton10";
+            this.materialRaisedButton10.Primary = true;
+            this.materialRaisedButton10.Size = new System.Drawing.Size(140, 31);
+            this.materialRaisedButton10.TabIndex = 4;
+            this.materialRaisedButton10.Text = "Làm sạch";
+            this.materialRaisedButton10.UseVisualStyleBackColor = true;
+            this.materialRaisedButton10.Click += new System.EventHandler(this.materialRaisedButton10_Click);
+            // 
             // crownDropDownList1
             // 
             this.crownDropDownList1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.crownDropDownList1.Location = new System.Drawing.Point(123, 19);
             this.crownDropDownList1.Name = "crownDropDownList1";
-            this.crownDropDownList1.Size = new System.Drawing.Size(180, 20);
+            this.crownDropDownList1.Size = new System.Drawing.Size(181, 20);
             this.crownDropDownList1.TabIndex = 4;
             this.crownDropDownList1.Text = "crownDropDownList1";
             // 
@@ -851,6 +820,7 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.webView22);
             this.tabPage4.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tabPage4.Location = new System.Drawing.Point(0, 40);
             this.tabPage4.Name = "tabPage4";
@@ -878,66 +848,91 @@
             this.materialFlatButton3.UseVisualStyleBackColor = true;
             this.materialFlatButton3.Click += new System.EventHandler(this.materialFlatButton3_Click);
             // 
-            // materialRaisedButton10
+            // webView22
             // 
-            this.materialRaisedButton10.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.webView22.AllowExternalDrop = true;
+            this.webView22.CreationProperties = null;
+            this.webView22.DefaultBackgroundColor = System.Drawing.Color.White;
+            this.webView22.Location = new System.Drawing.Point(13, 31);
+            this.webView22.Name = "webView22";
+            this.webView22.Size = new System.Drawing.Size(890, 392);
+            this.webView22.TabIndex = 0;
+            this.webView22.ZoomFactor = 1D;
+            // 
+            // fastColoredTextBox1
+            // 
+            this.fastColoredTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.materialRaisedButton10.Depth = 0;
-            this.materialRaisedButton10.Location = new System.Drawing.Point(148, 3);
-            this.materialRaisedButton10.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialRaisedButton10.Name = "materialRaisedButton10";
-            this.materialRaisedButton10.Primary = true;
-            this.materialRaisedButton10.Size = new System.Drawing.Size(139, 31);
-            this.materialRaisedButton10.TabIndex = 4;
-            this.materialRaisedButton10.Text = "Làm sạch";
-            this.materialRaisedButton10.UseVisualStyleBackColor = true;
-            this.materialRaisedButton10.Click += new System.EventHandler(this.materialRaisedButton10_Click);
+            this.fastColoredTextBox1.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+            this.fastColoredTextBox1.AutoScrollMinSize = new System.Drawing.Size(179, 14);
+            this.fastColoredTextBox1.BackBrush = null;
+            this.fastColoredTextBox1.CharHeight = 14;
+            this.fastColoredTextBox1.CharWidth = 8;
+            this.fastColoredTextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.fastColoredTextBox1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.fastColoredTextBox1.Font = new System.Drawing.Font("Courier New", 9.75F);
+            this.fastColoredTextBox1.ForeColor = System.Drawing.Color.Black;
+            this.fastColoredTextBox1.IsReplaceMode = false;
+            this.fastColoredTextBox1.Location = new System.Drawing.Point(13, 78);
+            this.fastColoredTextBox1.Name = "fastColoredTextBox1";
+            this.fastColoredTextBox1.Paddings = new System.Windows.Forms.Padding(0);
+            this.fastColoredTextBox1.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.fastColoredTextBox1.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fastColoredTextBox1.ServiceColors")));
+            this.fastColoredTextBox1.Size = new System.Drawing.Size(291, 174);
+            this.fastColoredTextBox1.TabIndex = 10;
+            this.fastColoredTextBox1.Text = "fastColoredTextBox1";
+            this.fastColoredTextBox1.Zoom = 100;
             // 
-            // tableLayoutPanel3
+            // materialLabel13
             // 
-            this.tableLayoutPanel3.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.materialLabel13.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tableLayoutPanel3.ColumnCount = 2;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Controls.Add(this.materialRaisedButton3, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.materialRaisedButton10, 1, 0);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(13, 51);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 1;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(290, 37);
-            this.tableLayoutPanel3.TabIndex = 11;
+            this.materialLabel13.AutoSize = true;
+            this.materialLabel13.Depth = 0;
+            this.materialLabel13.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel13.Location = new System.Drawing.Point(12, 54);
+            this.materialLabel13.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel13.Name = "materialLabel13";
+            this.materialLabel13.Size = new System.Drawing.Size(175, 19);
+            this.materialLabel13.TabIndex = 11;
+            this.materialLabel13.Text = "Yêu Cầu Để AI Sinh Test:";
             // 
-            // materialRaisedButton3
+            // materialRaisedButton5
             // 
-            this.materialRaisedButton3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.materialRaisedButton5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.materialRaisedButton3.Depth = 0;
-            this.materialRaisedButton3.Location = new System.Drawing.Point(3, 3);
-            this.materialRaisedButton3.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialRaisedButton3.Name = "materialRaisedButton3";
-            this.materialRaisedButton3.Primary = true;
-            this.materialRaisedButton3.Size = new System.Drawing.Size(139, 31);
-            this.materialRaisedButton3.TabIndex = 12;
-            this.materialRaisedButton3.Text = "Lưu lại";
-            this.materialRaisedButton3.UseVisualStyleBackColor = true;
+            this.materialRaisedButton5.Depth = 0;
+            this.materialRaisedButton5.Location = new System.Drawing.Point(13, 257);
+            this.materialRaisedButton5.Margin = new System.Windows.Forms.Padding(2);
+            this.materialRaisedButton5.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton5.Name = "materialRaisedButton5";
+            this.materialRaisedButton5.Primary = true;
+            this.materialRaisedButton5.Size = new System.Drawing.Size(293, 30);
+            this.materialRaisedButton5.TabIndex = 12;
+            this.materialRaisedButton5.Text = "Sử dụng mã sinh test tùy chỉnh";
+            this.toolTip1.SetToolTip(this.materialRaisedButton5, "Sử dụng mã python tùy chỉnh dùng module \"SinhTest\".");
+            this.materialRaisedButton5.UseVisualStyleBackColor = true;
             // 
-            // col1
+            // toolTip1
             // 
-            this.col1.HeaderText = "Giới Hạn";
-            this.col1.MinimumWidth = 6;
-            this.col1.Name = "col1";
-            this.col1.Width = 125;
-            // 
-            // col2
-            // 
-            this.col2.HeaderText = "Điều Kiện (Yêu Cầu)";
-            this.col2.MinimumWidth = 6;
-            this.col2.Name = "col2";
-            this.col2.Width = 125;
+            this.toolTip1.AutomaticDelay = 100;
+            this.toolTip1.AutoPopDelay = 5000;
+            this.toolTip1.InitialDelay = 100;
+            this.toolTip1.ReshowDelay = 20;
+            this.toolTip1.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.toolTip1.ToolTipTitle = "Info";
             // 
             // FormMain
             // 
@@ -968,15 +963,16 @@
             this.lostBorderPanel2.ResumeLayout(false);
             this.lostBorderPanel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.crownNumeric1)).EndInit();
-            this.tableLayoutPanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.lostBorderPanel1.ResumeLayout(false);
             this.lostBorderPanel1.PerformLayout();
+            this.tableLayoutPanel3.ResumeLayout(false);
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.VideoPlayer)).EndInit();
-            this.tableLayoutPanel3.ResumeLayout(false);
+            this.tabPage4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.webView22)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -999,13 +995,10 @@
         private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton4;
         private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton6;
         private ReaLTaiizor.Controls.CrownDropDownList crownDropDownList1;
-        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton8;
-        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton5;
         private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton9;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private ReaLTaiizor.Controls.LostBorderPanel lostBorderPanel3;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         public Microsoft.Web.WebView2.WinForms.WebView2 webView21;
         public System.Windows.Forms.TabPage tabPage2;
         public MaterialSkin.Controls.MaterialSingleLineTextField materialSingleLineTextField6;
@@ -1027,7 +1020,6 @@
         private MaterialSkin.Controls.MaterialLabel materialLabel2;
         public MaterialSkin.Controls.MaterialSingleLineTextField materialSingleLineTextField1;
         private MaterialSkin.Controls.MaterialLabel materialLabel1;
-        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton7;
         private System.Windows.Forms.TabPage tabPage4;
         public Microsoft.Web.WebView2.WinForms.WebView2 VideoPlayer;
         private MaterialSkin.Controls.MaterialLabel materialLabel11;
@@ -1036,9 +1028,11 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton10;
         private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn col1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn col2;
-        public System.Windows.Forms.DataGridView dataGridView1;
+        private Microsoft.Web.WebView2.WinForms.WebView2 webView22;
+        private MaterialSkin.Controls.MaterialLabel materialLabel13;
+        private FastColoredTextBoxNS.FastColoredTextBox fastColoredTextBox1;
+        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton5;
+        private System.Windows.Forms.ToolTip toolTip1;
     }
 }
 

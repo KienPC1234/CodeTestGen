@@ -12,6 +12,7 @@ import type { RenderedConnection } from '../../rendered_connection.js';
 import type { BlockStyle, Theme } from '../../theme.js';
 import type { WorkspaceSvg } from '../../workspace_svg.js';
 import { ConstantProvider } from './constants.js';
+import { Debug } from './debugger.js';
 import { Drawer } from './drawer.js';
 import type { IPathObject } from './i_path_object.js';
 import { RenderInfo } from './info.js';
@@ -91,6 +92,14 @@ export declare class Renderer implements IRegistrable {
      */
     protected makeDrawer_(block: BlockSvg, info: RenderInfo): Drawer;
     /**
+     * Create a new instance of the renderer's debugger.
+     *
+     * @returns The renderer debugger.
+     * @suppress {strictModuleDepCheck} Debug renderer only included in
+     * playground.
+     */
+    protected makeDebugger_(): Debug;
+    /**
      * Create a new instance of the renderer's marker drawer.
      *
      * @param workspace The workspace the marker belongs to.
@@ -141,9 +150,6 @@ export declare class Renderer implements IRegistrable {
      * @param local The connection currently being dragged.
      * @param topBlock The block currently being dragged.
      * @returns The preview type to display.
-     *
-     * @deprecated v10 - This function is no longer respected. A custom
-     *    IConnectionPreviewer may be able to fulfill the functionality.
      */
     getConnectionPreviewMethod(closest: RenderedConnection, local: RenderedConnection, topBlock: BlockSvg): PreviewType;
     /**

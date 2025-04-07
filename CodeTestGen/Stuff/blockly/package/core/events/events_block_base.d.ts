@@ -3,11 +3,6 @@
  * Copyright 2018 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Base class for all types of block events.
- *
- * @class
- */
 import type { Block } from '../block.js';
 import type { Workspace } from '../workspace.js';
 import { Abstract as AbstractEvent, AbstractEventJson } from './events_abstract.js';
@@ -29,6 +24,12 @@ export declare class BlockBase extends AbstractEvent {
      * @returns JSON representation.
      */
     toJson(): BlockBaseJson;
+    /**
+     * Decode the JSON event.
+     *
+     * @param json JSON representation.
+     */
+    fromJson(json: BlockBaseJson): void;
     /**
      * Deserializes the JSON event.
      *

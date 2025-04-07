@@ -1,4 +1,23 @@
-// Shim for backwards-compatibility with bundlers that do not
-// support the 'exports' clause in package.json, to allow them
-// to load the blockly/javascript submodule entrypoint.
-module.exports = require('./javascript_compressed.js');
+/* eslint-disable */
+;(function(root, factory) {
+  if (typeof define === 'function' && define.amd) { // AMD
+    define(['./core', './javascript_compressed.js'], factory);
+  } else if (typeof exports === 'object') { // Node.js
+    module.exports = factory(require('./core'), require('./javascript_compressed.js'));
+  } else { // Browser
+    root.BlocklyJavaScript = factory(root.Blockly, root.BlocklyJavaScript);
+  }
+}(this, function(Blockly, BlocklyJavaScript) {
+/**
+ * @license
+ * Copyright 2020 Google LLC
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+/**
+ * @fileoverview JavaScript Generator module; just a wrapper for
+ *     javascript_compressed.js.
+ */
+
+return BlocklyJavaScript;
+}));

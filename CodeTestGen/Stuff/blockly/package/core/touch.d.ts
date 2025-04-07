@@ -5,6 +5,17 @@
  */
 import type { Gesture } from './gesture.js';
 /**
+ * A mock event, created from either a mouse or touch event,
+ * with no more than one entry in the changedTouches array.
+ */
+interface PseudoEvent {
+    type: string;
+    changedTouches: Touch[];
+    target: Element;
+    stopPropagation: () => void;
+    preventDefault: () => void;
+}
+/**
  * Whether touch is enabled in the browser.
  * Copied from Closure's goog.events.BrowserFeature.TOUCH_ENABLED
  */
@@ -69,4 +80,36 @@ export declare function getTouchIdentifierFromEvent(e: PointerEvent): string;
  *     identifier.
  */
 export declare function checkTouchIdentifier(e: PointerEvent): boolean;
+/**
+ * Set an event's clientX and clientY from its first changed touch.  Use this to
+ * make a touch event work in a mouse event handler.
+ *
+ * @param e A touch event.
+ */
+export declare function setClientFromTouch(e: Event | PseudoEvent): void;
+/**
+ * Check whether a given event is a mouse, touch, or pointer event.
+ *
+ * @param e An event.
+ * @returns True if it is a mouse, touch, or pointer event; false otherwise.
+ */
+export declare function isMouseOrTouchEvent(e: Event | PseudoEvent): boolean;
+/**
+ * Check whether a given event is a touch event or a pointer event.
+ *
+ * @param e An event.
+ * @returns True if it is a touch or pointer event; false otherwise.
+ */
+export declare function isTouchEvent(e: Event | PseudoEvent): boolean;
+/**
+ * Split an event into an array of events, one per changed touch or mouse
+ * point.
+ *
+ * @param e A mouse event or a touch event with one or more changed touches.
+ * @returns An array of events or pseudo events.
+ *     Each pseudo-touch event will have exactly one changed touch and there
+ * will be no real touch events.
+ */
+export declare function splitEventByTouches(e: Event): Array<Event | PseudoEvent>;
+export {};
 //# sourceMappingURL=touch.d.ts.map

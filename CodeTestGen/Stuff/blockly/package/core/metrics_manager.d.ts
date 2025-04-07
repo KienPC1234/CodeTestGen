@@ -3,11 +3,6 @@
  * Copyright 2021 Google LLC
  * SPDX-License-Identifier: Apache-2.0
  */
-/**
- * Calculates and reports workspace metrics.
- *
- * @class
- */
 import type { IFlyout } from './interfaces/i_flyout.js';
 import type { IMetricsManager } from './interfaces/i_metrics_manager.js';
 import type { IToolbox } from './interfaces/i_toolbox.js';
