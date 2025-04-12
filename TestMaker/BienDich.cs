@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 
@@ -50,31 +51,22 @@ namespace TestMaker
                 string output = null;
                 string code = ScriptData;
 
-                // Bước 1: Xóa comment và lệnh file I/O có thể xóa
+                // Bước 1: Xử lý comment và lệnh I/O theo ngôn ngữ
                 switch (type)
                 {
                     case CompilerType.Cpp:
                         code = Regex.Replace(code, @"(?<![""'])//.*?$|(?<![""'])/\*[\s\S]*?\*/", "", RegexOptions.Multiline);
-                        code = Regex.Replace(code,
-                            @"\bfreopen\s*\(\s*['""][^'""]*\.(in|out|inp)['""]\s*,[^)]*\)\s*;",
-                            "// Removed freopen\n",
-                            RegexOptions.Singleline);
+                        code = Regex.Replace(code, @"^\s*\bfreopen\s*\([^;]*\)\s*;\s*$", "//Removed By Runner", RegexOptions.Multiline);
                         break;
 
                     case CompilerType.Python:
                         code = Regex.Replace(code, @"(?<![""'])#.*?$", "", RegexOptions.Multiline);
-                        code = Regex.Replace(code,
-                            @"\bsys\.(stdin|stdout)\s*=\s*open\s*\([^)]*\)\s*(#.*)?$",
-                            "# Removed sys.open\n",
-                            RegexOptions.Multiline);
+                        code = Regex.Replace(code, @"^\s*\bsys\.(stdin|stdout)\s*=\s*open\s*\([^)]*\)\s*$", "#Removed By Runner", RegexOptions.Multiline);
                         break;
 
                     case CompilerType.Pascal:
                         code = Regex.Replace(code, @"(?<!['""])\{[^}]*\}|(?<!['""])\(\*.*?\*\)|(?<!['""])//.*?$", "", RegexOptions.Singleline | RegexOptions.Multiline);
-                        code = Regex.Replace(code,
-                            @"\b(assign|reset|rewrite)\s*\([^;]*\.(in|out|inp)[^;]*\)\s*;",
-                            "// Removed file operation\n",
-                            RegexOptions.IgnoreCase | RegexOptions.Singleline);
+                        code = Regex.Replace(code, @"^\s*\b(assign|reset|rewrite)\s*\([^;]*\)\s*;\s*$", "//Removed By Runner", RegexOptions.IgnoreCase | RegexOptions.Multiline);
                         break;
 
                     default:
@@ -86,61 +78,71 @@ namespace TestMaker
                 bool hasOut = Regex.IsMatch(code, @"\.out\b", RegexOptions.IgnoreCase);
                 bool hasInp = Regex.IsMatch(code, @"\.inp\b", RegexOptions.IgnoreCase);
 
-                // Nếu không có file I/O, trả null
-                if (!hasIn && !hasOut && !hasInp)
+                // Bước 3: Trích xuất tên file nếu có
+                if (hasIn || hasOut || hasInp)
                 {
-                    return Tuple.Create<string, string, string>(null, null, code);
-                }
+                    string filePattern = @"(['""])([^'""]*\.(in|out|inp))\1(?!\s*;)";
+                    var matches = Regex.Matches(code, filePattern, RegexOptions.IgnoreCase);
+                    bool hasSpecialChars = Regex.IsMatch(code, @"['""][^'""]*\.(in|out|inp)[^'""]*[{}][^'""]*['""]");
+                    bool hasVariable = Regex.IsMatch(code, @"['""][^'""]*\s*\+\s*[^'""]*\.(in|out|inp)['""]");
 
-                // Bước 3: Trích xuất tên file
-                string filePattern = @"(['""])([^'""]*\.(in|out|inp))\1(?!\s*;)";
-                var matches = Regex.Matches(code, filePattern, RegexOptions.IgnoreCase);
-                bool hasSpecialChars = Regex.IsMatch(code, @"['""][^'""]*\.(in|out|inp)[^'""]*[{}][^'""]*['""]");
-                bool hasVariable = Regex.IsMatch(code, @"['""][^'""]*\s*\+\s*[^'""]*\.(in|out|inp)['""]");
-
-                foreach (Match match in matches)
-                {
-                    string fileName = match.Groups[2].Value;
-                    if ((fileName.EndsWith(".in", StringComparison.OrdinalIgnoreCase) ||
-                         fileName.EndsWith(".inp", StringComparison.OrdinalIgnoreCase)) && input == null)
-                        input = fileName;
-                    else if (fileName.EndsWith(".out", StringComparison.OrdinalIgnoreCase) && output == null)
-                        output = fileName;
-                }
-
-                // Bước 4: Xử lý trường hợp không rõ ràng
-                if (input == null || output == null || hasSpecialChars || hasVariable)
-                {
-                    Console.WriteLine("Lỗi: Tên file .in, .inp hoặc .out không rõ ràng trong mã nguồn.");
-                    if (input == null || hasSpecialChars || hasVariable)
+                    foreach (Match match in matches)
                     {
-                        Console.WriteLine("Vui lòng nhập tên file input (.in hoặc .inp):");
-                        input = Console.ReadLine()?.Trim();
-                    }
-                    if (output == null || hasSpecialChars || hasVariable)
-                    {
-                        Console.WriteLine("Vui lòng nhập tên file output (.out):");
-                        output = Console.ReadLine()?.Trim();
+                        string fileName = match.Groups[2].Value;
+                        if ((fileName.EndsWith(".in", StringComparison.OrdinalIgnoreCase) ||
+                             fileName.EndsWith(".inp", StringComparison.OrdinalIgnoreCase)) && input == null)
+                            input = fileName;
+                        else if (fileName.EndsWith(".out", StringComparison.OrdinalIgnoreCase) && output == null)
+                            output = fileName;
                     }
 
-                    if (string.IsNullOrWhiteSpace(input) || string.IsNullOrWhiteSpace(output))
+                    if (input == null || output == null || hasSpecialChars || hasVariable)
                     {
-                        Console.WriteLine("Lỗi: Tên file input/output không được để trống.");
-                        return Tuple.Create<string, string, string>(null, null, code);
+                        Console.WriteLine("Lỗi: Tên file .in, .inp hoặc .out không rõ ràng trong mã nguồn.");
+                        if (input == null || hasSpecialChars || hasVariable)
+                        {
+                            Console.WriteLine("Vui lòng nhập tên file input (vd: input.inp):");
+                            input = Console.ReadLine()?.Trim();
+                        }
+                        if (output == null || hasSpecialChars || hasVariable)
+                        {
+                            Console.WriteLine("Vui lòng nhập tên file output (vd: output.out):");
+                            output = Console.ReadLine()?.Trim();
+                        }
+
+                        if (string.IsNullOrWhiteSpace(input) || string.IsNullOrWhiteSpace(output))
+                        {
+                            Console.WriteLine("Lỗi: Tên file input/output không được để trống.");
+                            return Tuple.Create<string, string, string>(null, null, code);
+                        }
                     }
                 }
+
+                // Bước 4: Hiển thị mã nguồn đã xử lý
+                Console.WriteLine();
+                Console.WriteLine("Nội dung script sau khi xử lý:");
+                Console.WriteLine(code != null ? code : "(null)");
+                Console.WriteLine();
 
                 // Bước 5: Xác nhận từ người dùng
                 bool confirmed = false;
                 while (!confirmed)
                 {
-                    Console.WriteLine($"Input File: {(input ?? "none")}, Output File: {(output ?? "none")}");
+                    Console.WriteLine();
+                    if (input == null && output == null)
+                    {
+                        Console.WriteLine("Phát hiện chương trình dùng stdio (không có file I/O).");
+                    }
+                    else
+                    {
+                        Console.WriteLine("Input File: {0}, Output File: {1}", input ?? "none", output ?? "none");
+                    }
                     Console.WriteLine("Nhấn Enter để chấp nhận, hoặc nhập 'no' để từ chối:");
                     string response = Console.ReadLine()?.Trim().ToLower();
 
                     if (string.IsNullOrEmpty(response))
                     {
-                        confirmed = true; // Enter để chấp nhận
+                        confirmed = true;
                     }
                     else if (response == "no")
                     {
@@ -152,7 +154,9 @@ namespace TestMaker
 
                         if (choice == "1")
                         {
-                            return Tuple.Create<string, string, string>(null, null, code);
+                            input = null;
+                            output = null;
+                            confirmed = true;
                         }
                         else if (choice == "2")
                         {
@@ -164,8 +168,9 @@ namespace TestMaker
                             if (string.IsNullOrWhiteSpace(input) || string.IsNullOrWhiteSpace(output))
                             {
                                 Console.WriteLine("Lỗi: Tên file không được để trống.");
-                                return Tuple.Create<string, string, string>(null, null, code);
+                                continue;
                             }
+                            confirmed = true;
                         }
                         else
                         {
@@ -187,7 +192,7 @@ namespace TestMaker
             public string InputFile { get; set; }
             public string OutputFile { get; set; }
             public string CompiledPath { get; set; }
-            public string CompileDir { get; set; } // Thêm trường mới
+            public string CompileDir { get; set; }
         }
 
         public class CompilerExecutor : IDisposable
@@ -206,6 +211,7 @@ namespace TestMaker
                 if (string.IsNullOrWhiteSpace(args.CompilerPath))
                 {
                     Console.WriteLine("Lỗi: Đường dẫn trình biên dịch không được để trống.");
+                    Environment.Exit(-1);
                     return null;
                 }
 
@@ -260,6 +266,9 @@ namespace TestMaker
                 }
 
                 string scriptPath = Path.Combine(_tempFolder, string.Format("script_{0}{1}", Guid.NewGuid().ToString("N"), ext));
+                string batPath = null; // Khai báo ở đây để sử dụng trong khối else
+                string compiledPath = null;
+
                 try
                 {
                     File.WriteAllText(scriptPath, result.Item3);
@@ -270,7 +279,7 @@ namespace TestMaker
                     return null;
                 }
 
-                string compiledPath = scriptPath;
+                compiledPath = scriptPath;
 
                 if (type != CompilerType.Python)
                 {
@@ -336,7 +345,36 @@ namespace TestMaker
                 }
                 else
                 {
-                    Console.WriteLine("Script Python đã được xử lý và lưu.");
+                    scriptPath = Path.Combine(_tempFolder, string.Format("script_{0}.py", Guid.NewGuid().ToString("N")));
+                    batPath = Path.Combine(_tempFolder, string.Format("script_{0}.bat", Guid.NewGuid().ToString("N")));
+
+                    try
+                    {
+                        byte[] scriptBytes = Encoding.UTF8.GetBytes(result.Item3);
+                        File.WriteAllBytes(scriptPath, scriptBytes);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Lỗi khi ghi file Python '{0}': {1}", scriptPath, ex.Message);
+                        return null;
+                    }
+
+                    string batContent = "@echo off\r\n" +
+                                       "chcp 65001 >nul\r\n" +
+                                       string.Format("\"{0}\" \"{1}\"", fullPath, scriptPath);
+
+                    try
+                    {
+                        byte[] batBytes = Encoding.ASCII.GetBytes(batContent);
+                        File.WriteAllBytes(batPath, batBytes);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Lỗi khi tạo file .bat '{0}': {1}", batPath, ex.Message);
+                        return null;
+                    }
+
+                    compiledPath = batPath;
                 }
 
                 return new CompileResult
@@ -344,7 +382,7 @@ namespace TestMaker
                     InputFile = result.Item1,
                     OutputFile = result.Item2,
                     CompiledPath = compiledPath,
-                    CompileDir = _tempFolder // Lưu đường dẫn thư mục
+                    CompileDir = _tempFolder
                 };
             }
 
@@ -361,7 +399,6 @@ namespace TestMaker
                         if (Directory.Exists(_tempFolder))
                         {
                             Directory.Delete(_tempFolder, true);
-                            Console.WriteLine("Đã xóa thư mục tạm: {0}", _tempFolder);
                             break;
                         }
                     }
