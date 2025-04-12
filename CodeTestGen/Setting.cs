@@ -18,8 +18,10 @@ namespace CodeTestGenV1
         public bool UseAppCompiler { get; set; }
         public string PythonCompilerOptions { get; set; }
         public string CppCompilerOptions { get; set; }
+        public string PascalCompilerOptions { get; set; }
         public string PythonCompilerPath { get; set; }
         public string CppCompilerPath { get; set; }
+        public string PascalCompilerPath { get; set; }
     }
 
     public class Settings
@@ -30,9 +32,11 @@ namespace CodeTestGenV1
         public bool UseAppCompiler { get; set; }
         public string PythonCompilerOptions { get; set; }
         public string CppCompilerOptions { get; set; }
+        public string PascalCompilerOptions { get; set; }
         public string BasePath { get; set; }
         public string PythonCompilerPath { get; set; }
         public string CppCompilerPath { get; set; }
+        public string PascalCompilerPath { get; set; }
         private FormMain form;
         private static readonly string SettingsFilePath = Path.Combine(Hotro.AppPath, "settings.json");
         private readonly MaterialSkinManager skinManager;
@@ -49,24 +53,21 @@ namespace CodeTestGenV1
             this.skinManager = skinManager;
             ApiKey = "AIzaSyDar-WvC-WReSGkb6AAPCm7q-KW9b3LdT4";
             ModelType = "models/gemini-2.0-flash";
-            Mode = "Light"; 
+            Mode = "Dark"; 
             UseAppCompiler = true;
             PythonCompilerOptions = "";
             CppCompilerOptions = "";
             BasePath = Hotro.AppPath;
-            PythonCompilerPath = Path.Combine(BasePath, "python", "python.exe");
-            CppCompilerPath = Path.Combine(BasePath, "mingw64", "bin", "g++.exe");
-
-            // Kiểm tra thư mục BasePath/BienDich
             string bienDichPath = Path.Combine(BasePath, "BienDich");
+            PythonCompilerPath = Path.Combine(bienDichPath, "python", "python.exe");
+            CppCompilerPath = Path.Combine(bienDichPath, "mingw64", "bin", "g++.exe");
+            PascalCompilerPath = Path.Combine(bienDichPath, "FPC", "bin", "i386-win32", "fpc.exe");
             if (!Directory.Exists(bienDichPath))
             {
-                UseAppCompiler = false; 
-            }
-            else
-            {
-                PythonCompilerPath = "python";
+                UseAppCompiler = false;
+                PythonCompilerPath = "python.exe";
                 CppCompilerPath = "g++.exe";
+                PascalCompilerPath = "fpc.exe";
             }
         }
 
@@ -98,12 +99,14 @@ namespace CodeTestGenV1
                 UseAppCompiler = data.UseAppCompiler,
                 PythonCompilerOptions = data.PythonCompilerOptions,
                 CppCompilerOptions = data.CppCompilerOptions,
+                PascalCompilerOptions = data.PascalCompilerOptions,
                 PythonCompilerPath = data.PythonCompilerPath,
                 CppCompilerPath = data.CppCompilerPath,
+                PascalCompilerPath = data.PascalCompilerPath,
                 BasePath = Hotro.AppPath
             };
             
-            settings.ApplyTheme();
+            settings.colorSet();
             return settings;
         }
 
@@ -119,8 +122,10 @@ namespace CodeTestGenV1
                     UseAppCompiler = this.UseAppCompiler,
                     PythonCompilerOptions = this.PythonCompilerOptions,
                     CppCompilerOptions = this.CppCompilerOptions,
+                    PascalCompilerOptions = this.PascalCompilerOptions,
                     PythonCompilerPath= this.PythonCompilerPath,
-                    CppCompilerPath = this.CppCompilerPath
+                    CppCompilerPath = this.CppCompilerPath,
+                    PascalCompilerPath = this.PascalCompilerPath,
                 };
                 string jsonString = JsonSerializer.Serialize(data, new JsonSerializerOptions { WriteIndented = true });
                 File.WriteAllText(SettingsFilePath, jsonString);
@@ -139,10 +144,13 @@ namespace CodeTestGenV1
             UseAppCompiler = form.materialCheckBox1.Checked;
             PythonCompilerOptions = form.materialSingleLineTextField2.Text;
             CppCompilerOptions = form.materialSingleLineTextField3.Text;
+            PascalCompilerOptions = form.materialSingleLineTextField7.Text;
             PythonCompilerPath = form.materialSingleLineTextField5.Text;
             CppCompilerPath = form.materialSingleLineTextField4.Text;
+            PascalCompilerPath = form.materialSingleLineTextField8.Text;
             BasePath = Hotro.AppPath;
-            ApplyTheme();
+            colorSet();
+            WebViewApply();
         }
 
         public void ApplyToForm()
@@ -160,9 +168,11 @@ namespace CodeTestGenV1
             form.materialCheckBox1.Checked = UseAppCompiler;
             form.materialSingleLineTextField2.Text = PythonCompilerOptions;
             form.materialSingleLineTextField3.Text = CppCompilerOptions;
+            form.materialSingleLineTextField7.Text = PascalCompilerOptions;
             form.materialSingleLineTextField5.Text = PythonCompilerPath;
             form.materialSingleLineTextField4.Text = CppCompilerPath;
-            ApplyTheme();
+            form.materialSingleLineTextField8.Text = PascalCompilerPath;
+            colorSet();
         }
 
         public void RefreshSettings()  
@@ -174,13 +184,14 @@ namespace CodeTestGenV1
             UseAppCompiler = data.UseAppCompiler;
             PythonCompilerOptions = data.PythonCompilerOptions;
             CppCompilerOptions = data.CppCompilerOptions;
+            PascalCompilerOptions = data.PascalCompilerOptions;
             PythonCompilerPath = data.PythonCompilerPath;
             CppCompilerPath = data.CppCompilerPath;
+            PascalCompilerPath = data.PascalCompilerPath;
             BasePath = Hotro.AppPath; 
             ApplyToForm();
         }
-
-        public async void ApplyTheme()
+        public void colorSet()
         {
             if (Mode == "Dark")
             {
@@ -194,8 +205,17 @@ namespace CodeTestGenV1
                 form.tabPage1.BackColor = Color.FromArgb(29, 35, 44);
                 form.tabPage2.BackColor = Color.FromArgb(29, 35, 44);
                 form.hopeTabPage1.BaseColor = Color.FromArgb(44, 55, 66);
-                await form.webView21.CoreWebView2.ExecuteScriptAsync($"toggleDarkMode(true);");
-                await form.VideoPlayer.CoreWebView2.ExecuteScriptAsync($"toggleDarkMode(true);");
+                form.lostBorderPanel1.BorderColor = Color.FromArgb(67, 84, 102);
+                form.lostBorderPanel2.BorderColor = Color.FromArgb(67, 84, 102);
+                form.crownDockPanel1.BackColor = Color.FromArgb(67, 84, 102);
+                form.lostBorderPanel1.BackColor = Color.FromArgb(29, 35, 44);
+                form.lostBorderPanel2.BackColor = Color.FromArgb(29, 35, 44);
+                form.materialLabel3.ForeColor = Color.White;
+                form.materialLabel6.ForeColor = Color.White;
+                form.fastColoredTextBox1.BackColor = Color.FromArgb(54, 65, 82);
+                form.fastColoredTextBox1.ForeColor = Color.White;
+                form.lostBorderPanel4.BorderColor = Color.FromArgb(67, 84, 102);
+                form.lostBorderPanel4.BackColor = Color.FromArgb(67, 84, 102);
             }
             else // Light mode
             {
@@ -210,6 +230,29 @@ namespace CodeTestGenV1
                 form.tabPage1.BackColor = Color.WhiteSmoke;
                 form.tabPage2.BackColor = Color.WhiteSmoke;
                 form.hopeTabPage1.BaseColor = Color.FromArgb(48, 63, 159);
+                form.lostBorderPanel1.BorderColor = Color.FromArgb(48, 63, 159);
+                form.lostBorderPanel2.BorderColor = Color.FromArgb(48, 63, 159);
+                form.crownDockPanel1.BackColor = Color.FromArgb(67, 84, 102);
+                form.lostBorderPanel1.BackColor = Color.WhiteSmoke;
+                form.lostBorderPanel2.BackColor = Color.WhiteSmoke;
+                form.materialLabel3.ForeColor = Color.Black;
+                form.materialLabel6.ForeColor = Color.Black;
+                form.fastColoredTextBox1.BackColor = Color.WhiteSmoke;
+                form.fastColoredTextBox1.ForeColor = Color.Black;
+                form.lostBorderPanel4.BorderColor = Color.FromArgb(48, 63, 159);
+                form.lostBorderPanel4.BackColor = Color.FromArgb(48, 63, 159);
+            }
+        }
+        public async void WebViewApply()
+        {
+            if (Mode == "Dark")
+            {
+                await form.webView21.CoreWebView2.ExecuteScriptAsync($"toggleDarkMode(true);");
+                await form.webView21.CoreWebView2.ExecuteScriptAsync($"toggleDarkMode(true);");
+                await form.VideoPlayer.CoreWebView2.ExecuteScriptAsync($"toggleDarkMode(true);");
+            }
+            else // Light mode
+            {
                 await form.webView21.CoreWebView2.ExecuteScriptAsync($"toggleDarkMode(false);");
                 await form.VideoPlayer.CoreWebView2.ExecuteScriptAsync($"toggleDarkMode(false);");
             }

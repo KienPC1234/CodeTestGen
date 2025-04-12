@@ -1503,6 +1503,30 @@ function loadFromJson(event) {
   }
 }
 
+const container = workspace.newBlock('test_container');
+container.initSvg();
+container.render();
+container.moveBy(100, 100);
+
+const numberBlock = workspace.newBlock('math_number');
+numberBlock.setFieldValue('1', 'NUM');
+numberBlock.initSvg();
+numberBlock.render();
+
+container.getInput('NUM_TESTS').connection.connect(numberBlock.outputConnection);
+
+const startBlock = workspace.newBlock('testcase_start');
+startBlock.initSvg();
+startBlock.render();
+
+const endBlock = workspace.newBlock('testcase_end');
+endBlock.initSvg();
+endBlock.render();
+
+startBlock.nextConnection.connect(endBlock.previousConnection);
+
+container.getInput('CONTENT').connection.connect(startBlock.previousConnection);
+
 workspace.addChangeListener(function () {
   updatePythonCode();
 });

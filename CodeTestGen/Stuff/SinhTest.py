@@ -11,8 +11,34 @@
 # limitations under the License.
 
 import random
-import math
 import rstr
+import msvcrt
+import time
+import sys
+
+RED = "\033[31m"
+RESET = "\033[0m"
+
+def my_excepthook(exctype, value, traceback):
+    
+    print(f"\n{RED}Đã xảy ra lỗi: {exctype.__name__} - {value}{RESET}")
+    import traceback as tb
+    print("Traceback:")
+    tb.print_tb(traceback)
+    
+    print("Nhấn phím bất kỳ để thoát, hoặc đợi 2 giây...")
+    start_time = time.time()
+    while time.time() - start_time < 2:
+        if msvcrt.kbhit():  
+            key = msvcrt.getch()  
+            print(f"Đã nhấn phím: {key}")
+            break
+        time.sleep(0.1)
+    
+    print("Kết thúc.")
+    sys.exit(-1)
+
+sys.excepthook = my_excepthook
 
 def _print(text: str) -> None:
     color = '\033[38;5;46m'  
@@ -34,8 +60,10 @@ _print(r"""
                
 """)
 _print("Make by KCD DEV (KienTensorFlow) - https://github.com/KienPC1234/CodeTestGen\n")
+_print("Chú ý: Vui lòng không thoát khi đang sinh test!\n\n")
 
 output = []
+is_creating_testcase = False
 
 output.append("<?xml version='1.0' encoding='utf-8'?>")
 output.append('<testcases>')
@@ -287,23 +315,57 @@ def random_graph_weighted(n, m, min_val, max_val, weight_min=1, weight_max=100, 
 
     return '\n'.join(result)
 
+GREEN = '\033[38;5;82m'
+RESET = '\033[0m'
 
 def testcase(caseNum):
-    print("Test Case:",caseNum)
+    global is_creating_testcase
+    if is_creating_testcase:
+        raise RuntimeError(f"{RED}Lỗi: Test case trước đó chưa được đóng bằng endtestcase(){RESET}")
+    
+    is_creating_testcase = True
+    animations = ['.', '..', '...']
+    
+    for anim in animations:
+        sys.stdout.write(f"\r{GREEN}Đang Tạo Test Case: {caseNum} {anim}      {RESET}")
+        sys.stdout.flush()
+    
+    sys.stdout.write(f"\r{GREEN}Đang Tạo Test Case: {caseNum}      {RESET}")
+    sys.stdout.flush()
+    
     output.append(f'<testcase case="{caseNum}">')
 
 def endtestcase():
+    global is_creating_testcase
+    if not is_creating_testcase:
+        raise RuntimeError(f"{RED}Lỗi: Không có test case nào đang được tạo{RESET}")
+    
+    is_creating_testcase = False
     output.append(f'</testcase>')
+    
 
 def testcase_print(result):
-    output.append(str(result))
+    try:
+        output.append(str(result))
+    except Exception as e:
+        raise Exception(f"{RED}Lỗi khi in kết quả: {str(e)}{RESET}")
 
 def xuong_dong():
-    output.append("\n")
+    try:
+        output.append("\n")
+    except Exception as e:
+        raise Exception(f"{RED}Lỗi khi xuống dòng: {str(e)}{RESET}")
 
 def tao_khoang_trang(so):
-    output.append(" " * so)
-
+    try:
+        if not isinstance(so, int):
+            raise ValueError("Số khoảng trắng phải là số nguyên")
+        if so < 0:
+            raise ValueError("Số khoảng trắng không được âm")
+        output.append(" " * so)
+    except Exception as e:
+        raise Exception(f"{RED}Lỗi khi tạo khoảng trắng: {str(e)}{RESET}")
+    
 def SaveTestCases():
     """
     Hàm này lưu các test cases vào file XML 'testcases.xml' tại thư mục hiện tại.
@@ -312,4 +374,15 @@ def SaveTestCases():
     with open("testcases.xml", "w") as f:
         for case in output:
             f.write(case)
+    _print("\nĐã Tạo Xong Test Case!\n")
+    print("Nhấn phím bất kỳ để thoát, hoặc đợi 2 giây...")
+    start_time = time.time()
+    while time.time() - start_time < 2:
+        if msvcrt.kbhit():
+            key = msvcrt.getch()
+            print(f"Đã nhấn phím: {key}")
+            break
+        time.sleep(0.1)
+
+    print("Kết thúc.")
 

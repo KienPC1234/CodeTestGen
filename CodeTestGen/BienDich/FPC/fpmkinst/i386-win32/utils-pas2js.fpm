@@ -1,0 +1,9 @@
+Name=utils-pas2js
+Version=3.2.2
+Checksum=1387234617
+CPU=i386
+OS=win32
+FPMakeOptions=-o -Ur -o -Xs -o -O2 -o -n -o -di386 -o -dRELEASE
+Depends=rtl,fcl-json|1387234572,fcl-js|1387234578,fcl-passrc|1387234579,pastojs|1387234602,fcl-web|1387234583,webidl|1387234603
+NeedLibC=N
+FPMakeAddIn=N

@@ -34,6 +34,7 @@
             this.hopeTabPage1 = new ReaLTaiizor.Controls.HopeTabPage();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.materialRaisedButton7 = new MaterialSkin.Controls.MaterialRaisedButton();
             this.lostBorderPanel3 = new ReaLTaiizor.Controls.LostBorderPanel();
             this.webView21 = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
@@ -44,10 +45,15 @@
             this.materialLabel6 = new MaterialSkin.Controls.MaterialLabel();
             this.materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
             this.lostBorderPanel2 = new ReaLTaiizor.Controls.LostBorderPanel();
+            this.lostBorderPanel4 = new ReaLTaiizor.Controls.LostBorderPanel();
+            this.fastColoredTextBox1 = new FastColoredTextBoxNS.FastColoredTextBox();
+            this.materialRaisedButton5 = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.materialLabel13 = new MaterialSkin.Controls.MaterialLabel();
             this.crownNumeric1 = new ReaLTaiizor.Controls.CrownNumeric();
             this.materialLabel11 = new MaterialSkin.Controls.MaterialLabel();
             this.materialRaisedButton6 = new MaterialSkin.Controls.MaterialRaisedButton();
             this.lostBorderPanel1 = new ReaLTaiizor.Controls.LostBorderPanel();
+            this.materialRaisedButton8 = new MaterialSkin.Controls.MaterialRaisedButton();
             this.materialLabel12 = new MaterialSkin.Controls.MaterialLabel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.materialRaisedButton3 = new MaterialSkin.Controls.MaterialRaisedButton();
@@ -55,6 +61,10 @@
             this.crownDropDownList1 = new ReaLTaiizor.Controls.CrownDropDownList();
             this.materialLabel7 = new MaterialSkin.Controls.MaterialLabel();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.materialSingleLineTextField8 = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.materialLabel15 = new MaterialSkin.Controls.MaterialLabel();
+            this.materialSingleLineTextField7 = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.materialLabel14 = new MaterialSkin.Controls.MaterialLabel();
             this.materialSingleLineTextField4 = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialSingleLineTextField6 = new MaterialSkin.Controls.MaterialSingleLineTextField();
             this.materialLabel8 = new MaterialSkin.Controls.MaterialLabel();
@@ -77,11 +87,8 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.VideoPlayer = new Microsoft.Web.WebView2.WinForms.WebView2();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.materialFlatButton3 = new MaterialSkin.Controls.MaterialFlatButton();
             this.webView22 = new Microsoft.Web.WebView2.WinForms.WebView2();
-            this.fastColoredTextBox1 = new FastColoredTextBoxNS.FastColoredTextBox();
-            this.materialLabel13 = new MaterialSkin.Controls.MaterialLabel();
-            this.materialRaisedButton5 = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.materialFlatButton3 = new MaterialSkin.Controls.MaterialFlatButton();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.hopeTabPage1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -93,6 +100,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.webView21)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.lostBorderPanel2.SuspendLayout();
+            this.lostBorderPanel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.crownNumeric1)).BeginInit();
             this.lostBorderPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
@@ -101,7 +110,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.VideoPlayer)).BeginInit();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.webView22)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // materialFlatButton1
@@ -156,7 +164,6 @@
             // 
             this.tabPage1.BackColor = System.Drawing.Color.DimGray;
             this.tabPage1.Controls.Add(this.splitContainer1);
-            this.tabPage1.ForeColor = System.Drawing.Color.Black;
             this.tabPage1.Location = new System.Drawing.Point(0, 40);
             this.tabPage1.Margin = new System.Windows.Forms.Padding(2);
             this.tabPage1.Name = "tabPage1";
@@ -174,12 +181,16 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.BackColor = System.Drawing.Color.Transparent;
+            this.splitContainer1.Panel1.Controls.Add(this.materialRaisedButton7);
             this.splitContainer1.Panel1.Controls.Add(this.lostBorderPanel3);
             this.splitContainer1.Panel1.Controls.Add(this.tableLayoutPanel1);
             this.splitContainer1.Panel1.Controls.Add(this.crownDockPanel1);
+            this.splitContainer1.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel1_Paint);
             // 
             // splitContainer1.Panel2
             // 
+            this.splitContainer1.Panel2.BackColor = System.Drawing.Color.Transparent;
             this.splitContainer1.Panel2.Controls.Add(this.materialLabel6);
             this.splitContainer1.Panel2.Controls.Add(this.materialLabel3);
             this.splitContainer1.Panel2.Controls.Add(this.lostBorderPanel2);
@@ -188,6 +199,21 @@
             this.splitContainer1.SplitterDistance = 576;
             this.splitContainer1.SplitterWidth = 3;
             this.splitContainer1.TabIndex = 3;
+            // 
+            // materialRaisedButton7
+            // 
+            this.materialRaisedButton7.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.materialRaisedButton7.Depth = 0;
+            this.materialRaisedButton7.Location = new System.Drawing.Point(19, 427);
+            this.materialRaisedButton7.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton7.Name = "materialRaisedButton7";
+            this.materialRaisedButton7.Primary = true;
+            this.materialRaisedButton7.Size = new System.Drawing.Size(542, 33);
+            this.materialRaisedButton7.TabIndex = 8;
+            this.materialRaisedButton7.Text = "Sinh Test Từ File Exe";
+            this.materialRaisedButton7.UseVisualStyleBackColor = true;
+            this.materialRaisedButton7.Click += new System.EventHandler(this.materialRaisedButton7_Click);
             // 
             // lostBorderPanel3
             // 
@@ -203,7 +229,7 @@
             this.lostBorderPanel3.Name = "lostBorderPanel3";
             this.lostBorderPanel3.Padding = new System.Windows.Forms.Padding(5);
             this.lostBorderPanel3.ShowText = false;
-            this.lostBorderPanel3.Size = new System.Drawing.Size(544, 422);
+            this.lostBorderPanel3.Size = new System.Drawing.Size(544, 388);
             this.lostBorderPanel3.TabIndex = 7;
             this.lostBorderPanel3.Text = "lostBorderPanel3";
             // 
@@ -218,7 +244,7 @@
             this.webView21.Location = new System.Drawing.Point(2, 2);
             this.webView21.Margin = new System.Windows.Forms.Padding(2);
             this.webView21.Name = "webView21";
-            this.webView21.Size = new System.Drawing.Size(540, 418);
+            this.webView21.Size = new System.Drawing.Size(540, 384);
             this.webView21.TabIndex = 0;
             this.webView21.ZoomFactor = 1D;
             // 
@@ -268,6 +294,7 @@
             this.materialRaisedButton4.TabIndex = 3;
             this.materialRaisedButton4.Text = "Bắt Đầu Tạo Test!";
             this.materialRaisedButton4.UseVisualStyleBackColor = true;
+            this.materialRaisedButton4.Click += new System.EventHandler(this.materialRaisedButton4_Click);
             // 
             // materialRaisedButton1
             // 
@@ -300,7 +327,7 @@
             this.materialLabel6.Depth = 0;
             this.materialLabel6.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel6.Location = new System.Drawing.Point(20, 149);
+            this.materialLabel6.Location = new System.Drawing.Point(20, 171);
             this.materialLabel6.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.materialLabel6.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel6.Name = "materialLabel6";
@@ -332,21 +359,111 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lostBorderPanel2.BackColor = System.Drawing.Color.DimGray;
             this.lostBorderPanel2.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.lostBorderPanel2.Controls.Add(this.lostBorderPanel4);
             this.lostBorderPanel2.Controls.Add(this.materialRaisedButton5);
             this.lostBorderPanel2.Controls.Add(this.materialLabel13);
-            this.lostBorderPanel2.Controls.Add(this.fastColoredTextBox1);
             this.lostBorderPanel2.Controls.Add(this.crownNumeric1);
             this.lostBorderPanel2.Controls.Add(this.materialLabel11);
             this.lostBorderPanel2.Controls.Add(this.materialRaisedButton6);
             this.lostBorderPanel2.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.lostBorderPanel2.ForeColor = System.Drawing.Color.White;
-            this.lostBorderPanel2.Location = new System.Drawing.Point(11, 159);
+            this.lostBorderPanel2.Location = new System.Drawing.Point(11, 181);
             this.lostBorderPanel2.Margin = new System.Windows.Forms.Padding(2);
             this.lostBorderPanel2.Name = "lostBorderPanel2";
             this.lostBorderPanel2.Padding = new System.Windows.Forms.Padding(4);
             this.lostBorderPanel2.ShowText = false;
-            this.lostBorderPanel2.Size = new System.Drawing.Size(318, 345);
+            this.lostBorderPanel2.Size = new System.Drawing.Size(309, 323);
             this.lostBorderPanel2.TabIndex = 2;
+            // 
+            // lostBorderPanel4
+            // 
+            this.lostBorderPanel4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lostBorderPanel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(63)))), ((int)(((byte)(63)))), ((int)(((byte)(70)))));
+            this.lostBorderPanel4.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.lostBorderPanel4.Controls.Add(this.fastColoredTextBox1);
+            this.lostBorderPanel4.Font = new System.Drawing.Font("Segoe UI", 12F);
+            this.lostBorderPanel4.ForeColor = System.Drawing.Color.White;
+            this.lostBorderPanel4.Location = new System.Drawing.Point(13, 76);
+            this.lostBorderPanel4.Name = "lostBorderPanel4";
+            this.lostBorderPanel4.Padding = new System.Windows.Forms.Padding(5);
+            this.lostBorderPanel4.ShowText = false;
+            this.lostBorderPanel4.Size = new System.Drawing.Size(284, 142);
+            this.lostBorderPanel4.TabIndex = 8;
+            this.lostBorderPanel4.Text = "lostBorderPanel4";
+            // 
+            // fastColoredTextBox1
+            // 
+            this.fastColoredTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.fastColoredTextBox1.AutoCompleteBrackets = true;
+            this.fastColoredTextBox1.AutoCompleteBracketsList = new char[] {
+        '(',
+        ')',
+        '{',
+        '}',
+        '[',
+        ']',
+        '\"',
+        '\"',
+        '\'',
+        '\''};
+            this.fastColoredTextBox1.AutoScrollMinSize = new System.Drawing.Size(322, 112);
+            this.fastColoredTextBox1.BackBrush = null;
+            this.fastColoredTextBox1.CharHeight = 14;
+            this.fastColoredTextBox1.CharWidth = 8;
+            this.fastColoredTextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.fastColoredTextBox1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
+            this.fastColoredTextBox1.ForeColor = System.Drawing.Color.Black;
+            this.fastColoredTextBox1.IsReplaceMode = false;
+            this.fastColoredTextBox1.Location = new System.Drawing.Point(3, 3);
+            this.fastColoredTextBox1.Name = "fastColoredTextBox1";
+            this.fastColoredTextBox1.Paddings = new System.Windows.Forms.Padding(0);
+            this.fastColoredTextBox1.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
+            this.fastColoredTextBox1.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fastColoredTextBox1.ServiceColors")));
+            this.fastColoredTextBox1.ShowLineNumbers = false;
+            this.fastColoredTextBox1.Size = new System.Drawing.Size(278, 136);
+            this.fastColoredTextBox1.TabIndex = 10;
+            this.fastColoredTextBox1.Text = resources.GetString("fastColoredTextBox1.Text");
+            this.fastColoredTextBox1.Zoom = 100;
+            this.fastColoredTextBox1.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.fastColoredTextBox1_TextChanged);
+            this.fastColoredTextBox1.Load += new System.EventHandler(this.fastColoredTextBox1_Load_1);
+            this.fastColoredTextBox1.MouseEnter += new System.EventHandler(this.fastColoredTextBox1_Load);
+            this.fastColoredTextBox1.MouseLeave += new System.EventHandler(this.fastColoredTextBox1_MouseLeave);
+            // 
+            // materialRaisedButton5
+            // 
+            this.materialRaisedButton5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.materialRaisedButton5.Depth = 0;
+            this.materialRaisedButton5.Location = new System.Drawing.Point(13, 223);
+            this.materialRaisedButton5.Margin = new System.Windows.Forms.Padding(2);
+            this.materialRaisedButton5.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton5.Name = "materialRaisedButton5";
+            this.materialRaisedButton5.Primary = true;
+            this.materialRaisedButton5.Size = new System.Drawing.Size(284, 42);
+            this.materialRaisedButton5.TabIndex = 12;
+            this.materialRaisedButton5.Text = "Sử dụng mã code để sinh test tùy chỉnh";
+            this.toolTip1.SetToolTip(this.materialRaisedButton5, "Sử dụng mã python tùy chỉnh dùng module \"SinhTest\".");
+            this.materialRaisedButton5.UseVisualStyleBackColor = true;
+            this.materialRaisedButton5.Click += new System.EventHandler(this.materialRaisedButton5_Click);
+            // 
+            // materialLabel13
+            // 
+            this.materialLabel13.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.materialLabel13.AutoSize = true;
+            this.materialLabel13.Depth = 0;
+            this.materialLabel13.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel13.Location = new System.Drawing.Point(12, 54);
+            this.materialLabel13.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel13.Name = "materialLabel13";
+            this.materialLabel13.Size = new System.Drawing.Size(175, 19);
+            this.materialLabel13.TabIndex = 11;
+            this.materialLabel13.Text = "Yêu Cầu Để AI Sinh Test:";
             // 
             // crownNumeric1
             // 
@@ -359,8 +476,13 @@
             0,
             0});
             this.crownNumeric1.Name = "crownNumeric1";
-            this.crownNumeric1.Size = new System.Drawing.Size(162, 29);
+            this.crownNumeric1.Size = new System.Drawing.Size(153, 29);
             this.crownNumeric1.TabIndex = 9;
+            this.crownNumeric1.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             // 
             // materialLabel11
             // 
@@ -380,15 +502,16 @@
             this.materialRaisedButton6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.materialRaisedButton6.Depth = 0;
-            this.materialRaisedButton6.Location = new System.Drawing.Point(13, 291);
+            this.materialRaisedButton6.Location = new System.Drawing.Point(13, 269);
             this.materialRaisedButton6.Margin = new System.Windows.Forms.Padding(2);
             this.materialRaisedButton6.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialRaisedButton6.Name = "materialRaisedButton6";
             this.materialRaisedButton6.Primary = true;
-            this.materialRaisedButton6.Size = new System.Drawing.Size(293, 47);
+            this.materialRaisedButton6.Size = new System.Drawing.Size(284, 47);
             this.materialRaisedButton6.TabIndex = 5;
-            this.materialRaisedButton6.Text = "Dùng PDF, Ảnh Của Đề Bài Để Ai Tự Tạo Yêu Cầu";
+            this.materialRaisedButton6.Text = "Dùng PDF, Ảnh Của Đề Bài Để Ai Tự Tạo Yêu Cầu (Có Thể Chọn Nhiều File)";
             this.materialRaisedButton6.UseVisualStyleBackColor = true;
+            this.materialRaisedButton6.Click += new System.EventHandler(this.materialRaisedButton6_Click);
             // 
             // lostBorderPanel1
             // 
@@ -396,6 +519,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lostBorderPanel1.BackColor = System.Drawing.Color.DimGray;
             this.lostBorderPanel1.BorderColor = System.Drawing.Color.DodgerBlue;
+            this.lostBorderPanel1.Controls.Add(this.materialRaisedButton8);
             this.lostBorderPanel1.Controls.Add(this.materialLabel12);
             this.lostBorderPanel1.Controls.Add(this.tableLayoutPanel3);
             this.lostBorderPanel1.Controls.Add(this.crownDropDownList1);
@@ -407,8 +531,24 @@
             this.lostBorderPanel1.Name = "lostBorderPanel1";
             this.lostBorderPanel1.Padding = new System.Windows.Forms.Padding(4);
             this.lostBorderPanel1.ShowText = false;
-            this.lostBorderPanel1.Size = new System.Drawing.Size(318, 103);
+            this.lostBorderPanel1.Size = new System.Drawing.Size(309, 135);
             this.lostBorderPanel1.TabIndex = 0;
+            // 
+            // materialRaisedButton8
+            // 
+            this.materialRaisedButton8.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.materialRaisedButton8.Depth = 0;
+            this.materialRaisedButton8.Location = new System.Drawing.Point(13, 88);
+            this.materialRaisedButton8.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton8.Name = "materialRaisedButton8";
+            this.materialRaisedButton8.Primary = true;
+            this.materialRaisedButton8.Size = new System.Drawing.Size(277, 34);
+            this.materialRaisedButton8.TabIndex = 12;
+            this.materialRaisedButton8.Text = "Sử dụng bản xuất từ File Save (XML)";
+            this.toolTip1.SetToolTip(this.materialRaisedButton8, "Bạn có thể xuất file lưu XML từ máy khác và sử dụng lại ở đây, nhớ cung cấp code " +
+        "của bài giải trước khi sinh test");
+            this.materialRaisedButton8.UseVisualStyleBackColor = true;
             // 
             // materialLabel12
             // 
@@ -432,11 +572,11 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.Controls.Add(this.materialRaisedButton3, 0, 0);
             this.tableLayoutPanel3.Controls.Add(this.materialRaisedButton10, 1, 0);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(13, 51);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(11, 45);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(291, 37);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(282, 37);
             this.tableLayoutPanel3.TabIndex = 11;
             // 
             // materialRaisedButton3
@@ -450,7 +590,7 @@
             this.materialRaisedButton3.Name = "materialRaisedButton3";
             this.materialRaisedButton3.Primary = true;
             this.materialRaisedButton3.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.materialRaisedButton3.Size = new System.Drawing.Size(139, 31);
+            this.materialRaisedButton3.Size = new System.Drawing.Size(135, 31);
             this.materialRaisedButton3.TabIndex = 12;
             this.materialRaisedButton3.Text = "Lưu lại";
             this.materialRaisedButton3.UseVisualStyleBackColor = true;
@@ -461,11 +601,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.materialRaisedButton10.Depth = 0;
-            this.materialRaisedButton10.Location = new System.Drawing.Point(148, 3);
+            this.materialRaisedButton10.Location = new System.Drawing.Point(144, 3);
             this.materialRaisedButton10.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialRaisedButton10.Name = "materialRaisedButton10";
             this.materialRaisedButton10.Primary = true;
-            this.materialRaisedButton10.Size = new System.Drawing.Size(140, 31);
+            this.materialRaisedButton10.Size = new System.Drawing.Size(135, 31);
             this.materialRaisedButton10.TabIndex = 4;
             this.materialRaisedButton10.Text = "Làm sạch";
             this.materialRaisedButton10.UseVisualStyleBackColor = true;
@@ -477,7 +617,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.crownDropDownList1.Location = new System.Drawing.Point(123, 19);
             this.crownDropDownList1.Name = "crownDropDownList1";
-            this.crownDropDownList1.Size = new System.Drawing.Size(181, 20);
+            this.crownDropDownList1.Size = new System.Drawing.Size(172, 20);
             this.crownDropDownList1.TabIndex = 4;
             this.crownDropDownList1.Text = "crownDropDownList1";
             // 
@@ -496,6 +636,10 @@
             // tabPage2
             // 
             this.tabPage2.BackColor = System.Drawing.SystemColors.AppWorkspace;
+            this.tabPage2.Controls.Add(this.materialSingleLineTextField8);
+            this.tabPage2.Controls.Add(this.materialLabel15);
+            this.tabPage2.Controls.Add(this.materialSingleLineTextField7);
+            this.tabPage2.Controls.Add(this.materialLabel14);
             this.tabPage2.Controls.Add(this.materialSingleLineTextField4);
             this.tabPage2.Controls.Add(this.materialSingleLineTextField6);
             this.tabPage2.Controls.Add(this.materialLabel8);
@@ -523,11 +667,71 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Cài Đặt";
             // 
+            // materialSingleLineTextField8
+            // 
+            this.materialSingleLineTextField8.Depth = 0;
+            this.materialSingleLineTextField8.Hint = "";
+            this.materialSingleLineTextField8.Location = new System.Drawing.Point(179, 426);
+            this.materialSingleLineTextField8.Margin = new System.Windows.Forms.Padding(2);
+            this.materialSingleLineTextField8.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialSingleLineTextField8.Name = "materialSingleLineTextField8";
+            this.materialSingleLineTextField8.PasswordChar = '\0';
+            this.materialSingleLineTextField8.SelectedText = "";
+            this.materialSingleLineTextField8.SelectionLength = 0;
+            this.materialSingleLineTextField8.SelectionStart = 0;
+            this.materialSingleLineTextField8.Size = new System.Drawing.Size(387, 23);
+            this.materialSingleLineTextField8.TabIndex = 28;
+            this.materialSingleLineTextField8.UseSystemPasswordChar = false;
+            // 
+            // materialLabel15
+            // 
+            this.materialLabel15.AutoSize = true;
+            this.materialLabel15.Depth = 0;
+            this.materialLabel15.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel15.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel15.Location = new System.Drawing.Point(18, 426);
+            this.materialLabel15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.materialLabel15.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel15.Name = "materialLabel15";
+            this.materialLabel15.Size = new System.Drawing.Size(157, 19);
+            this.materialLabel15.TabIndex = 27;
+            this.materialLabel15.Text = "Pascal Compiler Path:";
+            // 
+            // materialSingleLineTextField7
+            // 
+            this.materialSingleLineTextField7.Depth = 0;
+            this.materialSingleLineTextField7.Hint = "";
+            this.materialSingleLineTextField7.Location = new System.Drawing.Point(201, 335);
+            this.materialSingleLineTextField7.Margin = new System.Windows.Forms.Padding(2);
+            this.materialSingleLineTextField7.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialSingleLineTextField7.Name = "materialSingleLineTextField7";
+            this.materialSingleLineTextField7.PasswordChar = '\0';
+            this.materialSingleLineTextField7.SelectedText = "";
+            this.materialSingleLineTextField7.SelectionLength = 0;
+            this.materialSingleLineTextField7.SelectionStart = 0;
+            this.materialSingleLineTextField7.Size = new System.Drawing.Size(387, 23);
+            this.materialSingleLineTextField7.TabIndex = 26;
+            this.materialSingleLineTextField7.UseSystemPasswordChar = false;
+            // 
+            // materialLabel14
+            // 
+            this.materialLabel14.AutoSize = true;
+            this.materialLabel14.Depth = 0;
+            this.materialLabel14.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel14.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel14.Location = new System.Drawing.Point(18, 335);
+            this.materialLabel14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.materialLabel14.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel14.Name = "materialLabel14";
+            this.materialLabel14.Size = new System.Drawing.Size(179, 19);
+            this.materialLabel14.TabIndex = 25;
+            this.materialLabel14.Text = "Pascal Compiler Options:";
+            // 
             // materialSingleLineTextField4
             // 
             this.materialSingleLineTextField4.Depth = 0;
             this.materialSingleLineTextField4.Hint = "";
-            this.materialSingleLineTextField4.Location = new System.Drawing.Point(162, 368);
+            this.materialSingleLineTextField4.Location = new System.Drawing.Point(162, 396);
             this.materialSingleLineTextField4.Margin = new System.Windows.Forms.Padding(2);
             this.materialSingleLineTextField4.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialSingleLineTextField4.Name = "materialSingleLineTextField4";
@@ -561,7 +765,7 @@
             this.materialLabel8.Depth = 0;
             this.materialLabel8.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel8.Location = new System.Drawing.Point(18, 368);
+            this.materialLabel8.Location = new System.Drawing.Point(18, 396);
             this.materialLabel8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.materialLabel8.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel8.Name = "materialLabel8";
@@ -589,7 +793,7 @@
             this.materialLabel9.Depth = 0;
             this.materialLabel9.Font = new System.Drawing.Font("Roboto", 11F);
             this.materialLabel9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel9.Location = new System.Drawing.Point(18, 335);
+            this.materialLabel9.Location = new System.Drawing.Point(18, 366);
             this.materialLabel9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.materialLabel9.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialLabel9.Name = "materialLabel9";
@@ -601,7 +805,7 @@
             // 
             this.materialSingleLineTextField5.Depth = 0;
             this.materialSingleLineTextField5.Hint = "";
-            this.materialSingleLineTextField5.Location = new System.Drawing.Point(183, 335);
+            this.materialSingleLineTextField5.Location = new System.Drawing.Point(183, 366);
             this.materialSingleLineTextField5.Margin = new System.Windows.Forms.Padding(2);
             this.materialSingleLineTextField5.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialSingleLineTextField5.Name = "materialSingleLineTextField5";
@@ -830,6 +1034,17 @@
             this.tabPage4.Text = "Offline Mode";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // webView22
+            // 
+            this.webView22.AllowExternalDrop = true;
+            this.webView22.CreationProperties = null;
+            this.webView22.DefaultBackgroundColor = System.Drawing.Color.White;
+            this.webView22.Location = new System.Drawing.Point(13, 31);
+            this.webView22.Name = "webView22";
+            this.webView22.Size = new System.Drawing.Size(890, 392);
+            this.webView22.TabIndex = 0;
+            this.webView22.ZoomFactor = 1D;
+            // 
             // materialFlatButton3
             // 
             this.materialFlatButton3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -847,83 +1062,6 @@
             this.materialFlatButton3.Text = "REFRESH";
             this.materialFlatButton3.UseVisualStyleBackColor = true;
             this.materialFlatButton3.Click += new System.EventHandler(this.materialFlatButton3_Click);
-            // 
-            // webView22
-            // 
-            this.webView22.AllowExternalDrop = true;
-            this.webView22.CreationProperties = null;
-            this.webView22.DefaultBackgroundColor = System.Drawing.Color.White;
-            this.webView22.Location = new System.Drawing.Point(13, 31);
-            this.webView22.Name = "webView22";
-            this.webView22.Size = new System.Drawing.Size(890, 392);
-            this.webView22.TabIndex = 0;
-            this.webView22.ZoomFactor = 1D;
-            // 
-            // fastColoredTextBox1
-            // 
-            this.fastColoredTextBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.fastColoredTextBox1.AutoCompleteBracketsList = new char[] {
-        '(',
-        ')',
-        '{',
-        '}',
-        '[',
-        ']',
-        '\"',
-        '\"',
-        '\'',
-        '\''};
-            this.fastColoredTextBox1.AutoScrollMinSize = new System.Drawing.Size(179, 14);
-            this.fastColoredTextBox1.BackBrush = null;
-            this.fastColoredTextBox1.CharHeight = 14;
-            this.fastColoredTextBox1.CharWidth = 8;
-            this.fastColoredTextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.fastColoredTextBox1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.fastColoredTextBox1.Font = new System.Drawing.Font("Courier New", 9.75F);
-            this.fastColoredTextBox1.ForeColor = System.Drawing.Color.Black;
-            this.fastColoredTextBox1.IsReplaceMode = false;
-            this.fastColoredTextBox1.Location = new System.Drawing.Point(13, 78);
-            this.fastColoredTextBox1.Name = "fastColoredTextBox1";
-            this.fastColoredTextBox1.Paddings = new System.Windows.Forms.Padding(0);
-            this.fastColoredTextBox1.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
-            this.fastColoredTextBox1.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fastColoredTextBox1.ServiceColors")));
-            this.fastColoredTextBox1.Size = new System.Drawing.Size(291, 174);
-            this.fastColoredTextBox1.TabIndex = 10;
-            this.fastColoredTextBox1.Text = "fastColoredTextBox1";
-            this.fastColoredTextBox1.Zoom = 100;
-            // 
-            // materialLabel13
-            // 
-            this.materialLabel13.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.materialLabel13.AutoSize = true;
-            this.materialLabel13.Depth = 0;
-            this.materialLabel13.Font = new System.Drawing.Font("Roboto", 11F);
-            this.materialLabel13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.materialLabel13.Location = new System.Drawing.Point(12, 54);
-            this.materialLabel13.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialLabel13.Name = "materialLabel13";
-            this.materialLabel13.Size = new System.Drawing.Size(175, 19);
-            this.materialLabel13.TabIndex = 11;
-            this.materialLabel13.Text = "Yêu Cầu Để AI Sinh Test:";
-            // 
-            // materialRaisedButton5
-            // 
-            this.materialRaisedButton5.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.materialRaisedButton5.Depth = 0;
-            this.materialRaisedButton5.Location = new System.Drawing.Point(13, 257);
-            this.materialRaisedButton5.Margin = new System.Windows.Forms.Padding(2);
-            this.materialRaisedButton5.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialRaisedButton5.Name = "materialRaisedButton5";
-            this.materialRaisedButton5.Primary = true;
-            this.materialRaisedButton5.Size = new System.Drawing.Size(293, 30);
-            this.materialRaisedButton5.TabIndex = 12;
-            this.materialRaisedButton5.Text = "Sử dụng mã sinh test tùy chỉnh";
-            this.toolTip1.SetToolTip(this.materialRaisedButton5, "Sử dụng mã python tùy chỉnh dùng module \"SinhTest\".");
-            this.materialRaisedButton5.UseVisualStyleBackColor = true;
             // 
             // toolTip1
             // 
@@ -962,6 +1100,8 @@
             this.tableLayoutPanel1.ResumeLayout(false);
             this.lostBorderPanel2.ResumeLayout(false);
             this.lostBorderPanel2.PerformLayout();
+            this.lostBorderPanel4.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.crownNumeric1)).EndInit();
             this.lostBorderPanel1.ResumeLayout(false);
             this.lostBorderPanel1.PerformLayout();
@@ -972,7 +1112,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.VideoPlayer)).EndInit();
             this.tabPage4.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.webView22)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.fastColoredTextBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -985,12 +1124,6 @@
         public System.Windows.Forms.TabPage tabPage1;
         private MaterialSkin.Controls.MaterialFlatButton materialFlatButton3;
         private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton1;
-        private ReaLTaiizor.Controls.LostBorderPanel lostBorderPanel1;
-        private MaterialSkin.Controls.MaterialLabel materialLabel3;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private ReaLTaiizor.Docking.Crown.CrownDockPanel crownDockPanel1;
-        private MaterialSkin.Controls.MaterialLabel materialLabel6;
-        private ReaLTaiizor.Controls.LostBorderPanel lostBorderPanel2;
         private MaterialSkin.Controls.MaterialLabel materialLabel7;
         private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton4;
         private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton6;
@@ -1030,9 +1163,22 @@
         private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton3;
         private Microsoft.Web.WebView2.WinForms.WebView2 webView22;
         private MaterialSkin.Controls.MaterialLabel materialLabel13;
-        private FastColoredTextBoxNS.FastColoredTextBox fastColoredTextBox1;
         private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton5;
         private System.Windows.Forms.ToolTip toolTip1;
+        public ReaLTaiizor.Controls.LostBorderPanel lostBorderPanel1;
+        public ReaLTaiizor.Controls.LostBorderPanel lostBorderPanel2;
+        public System.Windows.Forms.SplitContainer splitContainer1;
+        public MaterialSkin.Controls.MaterialLabel materialLabel3;
+        public MaterialSkin.Controls.MaterialLabel materialLabel6;
+        public ReaLTaiizor.Docking.Crown.CrownDockPanel crownDockPanel1;
+        public ReaLTaiizor.Controls.LostBorderPanel lostBorderPanel4;
+        public FastColoredTextBoxNS.FastColoredTextBox fastColoredTextBox1;
+        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton7;
+        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton8;
+        public MaterialSkin.Controls.MaterialSingleLineTextField materialSingleLineTextField8;
+        private MaterialSkin.Controls.MaterialLabel materialLabel15;
+        public MaterialSkin.Controls.MaterialSingleLineTextField materialSingleLineTextField7;
+        private MaterialSkin.Controls.MaterialLabel materialLabel14;
     }
 }
 

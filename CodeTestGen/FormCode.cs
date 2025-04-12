@@ -5,7 +5,7 @@ using System.IO;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.Serialization.Formatters;
-using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MaterialSkin.Controls;
@@ -14,15 +14,38 @@ namespace CodeTestGenV1
 {
     public partial class FormCode : MaterialForm
     {
-        public FormCode(string Code)
+        public string Code;
+        private FormMain _mMain;
+        
+        public FormCode(string oldCode, FormMain fm)
         {
+            _mMain = fm;
+            Code = oldCode;
             InitializeComponent();
             InitializeWebViewAsync();
+        }
+
+
+        private async Task SetTheme()
+        {
+            if (_mMain != null)
+            {
+                string Mode = _mMain.appSettings.Mode;
+                if (Mode == "Dark")
+                {
+                    await webView21.CoreWebView2.ExecuteScriptAsync($"toggleDarkMode(true);");
+                }
+                else // Light mode
+                {
+                    await webView21.CoreWebView2.ExecuteScriptAsync($"toggleDarkMode(false);");
+                }
+
+            }
         }
         private async void InitializeWebViewAsync()
         {
             await webView21.EnsureCoreWebView2Async(null);
-
+            //Editor
             string htmlPath = Path.Combine(Hotro.AppPath, "editor.html");
             if (!File.Exists(htmlPath))
             {
@@ -31,31 +54,19 @@ namespace CodeTestGenV1
             }
 
             webView21.Source = new Uri($"file:///{htmlPath.Replace("\\", "/")}");
-            var tcs = new TaskCompletionSource<bool>();
-
-            webView21.CoreWebView2.NavigationCompleted += (sender, e) =>
+            webView21.CoreWebView2.NavigationCompleted += async (sender, e) =>
             {
-                if (e.IsSuccess)
-                {
-                    tcs.SetResult(true);
-                }
-                else
-                {
-                    tcs.SetResult(false);
-                }
+                await SetTheme();
+                await webView21.CoreWebView2.ExecuteScriptAsync($"setText({JsonSerializer.Serialize(Code)});");
             };
+        }
 
-            bool isLoaded = await tcs.Task;
-
-            if (isLoaded)
-            {
-                await webView21.CoreWebView2.ExecuteScriptAsync($"toggleDarkMode(true);");
-                await webView21.CoreWebView2.ExecuteScriptAsync($"toggleDarkMode(true);");
-            }
-            else
-            {
-                MessageBox.Show("Editor không thể tải thành công.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+        private  async void materialRaisedButton1_Click(object sender, EventArgs e)
+        {
+            string EditorDataRaw = await webView21.ExecuteScriptAsync("WebViewGetCode()");
+            Code = JsonSerializer.Deserialize<string>(EditorDataRaw);
+            DialogResult = DialogResult.OK;
+            Close();
         }
     }
 }

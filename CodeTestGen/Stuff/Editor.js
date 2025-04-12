@@ -20,7 +20,7 @@ function clearText() {
   editor.setValue("");
 }
 
-function getText() {
+function WebViewGetCode() {
   return editor.getValue();
 }
 
@@ -37,6 +37,9 @@ function changeLanguage(language) {
   } else if (language === "2") {
     lang = "cpp";
     document.getElementById("language").value = "cpp";
+  } else if (language === "3") {
+    lang = "pascal";
+    document.getElementById("language").value = "pascal";
   }
   monaco.editor.setModelLanguage(editor.getModel(), lang);
 }
@@ -489,8 +492,130 @@ require(["vs/editor/editor.main"], function () {
     },
   ];
 
+  const pascalSuggestions = [
+    {
+      label: "program",
+      kind: monaco.languages.CompletionItemKind.Keyword,
+      insertText: "program ${1:ProgramName};\n$0\nbegin\nend.",
+      insertTextRules:
+        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+    },
+    {
+      label: "begin",
+      kind: monaco.languages.CompletionItemKind.Keyword,
+      insertText: "begin\n\t$0\nend;",
+      insertTextRules:
+        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+    },
+    {
+      label: "if",
+      kind: monaco.languages.CompletionItemKind.Keyword,
+      insertText: "if ${1:condition} then\n\t$0",
+      insertTextRules:
+        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+    },
+    {
+      label: "else",
+      kind: monaco.languages.CompletionItemKind.Keyword,
+      insertText: "else\n\t$0",
+      insertTextRules:
+        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+    },
+    {
+      label: "for",
+      kind: monaco.languages.CompletionItemKind.Keyword,
+      insertText: "for ${1:i} := ${2:start} to ${3:end} do\n\t$0",
+      insertTextRules:
+        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+    },
+    {
+      label: "while",
+      kind: monaco.languages.CompletionItemKind.Keyword,
+      insertText: "while ${1:condition} do\n\t$0",
+      insertTextRules:
+        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+    },
+    {
+      label: "repeat",
+      kind: monaco.languages.CompletionItemKind.Keyword,
+      insertText: "repeat\n\t$0\nuntil ${1:condition};",
+      insertTextRules:
+        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+    },
+    {
+      label: "write",
+      kind: monaco.languages.CompletionItemKind.Function,
+      insertText: "write(${1:text});",
+      insertTextRules:
+        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+    },
+    {
+      label: "writeln",
+      kind: monaco.languages.CompletionItemKind.Function,
+      insertText: "writeln(${1:text});",
+      insertTextRules:
+        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+    },
+    {
+      label: "read",
+      kind: monaco.languages.CompletionItemKind.Function,
+      insertText: "read(${1:variable});",
+      insertTextRules:
+        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+    },
+    {
+      label: "readln",
+      kind: monaco.languages.CompletionItemKind.Function,
+      insertText: "readln(${1:variable});",
+      insertTextRules:
+        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+    },
+    {
+      label: "var",
+      kind: monaco.languages.CompletionItemKind.Keyword,
+      insertText: "var\n\t${1:name}: ${2:type};$0",
+      insertTextRules:
+        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+    },
+    {
+      label: "procedure",
+      kind: monaco.languages.CompletionItemKind.Keyword,
+      insertText: "procedure ${1:ProcName}(${2:parameters});\nbegin\n\t$0\nend;",
+      insertTextRules:
+        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+    },
+    {
+      label: "function",
+      kind: monaco.languages.CompletionItemKind.Keyword,
+      insertText: "function ${1:FuncName}(${2:parameters}): ${3:type};\nbegin\n\t$0\nend;",
+      insertTextRules:
+        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+    },
+    {
+      label: "uses",
+      kind: monaco.languages.CompletionItemKind.Module,
+      insertText: "uses ${1:unit};",
+      insertTextRules:
+        monaco.languages.CompletionItemInsertTextRule.InsertAsSnippet,
+    },
+  ];
+
+  monaco.languages.register({ id: "pascal" });
+  monaco.languages.setMonarchTokensProvider("pascal", {
+    tokenizer: {
+      root: [
+        [/\b(program|begin|end|var|integer|real|char|string|array|of|if|then|else|for|to|downto|while|do|repeat|until|procedure|function|uses|write|writeln|read|readln)\b/, "keyword"],
+        [/\b(true|false|nil)\b/, "constant"],
+        [/\/\/.*/, "comment"],
+        [/\{[^}]*\}/, "comment"],
+        [/[0-9]+/, "number"],
+        [/['"][^'"]*['"]/, "string"],
+      ],
+    },
+  });
+
   editor = monaco.editor.create(document.getElementById("editor"), {
-    value: `#Bạn Có Thể Dán Code Bài Test Vào Đây!`,
+    value: `#Bạn Có Thể Dán Code Vào Đây!`,
     language: "python",
     theme: "vs",
     automaticLayout: true,
@@ -523,6 +648,23 @@ require(["vs/editor/editor.main"], function () {
         endColumn: word.endColumn,
       };
       const suggestionsWithRange = pythonSuggestions.map((suggestion) => ({
+        ...suggestion,
+        range: range,
+      }));
+      return { suggestions: suggestionsWithRange };
+    },
+  });
+
+  monaco.languages.registerCompletionItemProvider("pascal", {
+    provideCompletionItems: (model, position) => {
+      const word = model.getWordUntilPosition(position);
+      const range = {
+        startLineNumber: position.lineNumber,
+        endLineNumber: position.lineNumber,
+        startColumn: word.startColumn,
+        endColumn: word.endColumn,
+      };
+      const suggestionsWithRange = pascalSuggestions.map((suggestion) => ({
         ...suggestion,
         range: range,
       }));

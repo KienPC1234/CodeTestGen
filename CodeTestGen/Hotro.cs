@@ -9,16 +9,67 @@ using Microsoft.Web.WebView2.Core;
 using GenerativeAI;
 using GenerativeAI.Types;
 using System.Collections.Generic;
-
-
+using Aspose.Pdf;
+using Aspose.Pdf.Devices;
+using System.Runtime.CompilerServices;
 namespace CodeTestGenV1
 {
     internal class Hotro
     {
         public static readonly string AppPath = Directory.GetCurrentDirectory();
         public static readonly string version = "1.0 Beta";
+        public static string StuffFolder = null;
+
+        //AI
+        public static string promptGenTesCaseCode(string Sotest, string EditorData, string YeuCau, string SinhTestModule)
+        {
+            string prompt = $@"
+Hãy viết code Python để sinh {Sotest} test theo yêu cầu của tôi.
+- Yêu Cầu Quan Trọng: Bắt Buộc phải bọc toàn bộ code của bạn tạo ra trong thẻ <MakeByAIFlag> và </MakeByAIFlag>
+- Dữ liệu có sẵn trong biến EditorData.
+- Yêu cầu người dùng có trong biến YeuCau.
+- Thư Viện 'SinhTest' đã được import sẵn, có các hàm hỗ trợ sinh test, hãy tận dụng triệt để Thư Viên Này!
+- Không Được Phép Phản Hồi Lại Bằng Markdown, Nội dung thông thường thôi!
+- Bắt Buộc Sinh Đủ {Sotest} Testcase.
+
+Yêu cầu bắt buộc:
+- Chỉ in ra code Python.
+- Phải bọc toàn bộ code trong <MakeByAIFlag> và </MakeByAIFlag>.
+- Không được viết mô tả, giải thích hay in gì ngoài thẻ.
+- Code phải chạy được, rõ ràng, trực tiếp sinh test từ EditorData hoặc theo yêu cầu.
+- Hãy ưu tiên dùng EditorData làm mẫu đầu vào để sinh test phù hợp với code!
+
+Biến:
+EditorData: {EditorData}
+YeuCau: {YeuCau}
+Thư viện 'SinhTest': {SinhTestModule}
+
+Ví dụ:
+
+EditorData: Không có gì cụ thể
+YeuCau: Sinh 20 test là ma trận ngẫu nhiên kích thước (1-100), giá trị 1-100.
+
+Trả lời:
+<MakeByAIFlag>
+from SinhTest import *
+
+for test_index in range(1, 21):
+    testcase(test_index)
+    n = random_number(1, 100)
+    m = random_number(1, 100)
+    testcase_print(n + ' ' + m)
+    xuong_dong()
+    testcase_print(random_matrix(n, m, 1, 100, 0))
+    endtestcase()
+
+SaveTestCases()
+</MakeByAIFlag>
+";
+            return prompt;
+        }
+
     }
-    
+
 
     public class GeminiClient
     {
@@ -39,11 +90,6 @@ namespace CodeTestGenV1
             _model = new GenerativeModel(_apiKey, _modelType);
         }
 
-        /// <summary>
-        /// Tạo text từ text input
-        /// </summary>
-        /// <param name="inputText">Text đầu vào</param>
-        /// <returns>Text được sinh ra</returns>
         public async Task<string> GenerateTextFromTextAsync(string inputText)
         {
             if (string.IsNullOrEmpty(inputText))
@@ -74,25 +120,65 @@ namespace CodeTestGenV1
                 throw new Exception($"Lỗi khi tạo text: {ex.Message}", ex);
             }
         }
+        private string[] Pdf2Image(string filepath, string baseTempDir)
+        {
+            string uuid = Guid.NewGuid().ToString();
+            string tempDir = Path.Combine(baseTempDir, uuid);
+            Directory.CreateDirectory(tempDir);
 
-        /// <summary>
-        /// Tạo text từ ảnh và text input
-        /// </summary>
-        /// <param name="inputText">Text đầu vào</param>
-        /// <param name="imagePath">Đường dẫn đến file ảnh cục bộ</param>
-        /// <returns>Text được sinh ra</returns>
-        public async Task<string> GenerateTextFromImageAndTextAsync(string inputText, string imagePath)
+            List<string> imagePaths = new List<string>();
+            using (var pdfDocument = new Aspose.Pdf.Document(filepath))
+            {
+                var resolution = new Resolution(300);
+                for (int pageNumber = 1; pageNumber <= pdfDocument.Pages.Count; pageNumber++)
+                {
+                    string outputPath = Path.Combine(tempDir, $"page_{pageNumber}.png");
+                    using (var imageStream = new FileStream(outputPath, FileMode.Create, FileAccess.Write, FileShare.None))
+                    {
+                        var pngDevice = new PngDevice(new PageSize(595, 842), resolution);
+                        pngDevice.Process(pdfDocument.Pages[pageNumber], imageStream);
+                    }
+                    imagePaths.Add(outputPath);
+                }
+            }
+            return imagePaths.ToArray();
+        }
+
+        public async Task<string> GenerateTextFromImageAndTextAsync(string inputText, string[] imageFolder)
         {
             if (string.IsNullOrEmpty(inputText))
                 throw new ArgumentNullException(nameof(inputText));
-            if (string.IsNullOrEmpty(imagePath))
-                throw new ArgumentNullException(nameof(imagePath));
+
+            string baseTempDir = Path.Combine(Path.GetTempPath(), "ctgPDF");
+            Directory.CreateDirectory(baseTempDir);
 
             try
             {
                 var request = new GenerateContentRequest();
                 request.AddText(inputText);
-                request.AddInlineFile(imagePath);
+
+                foreach (var file in imageFolder)
+                {
+                    if (File.Exists(file))
+                    {
+                        if (Path.GetExtension(file).ToLower() == ".pdf")
+                        {
+                            string[] imagePaths = Pdf2Image(file, baseTempDir);
+                            foreach (var imagePath in imagePaths)
+                            {
+                                request.AddInlineFile(imagePath);
+                            }
+                        }
+                        else
+                        {
+                            request.AddInlineFile(file);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show($"Không Tìm Thấy File Ở: {file}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
 
                 var response = await _model.GenerateContentAsync(request);
                 return response.Candidates[0].Content.Parts[0].Text;

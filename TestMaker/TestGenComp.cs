@@ -8,5 +8,6 @@ namespace TestMaker
 {
     internal class TestGenComp
     {
+
     }
 }
