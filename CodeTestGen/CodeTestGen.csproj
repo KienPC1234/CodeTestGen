@@ -19836,7 +19836,6 @@
     <Content Include="encode.ico" />
     <Content Include="ILLink\ILLink.Descriptors.LibraryBuild.xml" />
     <None Include="Resources\encode.png" />
-    <Content Include="python.exe" />
     <Content Include="TestCaseViewer.html">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

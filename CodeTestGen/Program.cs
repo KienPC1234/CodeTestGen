@@ -20,15 +20,15 @@ namespace CodeTestGenV1
                 MessageBox.Show("KHông Tìm Thấy Thư Mục Chứa File Quan Trọng, Vui Lòng Cài Lại App!","Lỗi Nghiêm Trọng",MessageBoxButtons.OK,MessageBoxIcon.Stop);
                 Environment.Exit(-1);
             }
-
+            if (Directory.Exists(Path.Combine(Path.GetTempPath(), "ctgPDF")))
+            {
+                Directory.Delete(Path.Combine(Path.GetTempPath(), "ctgPDF"),true);
+            }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain());
             //cleanUp
-            if (Directory.Exists(Path.Combine(Path.GetTempPath(), "ctgPDF")))
-            {
-                Directory.Delete(Path.Combine(Path.GetTempPath(), "ctgPDF"));
-            }
+            
         }
     }
 }

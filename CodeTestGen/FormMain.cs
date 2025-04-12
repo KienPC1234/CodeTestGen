@@ -367,16 +367,20 @@ namespace CodeTestGenV1
             int Pyec = await TestGen.RunPython(pythonCode, appSettings.PythonCompilerPath);
             if (Pyec == 0)
             {
-                
                 string XMLData = File.ReadAllText(TestCasesPath);
-                using (var TestcaseViewer = new TestcaseViewer(XMLData, this))
+                var Result3 = MessageBox.Show("Input Testcase đã tạo xong, Bạn có muốn xem lại hay tùy chỉnh gì không?", "Hỏi", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                if (Result3 == DialogResult.OK)
                 {
-                    if (TestcaseViewer.ShowDialog() == DialogResult.OK)
+                    using (var TestcaseViewer = new TestcaseViewer(XMLData, this))
                     {
-                        XMLData = TestcaseViewer.Xml;
+                        if (TestcaseViewer.ShowDialog() == DialogResult.OK)
+                        {
+                            XMLData = TestcaseViewer.Xml;
+                        }
                     }
+                    File.WriteAllText(TestCasesPath, XMLData, new UTF8Encoding(false));
                 }
-                File.WriteAllText(TestCasesPath, XMLData, new UTF8Encoding(false));
+
                 var (compPath, compOption) = await TestGen.GetEditorLanguageAsync(webView21, appSettings);
 
                 var (TestMaker,XmlDataNew) = await TestGen.RunTestMaker(TestCasesPath, EditorData,compPath,compOption);
