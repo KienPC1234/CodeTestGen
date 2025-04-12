@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blockly & Python Workspace</title>
+  <!-- Bootstrap CSS -->
+  <link href="Stuff/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Animate.css -->
+  <link href="Stuff/animate.css/package/animate.min.css" rel="stylesheet">
+  <!-- Blockly Scripts -->
+  <script src="Stuff/blockly/package/blockly_compressed.js"></script>
+  <script src="Stuff/blockly/package/blocks_compressed.js"></script>
+  <script src="Stuff/blockly/package/python_compressed.js"></script>
+  <script src="Stuff/blockly/package/msg/en.js"></script>
+  <style>
+    html, body {
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f7fa;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    body.dark-mode {
+      background-color: #1e1e1e;
+      color: #ffffff;
+    }
+    /* Wrapper toàn trang sử dụng flexbox */
+    .page-wrapper {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 0 20px;
+      overflow: hidden;
+    }
+    /* Row chứa hai cột Blockly và Python */
+    .content-row {
+      margin-top: 10px; 
+      flex-grow: 1;
+      display: flex;
+      gap: 20px;
+      overflow: hidden;
+    }
+    .col-half {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 300px;
+    }
+    /* Các panel sẽ tự mở rộng */
+    .panel {
+      flex-grow: 1;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      background-color: #fff;
+      overflow: hidden;
+      transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+    }
+    body.dark-mode .panel {
+      background-color: #2d2d2d;
+      border-color: #444;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+    /* Cài đặt riêng cho textarea Python */
+    #pythonCode {
+      padding: 15px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font-family: 'Courier New', monospace;
+      resize: none;
+    }
+    body.dark-mode #pythonCode {
+      color: #e0e0e0;
+    }
+    footer {
+      padding: 20px;
+      text-align: center;
+    }
+    .btn-custom {
+      margin-left: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 25px;
+      transition: transform 0.2s;
+    }
+    .btn-custom:hover {
+      transform: scale(1.05);
+    }
+    /* Nút chuyển đổi chế độ */
+    .toggle-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+    }
+    .toggle-btn {
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      font-size: 20px;
+      transition: transform 0.3s ease, background-color 0.3s ease;
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      color: #343a40;
+    }
+    body.dark-mode .toggle-btn {
+      background-color: #444;
+      border-color: #666;
+      color: #ffffff;
+    }
+    .toggle-btn:hover {
+      transform: scale(1.1);
+    }
+    @media (max-width: 768px) {
+      .col-half {
+        flex-basis: 100%;
+      }
+      .panel {
+        min-height: 300px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-wrapper">
+    <main>
+      <div class="content-row">
+        <div class="col-half animate__animated animate__fadeInLeft">
+          <h3>Đây là cửa sổ Blockly:</h3>
+          <div id="blocklyDiv" class="panel"></div>
+        </div>
+        <div class="col-half animate__animated animate__fadeInRight">
+          <h3>Mã Python:</h3>
+          <textarea id="pythonCode" class="panel" readonly></textarea>
+        </div>
+      </div>
+    </main>
+    <footer class="animate__animated animate__fadeInUp">
+      <button class="btn btn-success btn-custom me-2" onclick="exportToJson()">Lưu lại block</button>
+      <button class="btn btn-info btn-custom" onclick="document.getElementById('jsonInput').click()">Tải lại block từ file</button>
+      <input type="file" id="jsonInput" accept=".json" onchange="loadFromJson(event)" class="d-none">
+    </footer>
+  </div>
+  <div class="toggle-container">
+    <button class="toggle-btn" onclick="toggleDarkMode()">☀️</button>
+  </div>
+  <script src="Stuff/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="Stuff/mainBlockly.js"></script>
+  <script>
+    const darkTheme = Blockly.Theme.defineTheme('dark', {
+      'base': Blockly.Themes.Classic,
+      'componentStyles': {
+          'workspaceBackgroundColour': '#2d2d2d',
+          'toolboxBackgroundColour': '#1e1e1e',
+          'flyoutBackgroundColour': '#333',
+          'scrollbarColour': '#666',
+          'scrollbarOpacity': 0.5,
+      },
+      'blockStyles': {
+          'logic_blocks': {'colourPrimary': '#1e90ff'},
+          'loop_blocks': {'colourPrimary': '#32cd32'},
+          'math_blocks': {'colourPrimary': '#ff6347'},
+          'text_blocks': {'colourPrimary': '#ffa500'},
+          'variable_blocks': {'colourPrimary': '#dc143c'},
+          'procedure_blocks': {'colourPrimary': '#4682b4'},
+      }
+    });
+    let isDarkMode = false;
+    function toggleDarkMode(forceDark = null) {
+      isDarkMode = forceDark !== null ? forceDark : !isDarkMode;
+      const body = document.body;
+      const toggleBtn = document.querySelector('.toggle-btn');
+      if (isDarkMode) {
+        body.classList.add('dark-mode');
+        toggleBtn.textContent = '🌙';
+      } else {
+        body.classList.remove('dark-mode');
+        toggleBtn.textContent = '☀️';
+      }
+      workspace.setTheme(isDarkMode ? darkTheme : Blockly.Themes.Classic);
+      localStorage.setItem('darkMode', isDarkMode);
+    }
+    document.addEventListener('DOMContentLoaded', () => {
+      const darkMode = localStorage.getItem('darkMode') === 'true';
+      toggleDarkMode(darkMode);
+    });
+  </script>
+</body>
+</html>
