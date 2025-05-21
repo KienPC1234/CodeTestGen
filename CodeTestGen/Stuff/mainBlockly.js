@@ -217,6 +217,7 @@ const workspace = Blockly.inject("blocklyDiv", {
                     <value name="MIN"><block type="math_number"><field name="NUM">1</field></block></value>
                     <value name="MAX"><block type="math_number"><field name="NUM">100</field></block></value>
                     <value name="DIRECTED"><block type="logic_boolean"><field name="BOOL">FALSE</field></block></value>
+                    <value name="CONNECTED"><block type="logic_boolean"><field name="BOOL">FALSE</field></block></value>
                 </block>
                 <block type="random_graph_weighted">
                     <value name="N"><block type="math_number"><field name="NUM">4</field></block></value>
@@ -226,6 +227,7 @@ const workspace = Blockly.inject("blocklyDiv", {
                     <value name="WMIN"><block type="math_number"><field name="NUM">1</field></block></value>
                     <value name="WMAX"><block type="math_number"><field name="NUM">100</field></block></value>
                     <value name="DIRECTED"><block type="logic_boolean"><field name="BOOL">FALSE</field></block></value>
+                    <value name="CONNECTED"><block type="logic_boolean"><field name="BOOL">FALSE</field></block></value>
                 </block>
                 <block type="random_permutation">
                     <value name="N"><block type="math_number"><field name="NUM">5</field></block></value>
@@ -599,6 +601,9 @@ Blockly.Blocks["random_graph"] = {
     this.appendValueInput("DIRECTED")
       .setCheck("Boolean")
       .appendField("có hướng");
+    this.appendValueInput("CONNECTED")
+      .setCheck("Boolean")
+      .appendField("liên thông");
     this.setOutput(true, "String");
     this.setColour(230);
     this.setTooltip("Tạo đồ thị ngẫu nhiên với n đỉnh và m cạnh");
@@ -616,6 +621,9 @@ Blockly.Blocks["random_graph_weighted"] = {
     this.appendValueInput("DIRECTED")
       .setCheck("Boolean")
       .appendField("có hướng");
+    this.appendValueInput("CONNECTED")
+      .setCheck("Boolean")
+      .appendField("liên thông");
     this.appendValueInput("WMIN").setCheck("Number").appendField("trọng số từ");
     this.appendValueInput("WMAX").setCheck("Number").appendField("đến");
     this.setOutput(true, "String");
@@ -641,8 +649,14 @@ Blockly.Python["random_graph"] = function (block) {
       "DIRECTED",
       Blockly.Python.ORDER_ATOMIC
     ) || "False";
+  const connected =
+    Blockly.Python.valueToCode(
+      block,
+      "CONNECTED",
+      Blockly.Python.ORDER_ATOMIC
+    ) || "False";
   return [
-    `random_graph(${n}, ${m}, ${min}, ${max}, ${directed})`,
+    `random_graph(${n}, ${m}, ${min}, ${max}, ${directed}, ${connected})`,
     Blockly.Python.ORDER_FUNCTION_CALL,
   ];
 };
@@ -670,8 +684,14 @@ Blockly.Python["random_graph_weighted"] = function (block) {
       "DIRECTED",
       Blockly.Python.ORDER_ATOMIC
     ) || "False";
+  const connected =
+    Blockly.Python.valueToCode(
+      block,
+      "CONNECTED",
+      Blockly.Python.ORDER_ATOMIC
+    ) || "False";
   return [
-    `random_graph_weighted(${n}, ${m}, ${min}, ${max}, ${wmin}, ${wmax}, ${directed})`,
+    `random_graph_weighted(${n}, ${m}, ${min}, ${max}, ${wmin}, ${wmax}, ${directed}, ${connected})`,
     Blockly.Python.ORDER_FUNCTION_CALL,
   ];
 };

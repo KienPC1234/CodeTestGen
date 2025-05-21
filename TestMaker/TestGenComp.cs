@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Xml.Linq;
 
 namespace TestMaker
@@ -24,35 +23,42 @@ namespace TestMaker
         {
             try
             {
-                // Kiểm tra XML
                 if (string.IsNullOrWhiteSpace(_xmlData))
                 {
-                    LogError("Dữ liệu XML rỗng.");
+                    ConsoleUtils.LogError("Dữ liệu XML rỗng.");
                     return;
                 }
 
-                // Parse XML
                 XDocument doc;
                 try
                 {
-                    LogInfo("🔍 Đang phân tích XML...");
-                    ShowProgressAnimation("Phân tích", 5);
+                    ConsoleUtils.LogInfo("🔍 Đang phân tích XML...");
+                    ConsoleUtils.ShowProgressAnimation("Phân tích", 5);
                     doc = XDocument.Parse(_xmlData);
-                    LogSuccess("Phân tích XML thành công.");
+                    ConsoleUtils.LogSuccess("Phân tích XML thành công.");
                 }
                 catch (Exception ex)
                 {
-                    LogError($"Lỗi khi parse XML: {ex.Message}");
-                    LogError("Vui lòng kiểm tra định dạng XML.");
+                    ConsoleUtils.LogError(string.Format("Lỗi khi parse XML: {0}", ex.Message));
+                    ConsoleUtils.LogError("Vui lòng kiểm tra định dạng XML.");
                     return;
                 }
 
                 var testcases = doc.Element("testcases")?.Elements("testcase");
                 if (testcases == null)
                 {
-                    LogError("Không tìm thấy thẻ <testcases> trong XML.");
+                    ConsoleUtils.LogError("Không tìm thấy thẻ <testcases> trong XML.");
                     return;
                 }
+
+                Console.Write("Có muốn tự động làm sạch (bỏ khoảng trắng đầu/cuối) output testcase không? (Nhấn y/n hoặc Enter để đồng ý): ");
+                string trimInput = Console.ReadLine()?.Trim()?.ToLower();
+                bool shouldTrim = string.IsNullOrEmpty(trimInput) || trimInput == "y";
+                if (trimInput != "y" && trimInput != "n" && !string.IsNullOrEmpty(trimInput))
+                {
+                    ConsoleUtils.LogInfo("Đầu vào không hợp lệ, mặc định sẽ trim output.");
+                }
+                ConsoleUtils.LogInfo(shouldTrim ? "Sẽ trim output của testcase." : "Sẽ không trim output của testcase.");
 
                 var results = new List<(string Case, string Output)>();
                 int testIndex = 1;
@@ -64,31 +70,36 @@ namespace TestMaker
 
                     if (string.IsNullOrEmpty(inputData))
                     {
-                        LogError($"Testcase {caseNumber} không có dữ liệu đầu vào.");
+                        ConsoleUtils.LogError(string.Format("Testcase {0} không có dữ liệu đầu vào.", caseNumber));
                         continue;
                     }
 
                     inputData = inputData.Trim().TrimStart('\uFEFF');
                     inputData = new string(inputData.Where(c => !char.IsControl(c) || c == '\n' || c == '\r').ToArray());
 
-
                     string output1 = RunTestCase(inputData);
                     string output2 = RunTestCase(inputData);
 
                     if (output1 == null)
                     {
-                        LogError($"Không chạy được testcase {caseNumber}.");
+                        ConsoleUtils.LogError(string.Format("Không chạy được testcase {0}.", caseNumber));
                         continue;
+                    }
+
+                    if (shouldTrim)
+                    {
+                        output1 = output1.Trim();
+                        output2 = output2.Trim();
                     }
 
                     if (output1 != output2)
                     {
-                        LogError($"Kết quả testcase {caseNumber} không nhất quán. Output1: {output1}, Output2: {output2}");
+                        ConsoleUtils.LogError(string.Format("Kết quả testcase {0} không nhất quán. Output1: {1}, Output2: {2}", caseNumber, output1, output2));
                         continue;
                     }
 
                     results.Add((caseNumber, output1));
-                    LogSuccess($"Hoàn tất testcase {caseNumber}!");
+                    ConsoleUtils.LogSuccess(string.Format("Hoàn tất testcase {0}!", caseNumber));
                     testIndex++;
                 }
 
@@ -110,20 +121,20 @@ namespace TestMaker
                 string outputXmlPath = Path.Combine(_compileResult.CompileDir, "testcases.xml");
                 try
                 {
-                    LogInfo("💾 Đang lưu kết quả testcase...");
-                    ShowProgressAnimation("Lưu", 3);
+                    ConsoleUtils.LogInfo("💾 Đang lưu kết quả testcase...");
+                    ConsoleUtils.ShowProgressAnimation("Lưu", 3);
                     byte[] xmlBytes = Encoding.ASCII.GetBytes(doc.ToString());
                     File.WriteAllBytes(outputXmlPath, xmlBytes);
-                    LogSuccess("Lưu file XML thành công.");
+                    ConsoleUtils.LogSuccess("Lưu file XML thành công.");
                 }
                 catch (Exception ex)
                 {
-                    LogError($"Lỗi khi lưu file XML: {ex.Message}");
+                    ConsoleUtils.LogError(string.Format("Lỗi khi lưu file XML: {0}", ex.Message));
                 }
             }
             catch (Exception ex)
             {
-                LogError($"Lỗi chung khi xử lý testcases: {ex.Message}");
+                ConsoleUtils.LogError(string.Format("Lỗi chung khi xử lý testcases: {0}", ex.Message));
             }
         }
 
@@ -137,7 +148,7 @@ namespace TestMaker
             }
             catch (Exception ex)
             {
-                LogError($"Lỗi khi chạy testcase: {ex.Message}");
+                ConsoleUtils.LogError(string.Format("Lỗi khi chạy testcase: {0}", ex.Message));
                 return null;
             }
         }
@@ -147,24 +158,15 @@ namespace TestMaker
             Process process = null;
             try
             {
-                if (File.Exists("output.txt"))
-                {
-                    File.Delete("output.txt");
-                }
-                if (File.Exists("error.txt"))
-                {
-                    File.Delete("error.txt");
-                }
-
                 File.WriteAllText("input.txt", inputData, new UTF8Encoding(false));
-                string cmdCommand = $"type input.txt | \"{_compileResult.CompiledPath}\" > output.txt 2> error.txt";
+                string cmdCommand = string.Format("type input.txt | \"{0}\" > output.txt 2> error.txt", _compileResult.CompiledPath);
 
                 process = new Process
                 {
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = "cmd.exe",
-                        Arguments = $"/C {cmdCommand}",
+                        Arguments = string.Format("/C {0}", cmdCommand),
                         RedirectStandardInput = true,
                         RedirectStandardOutput = true,
                         RedirectStandardError = true,
@@ -179,23 +181,36 @@ namespace TestMaker
                     ? File.ReadAllText("error.txt", new UTF8Encoding(false)).Trim()
                     : null;
                 string output = File.Exists("output.txt")
-                    ? File.ReadAllText("output.txt", new UTF8Encoding(false)).Trim()
+                    ? File.ReadAllText("output.txt", new UTF8Encoding(false))
                     : null;
                 if (!string.IsNullOrWhiteSpace(error))
                 {
-                    LogError("Lỗi từ chương trình:\n" + error.Trim());
+                    ConsoleUtils.LogError("Lỗi từ chương trình:\n" + error.Trim());
                     return null;
                 }
+
                 return output;
             }
             catch (Exception ex)
             {
-                LogError($"Lỗi khi chạy với stdio: {ex.Message}");
+                ConsoleUtils.LogError(string.Format("Lỗi khi chạy với stdio: {0}", ex.Message));
                 return null;
             }
             finally
             {
                 process?.Dispose();
+                if (File.Exists("output.txt"))
+                {
+                    File.Delete("output.txt");
+                }
+                if (File.Exists("error.txt"))
+                {
+                    File.Delete("error.txt");
+                }
+                if (File.Exists("input.txt"))
+                {
+                    File.Delete("input.txt");
+                }
             }
         }
 
@@ -211,7 +226,7 @@ namespace TestMaker
             }
             catch (Exception ex)
             {
-                LogError($"Lỗi khi ghi file input {inputFilePath}: {ex.Message}");
+                ConsoleUtils.LogError(string.Format("Lỗi khi ghi file input {0}: {1}", inputFilePath, ex.Message));
                 return null;
             }
 
@@ -235,7 +250,7 @@ namespace TestMaker
 
                 if (process.ExitCode != 0 || !string.IsNullOrWhiteSpace(error))
                 {
-                    LogError($"Lỗi khi chạy chương trình: {error}");
+                    ConsoleUtils.LogError(string.Format("Lỗi khi chạy chương trình: {0}", error));
                     return null;
                 }
 
@@ -246,64 +261,18 @@ namespace TestMaker
                 }
                 catch (Exception ex)
                 {
-                    LogError($"Lỗi khi đọc file output {outputFilePath}: {ex.Message}");
+                    ConsoleUtils.LogError(string.Format("Lỗi khi đọc file output {0}: {1}", outputFilePath, ex.Message));
                     return null;
                 }
             }
             catch (Exception ex)
             {
-                LogError($"Lỗi khi chạy với file: {ex.Message}");
+                ConsoleUtils.LogError(string.Format("Lỗi khi chạy với file: {0}", ex.Message));
                 return null;
             }
             finally
             {
                 process?.Dispose();
-            }
-        }
-
-        private void LogError(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"❌ Lỗi: {message}");
-            Console.ResetColor();
-        }
-
-        private void LogSuccess(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"✅ {message}");
-            Console.ResetColor();
-        }
-
-        private void LogInfo(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine(message);
-            Console.ResetColor();
-        }
-
-        private void ShowProgressAnimation(string task, int cycles)
-        {
-            string[] frames = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" };
-            int cursorLeft = Console.CursorLeft;
-            int cursorTop = Console.CursorTop;
-            try
-            {
-                for (int i = 0; i < cycles * frames.Length; i++)
-                {
-                    Console.SetCursorPosition(cursorLeft, cursorTop);
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.Write($"{task} {frames[i % frames.Length]}");
-                    Console.ResetColor();
-                    Console.Out.Flush();
-                    Thread.Sleep(50); 
-                }
-            }
-            finally
-            {
-                Console.SetCursorPosition(cursorLeft, cursorTop);
-                Console.Write(new string(' ', task.Length + 2));
-                Console.SetCursorPosition(cursorLeft, cursorTop);
             }
         }
     }

@@ -1,31 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>XML Testcase Viewer</title>
-  <!-- Bootstrap CSS từ thư mục cục bộ -->
-  <link href="Stuff/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="Stuff/animate.css/package/animate.min.css">
+  <title>Trình chỉnh sửa Testcase</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <link rel="stylesheet" data-name="vs/editor/editor.main" href="Stuff/monaco-editor/package/min/vs/editor/editor.main.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <style>
     body {
-      background-color: #f8f9fa;
-      color: #212529;
-      transition: background-color 0.5s ease, color 0.5s ease;
+      background: linear-gradient(135deg, #e6effa, #c3d7f0);
+      color: #1e293b;
       margin: 0;
       padding: 0;
       height: 100vh;
-      overflow: hidden;
-      font-family: 'Segoe UI', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      transition: background 0.3s ease, color 0.3s ease;
     }
     body.dark-mode {
-      background-color: #121212;
-      color: #e0e0e0;
+      background: linear-gradient(135deg, #111827, #1e293b);
+      color: #e5e7eb;
     }
     .container-full {
       width: 100%;
       height: 100vh;
-      padding: 20px 40px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       box-sizing: border-box;
@@ -34,10 +33,12 @@
       flex-grow: 1;
       display: flex;
       width: 100%;
+      height: 100%;
       margin: 0;
-      gap: 20px;
-      overflow: hidden;
-      flex-wrap: nowrap; /* Ngăn cột xuống dòng */
+      gap: 15px;
+    }
+    .col-3 {
+      height: 100%;
     }
     .toggle-container {
       position: fixed;
@@ -49,155 +50,237 @@
       border-radius: 50%;
       width: 50px;
       height: 50px;
-      font-size: 20px;
-      transition: transform 0.3s ease, background-color 0.3s ease;
-      background-color: #f8f9fa;
-      border: 1px solid #dee2e6;
-      color: #343a40;
+      font-size: 24px;
+      background: #ffffff;
+      border: 2px solid #d1d5db;
+      color: #334155;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
     }
-    body.dark-mode .toggle-btn {
-      background-color: #444;
-      border-color: #666;
-      color: #ffffff;
+    .dark-mode .toggle-btn {
+      background: #374151;
+      border-color: #6b7280;
+      color: #e5e7eb;
     }
     .toggle-btn:hover {
-      transform: scale(1.1);
+      transform: scale(1.15);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      animation: animate__pulse 0.5s;
     }
-    .testcase-tree-container {
-      height: calc(100% - 40px);
-      overflow-y: auto;
-    }
-    .testcase-tree {
-      background-color: #ffffff;
-      border: 1px solid #ced4da;
+    .card {
+      background: #ffffff;
+      border: none;
       border-radius: 12px;
-      padding: 15px;
-      transition: background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      min-height: 100%;
-      width: 100%;
-      box-sizing: border-box; /* Quản lý padding tốt hơn */
-    }
-    .dark-mode .testcase-tree {
-      background-color: #1e1e1e;
-      border-color: #444;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    }
-    .testcase-tree:hover {
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-    }
-    .dark-mode .testcase-tree:hover {
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-    }
-    .testcase-tree ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-    .testcase-tree li {
-      padding: 12px 15px;
-      cursor: pointer;
-      border-radius: 8px;
-      transition: background-color 0.3s ease, transform 0.2s ease, padding-left 0.2s ease;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
       display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 16px;
-      font-weight: 500;
-      white-space: nowrap; /* Ngăn văn bản xuống dòng */
-    }
-    .testcase-tree li:before {
-      content: "📄";
-      font-size: 18px;
-    }
-    .testcase-tree li:hover {
-      background-color: #f1f3f5;
-      transform: translateX(8px);
-      padding-left: 20px;
-    }
-    .dark-mode .testcase-tree li:hover {
-      background-color: #2c2c2c;
-    }
-    .testcase-tree .selected {
-      background-color: #007bff;
-      color: #ffffff;
-      transform: translateX(8px);
-      padding-left: 20px;
-    }
-    .dark-mode .testcase-tree .selected {
-      background-color: #0056b3;
-    }
-    .testcase-tree .no-data {
-      padding: 15px;
-      text-align: center;
-      color: #6c757d;
-      font-style: italic;
-    }
-    .dark-mode .testcase-tree .no-data {
-      color: #adb5bd;
-    }
-    .testcase-editor-container {
-      height: calc(100% - 40px);
-      border: 1px solid #ced4da;
-      border-radius: 12px;
-      background-color: #ffffff;
-      transition: background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.3s ease;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      padding: 0; /* Loại bỏ padding để Monaco chiếm toàn bộ không gian */
-      overflow: hidden; /* Ngăn tràn nội dung */
-    }
-    .dark-mode .testcase-editor-container {
-      background-color: #1e1e1e;
-      border-color: #444;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    }
-    .testcase-editor-container:hover {
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-    }
-    .dark-mode .testcase-editor-container:hover {
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-    }
-    #testcaseEditor {
-      width: 100%;
+      flex-direction: column;
       height: 100%;
     }
-    /* Custom Scrollbar cho treeview */
-    .testcase-tree-container::-webkit-scrollbar {
+    .dark-mode .card {
+      background: #1e293b;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      overflow: hidden;
+      padding: 15px;
+    }
+    .testcase-tree-container {
+      flex-grow: 1;
+      position: relative;
+      height: calc(100% - 70px);
+      display: flex;
+      flex-direction: row;
+      overflow: hidden;
+    }
+    .testcase-tree-wrapper {
+      flex-grow: 1;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scroll-behavior: smooth;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .testcase-tree-wrapper::-webkit-scrollbar {
+      display: none;
+    }
+    .testcase-tree {
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .custom-scrollbar-vertical {
       width: 8px;
+      background: #e5e7eb;
+      border-radius: 4px;
+      margin-left: 5px;
+      position: relative;
+      display: none;
+      cursor: pointer;
     }
-    .testcase-tree-container::-webkit-scrollbar-track {
-      background: #f1f3f5;
+    .custom-scrollbar-vertical.active {
+      display: block;
+    }
+    .custom-scrollbar-thumb {
+      width: 100%;
+      background: #6b7280;
+      border-radius: 4px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transition: top 0.2s ease;
+    }
+    .custom-scrollbar-thumb:hover {
+      background: #4b5563;
+    }
+    .dark-mode .custom-scrollbar-vertical {
+      background: #374151;
+    }
+    .dark-mode .custom-scrollbar-thumb {
+      background: #9ca3af;
+    }
+    .dark-mode .custom-scrollbar-thumb:hover {
+      background: #d1d5db;
+    }
+    .list-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .list-group-item {
+      border: none;
+      border-bottom: 1px solid #d1d5db;
+      background: #f8fafc;
+      color: #1e293b;
+      margin-bottom: 8px;
+      border-radius: 8px;
+      padding: 12px 15px;
+      transition: background 0.3s ease, transform 0.2s ease, color 0.3s ease;
+    }
+    .dark-mode .list-group-item {
+      border-bottom-color: #4b5563;
+      background: #1e293b;
+      color: #e5e7eb;
+    }
+    .list-group-item:hover {
+      background: #e5e7eb;
+      transform: translateX(5px);
+      animation: animate__tada 0.5s;
+    }
+    .dark-mode .list-group-item:hover {
+      background: #374151;
+    }
+    .list-group-item.selected {
+      background: #2563eb;
+      color: #ffffff;
+      transform: translateX(5px);
+      animation: animate__bounceIn 0.3s;
+    }
+    .dark-mode .list-group-item.selected {
+      background: #3b82f6;
+      color: #ffffff;
+    }
+    .testcase-editor-container {
+      height: calc(100% - 70px);
       border-radius: 12px;
+      background: #ffffff;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
-    .dark-mode .testcase-tree-container::-webkit-scrollbar-track {
-      background: #2c2c2c;
+    .dark-mode .testcase-editor-container {
+      background: #1e293b;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
     }
-    .testcase-tree-container::-webkit-scrollbar-thumb {
-      background: #007bff;
-      border-radius: 12px;
-      transition: background 0.3s ease;
+    .editor-split {
+      flex-grow: 1;
+      display: flex;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
     }
-    .testcase-tree-container::-webkit-scrollbar-thumb:hover {
-      background: #0056b3;
+    .editor-pane {
+      flex: 1;
+      border-right: 1px solid #d1d5db;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
     }
-    .dark-mode .testcase-tree-container::-webkit-scrollbar-thumb {
-      background: #00d4ff;
+    .dark-mode .editor-pane {
+      border-right-color: #4b5563;
     }
-    .dark-mode .testcase-tree-container::-webkit-scrollbar-thumb:hover {
-      background: #007bff;
+    .editor-pane:last-child {
+      border-right: none;
+    }
+    .editor-label {
+      padding: 10px;
+      font-weight: 600;
+      background: #f1f5f9;
+      border-bottom: 1px solid #d1d5db;
+      text-align: center;
+      font-size: 14px;
+      color: #1e293b;
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      width: 100%;
+    }
+    .dark-mode .editor-label {
+      background: #374151;
+      border-bottom-color: #4b5563;
+      color: #e5e7eb;
+    }
+    .dark-mode .form-label {
+      color: #e5e7eb;
+    }
+    #testcaseInputEditor, #testcaseOutputEditor {
+      width: 100%;
+      height: calc(100% - 40px);
+      flex-grow: 1;
+    }
+    .no-data {
+      color: #6b7280;
+      transition: color 0.3s ease;
+    }
+    .dark-mode .no-data {
+      color: #9ca3af;
     }
     h2 {
       font-weight: 700;
-      background: linear-gradient(90deg, #007bff, #00d4ff);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+      font-size: 30px;
+      color: #1e40af;
       margin-bottom: 20px;
+      text-align: center;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      animation: animate__fadeInDown 0.5s;
+      transition: color 0.3s ease;
     }
     .dark-mode h2 {
-      background: linear-gradient(90deg, #00d4ff, #007bff);
-      -webkit-background-clip: text;
-      background-clip: text;
+      color: #60a5fa;
+    }
+    .action-buttons {
+      margin-bottom: 15px;
+      display: flex;
+      gap: 10px;
+    }
+    .action-buttons .btn {
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .action-buttons .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+      animation: animate__pulse 0.5s;
+    }
+    .delete-btn {
+      padding: 4px 10px;
+      font-size: 12px;
+      border-radius: 6px;
     }
     .loading-screen {
       position: fixed;
@@ -219,12 +302,16 @@
       visibility: visible;
     }
     .spinner {
-      width: 60px;
-      height: 60px;
-      border: 6px solid #f3f3f3;
-      border-top: 6px solid #007bff;
+      width: 50px;
+      height: 50px;
+      border: 5px solid #d1d5db;
+      border-top: 5px solid #2563eb;
       border-radius: 50%;
       animation: spin 1s linear infinite;
+    }
+    .dark-mode .spinner {
+      border-color: #4b5563;
+      border-top-color: #3b82f6;
     }
     @keyframes spin {
       0% { transform: rotate(0deg); }
@@ -234,18 +321,35 @@
 </head>
 <body>
   <div class="container-full animate__animated animate__fadeIn">
-    <h2 class="text-center animate__animated animate__zoomIn">📦 XML Testcase Viewer</h2>
+    <h2 class="animate__animated animate__zoomIn">📦 Trình chỉnh sửa Testcase</h2>
     <div class="row-full">
       <div class="col-3 animate__animated animate__fadeInLeft animate__delay-1s">
-        <label class="form-label">Danh sách Testcase:</label>
-        <div class="testcase-tree-container">
-          <div class="testcase-tree" id="testcaseTree"></div>
+        <div class="card h-100 animate__animated animate__slideInUp">
+          <div class="card-body p-3">
+            <div class="action-buttons animate__animated animate__fadeInUp">
+              <button class="btn btn-primary" onclick="addTestcase()"><i class="bi bi-plus-circle me-1"></i> Thêm Testcase</button>
+              <button class="btn btn-success" onclick="cleanWhitespace()"><i class="bi bi-scissors me-1"></i> Dọn Khoảng Trắng Thừa</button>
+            </div>
+            <label class="form-label fw-bold mb-2">Danh sách Testcase:</label>
+            <div class="testcase-tree-container">
+              <div class="testcase-tree-wrapper" id="testcaseTreeWrapper">
+                <div class="testcase-tree" id="testcaseTree"></div>
+              </div>
+              <div class="custom-scrollbar-vertical" id="customScrollbarVertical">
+                <div class="custom-scrollbar-thumb" id="customScrollbarThumb"></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="col-9 animate__animated animate__fadeInRight animate__delay-1s">
-        <label class="form-label">Nội dung Testcase:</label>
-        <div class="testcase-editor-container d-none" id="testcaseEditorContainer">
-          <div id="testcaseEditor"></div>
+        <div class="card h-100 animate__animated animate__slideInUp">
+          <div class="card-body p-3">
+            <label class="form-label fw-bold mb-2">Nội dung Testcase:</label>
+            <div class="testcase-editor-container d-none" id="testcaseEditorContainer">
+              <div class="editor-split" id="editorSplit"></div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -265,30 +369,218 @@
     let testcases = [];
     let selectedIndex = -1;
     let xmlString = "";
-    let monacoEditor = null;
+    let inputEditor = null;
+    let outputEditor = null;
+    let hasOutput = false;
 
     require.config({ paths: { 'vs': 'Stuff/monaco-editor/package/min/vs' } });
     require(['vs/editor/editor.main'], function () {
-      monacoEditor = monaco.editor.create(document.getElementById('testcaseEditor'), {
-        value: '',
+      renderEditorSplit();
+      loadTestcasesFromXmlString('<testcases></testcases>');
+      initializeCustomScrollbar();
+    });
+
+    function initializeCustomScrollbar() {
+      const wrapper = document.getElementById('testcaseTreeWrapper');
+      const scrollbar = document.getElementById('customScrollbarVertical');
+      const thumb = document.getElementById('customScrollbarThumb');
+
+      let isDragging = false;
+      let startY = 0;
+      let startTop = 0;
+
+      function updateScrollbar() {
+        const contentHeight = wrapper.scrollHeight;
+        const containerHeight = wrapper.clientHeight;
+
+        if (contentHeight > containerHeight) {
+          const thumbHeight = Math.max((containerHeight / contentHeight) * containerHeight, 20);
+          thumb.style.height = `${thumbHeight}px`;
+          scrollbar.style.height = `${containerHeight}px`;
+          scrollbar.classList.add('active');
+
+          const handleScroll = () => {
+            if (!isDragging) {
+              const scrollTop = wrapper.scrollTop;
+              const maxScroll = contentHeight - containerHeight;
+              const thumbPosition = (scrollTop / maxScroll) * (containerHeight - thumbHeight);
+              thumb.style.top = `${thumbPosition}px`;
+            }
+          };
+
+          wrapper.addEventListener('scroll', handleScroll);
+          handleScroll();
+
+          // Xử lý kéo thanh cuộn
+          thumb.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startY = e.clientY;
+            startTop = parseFloat(thumb.style.top) || 0;
+            e.preventDefault();
+          });
+
+          document.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+              const deltaY = e.clientY - startY;
+              const thumbHeightPx = parseFloat(thumb.style.height);
+              const maxTop = containerHeight - thumbHeightPx;
+              let newTop = startTop + deltaY;
+              newTop = Math.max(0, Math.min(newTop, maxTop));
+
+              thumb.style.top = `${newTop}px`;
+
+              const maxScroll = contentHeight - containerHeight;
+              const scrollPosition = (newTop / maxTop) * maxScroll;
+              wrapper.scrollTop = scrollPosition;
+            }
+          });
+
+          document.addEventListener('mouseup', () => {
+            isDragging = false;
+          });
+
+          // Xử lý nhấp vào thanh cuộn (không phải thumb) để cuộn
+          scrollbar.addEventListener('mousedown', (e) => {
+            if (e.target === thumb) return;
+            const rect = scrollbar.getBoundingClientRect();
+            const clickY = e.clientY - rect.top;
+            const thumbHeightPx = parseFloat(thumb.style.height);
+            const newTop = clickY - thumbHeightPx / 2;
+            const maxTop = containerHeight - thumbHeightPx;
+            const adjustedTop = Math.max(0, Math.min(newTop, maxTop));
+
+            thumb.style.top = `${adjustedTop}px`;
+
+            const maxScroll = contentHeight - containerHeight;
+            const scrollPosition = (adjustedTop / maxTop) * maxScroll;
+            wrapper.scrollTop = scrollPosition;
+          });
+        } else {
+          scrollbar.classList.remove('active');
+        }
+      }
+
+      const observer = new MutationObserver(() => {
+        updateScrollbar();
+      });
+      observer.observe(document.getElementById('testcaseTree'), { childList: true, subtree: true });
+
+      window.addEventListener('resize', updateScrollbar);
+
+      updateScrollbar();
+    }
+
+    function initializeEditors() {
+      const editorConfig = {
         language: 'plaintext',
         theme: isDarkMode ? 'vs-dark' : 'vs',
         automaticLayout: true,
-      });
+        scrollBeyondLastLine: true,
+        minimap: { enabled: false },
+        wordWrap: 'on',
+      };
 
-      monacoEditor.onDidChangeModelContent(() => {
-        if (selectedIndex >= 0) {
-          testcases[selectedIndex].content = monacoEditor.getValue();
+      const inputEditorDiv = document.getElementById('testcaseInputEditor');
+      if (inputEditorDiv && !inputEditor) {
+        inputEditor = monaco.editor.create(inputEditorDiv, {
+          value: '',
+          ...editorConfig,
+        });
+        inputEditor.onDidChangeModelContent(() => {
+          if (selectedIndex >= 0 && testcases[selectedIndex]) {
+            testcases[selectedIndex].input = inputEditor.getValue();
+          }
+        });
+      }
+
+      if (hasOutput && !outputEditor) {
+        const outputEditorDiv = document.getElementById('testcaseOutputEditor');
+        if (outputEditorDiv) {
+          outputEditor = monaco.editor.create(outputEditorDiv, {
+            value: '',
+            ...editorConfig,
+          });
+          outputEditor.onDidChangeModelContent(() => {
+            if (selectedIndex >= 0 && testcases[selectedIndex]) {
+              testcases[selectedIndex].output = outputEditor.getValue();
+            }
+          });
         }
-      });
-    });
+      }
+    }
 
     function toggleDarkMode(forceDark = null) {
       isDarkMode = forceDark !== null ? forceDark : !isDarkMode;
       document.body.classList.toggle('dark-mode', isDarkMode);
       document.querySelector('.toggle-btn').textContent = isDarkMode ? '🌙' : '☀️';
-      if (monacoEditor) {
-        monacoEditor.updateOptions({ theme: isDarkMode ? 'vs-dark' : 'vs' });
+      if (inputEditor || outputEditor) {
+        monaco.editor.setTheme(isDarkMode ? 'vs-dark' : 'vs');
+      }
+    }
+
+    function reindexTestcases() {
+      testcases.forEach((tc, index) => {
+        tc.case = (index + 1).toString();
+      });
+      renderTestcaseTree();
+      if (selectedIndex >= 0 && testcases[selectedIndex]) {
+        selectTestcase(selectedIndex);
+      } else if (testcases.length > 0) {
+        selectTestcase(0);
+      }
+    }
+
+    function addTestcase() {
+      testcases.push({
+        case: (testcases.length + 1).toString(),
+        input: '',
+        output: hasOutput ? '' : null
+      });
+      renderTestcaseTree();
+      selectedIndex = testcases.length - 1;
+      selectTestcase(selectedIndex);
+    }
+
+    function deleteTestcase(index) {
+      if (index >= 0 && index < testcases.length) {
+        testcases.splice(index, 1);
+        if (testcases.length === 0) {
+          selectedIndex = -1;
+          document.getElementById("testcaseEditorContainer").classList.add("d-none");
+          if (inputEditor) inputEditor.setValue('');
+          if (outputEditor) outputEditor.setValue('');
+        } else {
+          selectedIndex = Math.min(index, testcases.length - 1);
+        }
+        reindexTestcases();
+      }
+    }
+
+    function cleanWhitespace() {
+      testcases.forEach(tc => {
+        tc.input = tc.input.trim();
+        if (tc.output !== null) tc.output = tc.output.trim();
+      });
+      if (selectedIndex >= 0 && testcases[selectedIndex]) {
+        if (inputEditor) inputEditor.setValue(testcases[selectedIndex].input);
+        if (outputEditor && testcases[selectedIndex].output !== null) {
+          outputEditor.setValue(testcases[selectedIndex].output);
+        }
+      }
+      renderTestcaseTree();
+    }
+
+    function renderTestcaseTree() {
+      const tree = document.getElementById("testcaseTree");
+      if (testcases.length === 0) {
+        tree.innerHTML = '<div class="no-data text-center animate__animated animate__fadeIn">Không có testcase nào</div>';
+      } else {
+        tree.innerHTML = '<ul class="list-group">' + testcases.map((tc, index) => 
+          `<li class="list-group-item d-flex justify-content-between align-items-center animate__animated animate__fadeIn ${selectedIndex === index ? 'selected' : ''}" onclick="selectTestcase(${index})">
+            <span><i class="bi bi-file-earmark-text me-2"></i>Testcase ${tc.case}</span>
+            <button class="btn btn-danger btn-sm delete-btn animate__animated animate__bounceIn" onclick="deleteTestcase(${index}); event.stopPropagation();">X</button>
+          </li>`
+        ).join('') + '</ul>';
       }
     }
 
@@ -299,48 +591,96 @@
         console.error("Error parsing XML");
         return;
       }
-      testcases = Array.from(xmlDoc.getElementsByTagName("testcase")).map(tc => ({
-        case: tc.getAttribute("case"),
-        content: tc.textContent.trim()
+      testcases = Array.from(xmlDoc.getElementsByTagName("testcase")).map((tc, index) => ({
+        case: (index + 1).toString(),
+        input: tc.textContent.trim(),
+        output: null
       }));
-
-      const tree = document.getElementById("testcaseTree");
-      if (testcases.length === 0) {
-        tree.innerHTML = '<div class="no-data">Vui lòng chờ để code lấy dữ liệu testcase</div>';
-      } else {
-        tree.innerHTML = '<ul>' + testcases.map((tc, index) => 
-          `<li onclick="selectTestcase(${index})">Testcase ${tc.case}</li>`
-        ).join('') + '</ul>';
+      const testcaseouts = xmlDoc.getElementsByTagName("testcaseout");
+      hasOutput = testcaseouts.length > 0;
+      if (hasOutput) {
+        testcases.forEach(tc => tc.output = '');
+        Array.from(testcaseouts).forEach(out => {
+          const caseNum = out.getAttribute("case");
+          const matchingTestcase = testcases.find(tc => tc.case === caseNum);
+          if (matchingTestcase) {
+            matchingTestcase.output = out.textContent.trim();
+          }
+        });
+        renderEditorSplit();
       }
+      reindexTestcases();
+    }
 
-      selectedIndex = -1;
-      document.getElementById("testcaseEditorContainer").classList.add("d-none");
+    function renderEditorSplit() {
+      if (inputEditor) {
+        inputEditor.dispose();
+        inputEditor = null;
+      }
+      if (outputEditor) {
+        outputEditor.dispose();
+        outputEditor = null;
+      }
+      const splitContainer = document.getElementById("editorSplit");
+      splitContainer.innerHTML = `
+        <div class="editor-pane animate__animated animate__fadeIn">
+          <div class="editor-label">Input</div>
+          <div id="testcaseInputEditor"></div>
+        </div>
+      `;
+      if (hasOutput) {
+        splitContainer.innerHTML += `
+          <div class="editor-pane animate__animated animate__fadeIn">
+            <div class="editor-label">Output</div>
+            <div id="testcaseOutputEditor"></div>
+          </div>
+        `;
+      }
+      initializeEditors();
     }
 
     function selectTestcase(index) {
       if (index >= 0 && testcases[index]) {
         selectedIndex = index;
-        const treeItems = document.querySelectorAll("#testcaseTree li");
-        treeItems.forEach(item => item.classList.remove("selected"));
-        treeItems[index].classList.add("selected");
+        renderTestcaseTree();
         const editorContainer = document.getElementById("testcaseEditorContainer");
         editorContainer.classList.remove("d-none");
-        if (monacoEditor) {
-          monacoEditor.setValue(testcases[index].content);
+        editorContainer.classList.add("animate__animated", "animate__fadeIn");
+        if (inputEditor) {
+          inputEditor.setValue(testcases[index].input);
+          inputEditor.revealLine(1);
+        }
+        if (outputEditor && testcases[index].output !== null) {
+          outputEditor.setValue(testcases[index].output);
+          outputEditor.revealLine(1);
         }
       }
     }
 
     function GetXML() {
-      if (testcases.length === 0) return '<?xml version="1.0" encoding="utf-8"?>' + xmlString;
+      if (testcases.length === 0) return '<?xml version="1.0" encoding="utf-8"?>\n<testcases></testcases>';
       const xmlDoc = document.implementation.createDocument("", "", null);
       const root = xmlDoc.createElement("testcases");
       testcases.forEach(tc => {
         const node = xmlDoc.createElement("testcase");
         node.setAttribute("case", tc.case);
-        node.textContent = tc.content;
+        node.textContent = tc.input;
         root.appendChild(node);
       });
+      if (hasOutput) {
+        const outs = xmlDoc.createElement("testcaseouts");
+        testcases.forEach(tc => {
+          if (tc.output) {
+            const outNode = xmlDoc.createElement("testcaseout");
+            outNode.setAttribute("case", tc.case);
+            outNode.textContent = tc.output;
+            outs.appendChild(outNode);
+          }
+        });
+        if (outs.children.length > 0) {
+          root.appendChild(outs);
+        }
+      }
       xmlDoc.appendChild(root);
       const serializer = new XMLSerializer();
       const xmlContent = serializer.serializeToString(xmlDoc);
@@ -360,10 +700,7 @@
         loadTestcasesFromXmlString(xmlString);
       }
     }
-
-    loadTestcasesFromXmlString("");
   </script>
-
-  <script src="Stuff/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

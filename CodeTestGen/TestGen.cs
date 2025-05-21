@@ -45,7 +45,6 @@ internal class TestGen
             throw new FileNotFoundException("TestMaker.exe not found at: " + appPath);
         }
 
-        // Encode scriptData to Base64
         string base64ScriptData = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(scriptData));
 
         var startInfo = new ProcessStartInfo
@@ -62,7 +61,35 @@ internal class TestGen
             process.Start();
             await Task.Run(() => process.WaitForExit());
 
-            // Read the XML data from fulltestcases.xml if it exists
+            string xmlData = File.Exists(fullTestCasesPath) ? File.ReadAllText(fullTestCasesPath) : string.Empty;
+
+            return (process.ExitCode, xmlData);
+        }
+    }
+    public static async Task<(int ExitCode, string XmlData)> RunTestMakerExeMode(string xmlDataPath, string ExePath)
+    {
+        string appPath = Path.Combine(Hotro.AppPath, "TestMaker.exe");
+        string fullTestCasesPath = Path.Combine(Hotro.AppPath, "fulltestcases.xml");
+
+        if (!File.Exists(appPath))
+        {
+            throw new FileNotFoundException("TestMaker.exe not found at: " + appPath);
+        }
+
+        var startInfo = new ProcessStartInfo
+        {
+            FileName = appPath,
+            Arguments = $"-x \"{xmlDataPath}\" -e -p \"{ExePath}\"",
+            UseShellExecute = false,
+            RedirectStandardOutput = false,
+            CreateNoWindow = false
+        };
+
+        using (var process = new Process { StartInfo = startInfo })
+        {
+            process.Start();
+            await Task.Run(() => process.WaitForExit());
+
             string xmlData = File.Exists(fullTestCasesPath) ? File.ReadAllText(fullTestCasesPath) : string.Empty;
 
             return (process.ExitCode, xmlData);

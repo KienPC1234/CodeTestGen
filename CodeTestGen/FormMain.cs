@@ -11,10 +11,15 @@ using MaterialSkin;
 using MaterialSkin.Controls;
 using System.IO;
 using System.Text.Json;
-using ReaLTaiizor.Controls;
+using System.IO.Compression;
 using ReaLTaiizor.Child.Crown;
 using FastColoredTextBoxNS;
 using CodeTestGen;
+using System.Xml.Linq;
+using ReaLTaiizor.Controls;
+using System.Reflection;
+using static CodeTestGen.TescaseSaver;
+using System.Threading;
 namespace CodeTestGenV1
 {
     public partial class FormMain : MaterialForm
@@ -22,7 +27,9 @@ namespace CodeTestGenV1
         private readonly TextStyle hyperlinkStyle = new TextStyle(Brushes.Blue, null, FontStyle.Underline);
         private readonly TextStyle numberStyle = new TextStyle(Brushes.Green, null, FontStyle.Bold);
         private readonly MaterialSkinManager materialSkinManager;
+        private readonly string TestCasesPath = Path.Combine(Hotro.StuffFolder, "testcases.xml");
         public Settings appSettings;
+        private CancellationTokenSource _zoneWatcherCts;
 
         public FormMain()
         {
@@ -46,6 +53,17 @@ namespace CodeTestGenV1
             dropDownControl1.Items.Add(new CrownDropDownItem { Text = "Dark" });
             dropDownControl1.Items.Add(new CrownDropDownItem { Text = "Light" });
 
+            //Lưu testcase
+            foreach (TestCaseFormat format in Enum.GetValues(typeof(TestCaseFormat)))
+            {
+                var fieldInfo = format.GetType().GetField(format.ToString());
+                var descriptionAttribute = fieldInfo.GetCustomAttribute<DescriptionAttribute>();
+
+                string text = descriptionAttribute != null ? descriptionAttribute.Description : format.ToString();
+
+                crownDropDownList1.Items.Add(new CrownDropDownItem { Text = text });
+            }
+
             if (appSettings.Mode == "Dark")
             {
                 dropDownControl1.SelectedItem = dropDownControl1.Items[0];
@@ -56,7 +74,7 @@ namespace CodeTestGenV1
             }
 
             InitializeWebViewAsync();
-
+            Task.Run(() => StartZoneWatcher());
         }
 
         private async void InitializeWebViewAsync()
@@ -89,7 +107,6 @@ namespace CodeTestGenV1
         }
 
 
-        #region event
 
         private void materialFlatButton1_Click(object sender, EventArgs e) => new AboutBox().ShowDialog();
 
@@ -192,12 +209,15 @@ namespace CodeTestGenV1
                 await webView21.ExecuteScriptAsync($"changeLanguage({JsonSerializer.Serialize(language)})");
             }
         }
-        #endregion
 
         private void materialRaisedButton10_Click(object sender, EventArgs e)
         {
-
+            if (File.Exists(Path.Combine(Hotro.StuffFolder, "testcases.xml")))
+            {
+                File.Delete(Path.Combine(Hotro.StuffFolder, "testcases.xml"));
+            }
         }
+
 
         private async void materialRaisedButton6_Click(object sender, EventArgs e)
         {
@@ -306,7 +326,7 @@ namespace CodeTestGenV1
             string SinhTestModule = File.ReadAllText(Path.Combine(Hotro.StuffFolder, "SinhTest.py"));
             string sotesst = "100";
             string pythonCode = "";
-     
+
             if (YeuCau.Contains("NoAIFlag"))
             {
                 pythonCode = YeuCau.Substring(YeuCau.IndexOf("NoAIFlag") + "NoAIFlag".Length).Trim();
@@ -335,7 +355,7 @@ namespace CodeTestGenV1
                     return;
                 }
 
-                string prompt = Hotro.promptGenTesCaseCode(sotesst,EditorData,YeuCau,SinhTestModule);
+                string prompt = Hotro.promptGenTesCaseCode(sotesst, EditorData, YeuCau, SinhTestModule);
 
                 string code = await AI.GenerateTextFromTextAsync(prompt);
 
@@ -349,26 +369,27 @@ namespace CodeTestGenV1
                 pythonCode = code.Substring(startIndex, endIndex - startIndex).Trim();
             }
 
-            var Result2  = MessageBox.Show("Code Đã Tạo Xong Bạn Có Muốn Sửa Hay Xem Lại Không?", "Hỏi", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            var Result2 = MessageBox.Show("Code Đã Tạo Xong Bạn Có Muốn Sửa Hay Xem Lại Không?", "Hỏi", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (Result2 == DialogResult.OK)
             {
                 using (var formCode = new FormCode(pythonCode, this))
                 {
                     if (formCode.ShowDialog() == DialogResult.OK)
                     {
-                         pythonCode = formCode.Code;
+                        pythonCode = formCode.Code;
                     }
                 }
             }
-            string TestCasesPath = Path.Combine(Hotro.StuffFolder, "testcases.xml");
-            if (File.Exists(TestCasesPath)){
+
+            if (File.Exists(TestCasesPath))
+            {
                 File.Delete(TestCasesPath);
             }
             int Pyec = await TestGen.RunPython(pythonCode, appSettings.PythonCompilerPath);
             if (Pyec == 0)
             {
                 string XMLData = File.ReadAllText(TestCasesPath);
-                var Result3 = MessageBox.Show("Input Testcase đã tạo xong, Bạn có muốn xem lại hay tùy chỉnh gì không?", "Hỏi", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                var Result3 = MessageBox.Show("Input của Testcase đã tạo xong, Bạn có muốn xem lại hay tùy chỉnh gì không?", "Hỏi", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
                 if (Result3 == DialogResult.OK)
                 {
                     using (var TestcaseViewer = new TestcaseViewer(XMLData, this))
@@ -383,9 +404,10 @@ namespace CodeTestGenV1
 
                 var (compPath, compOption) = await TestGen.GetEditorLanguageAsync(webView21, appSettings);
 
-                var (TestMaker,XmlDataNew) = await TestGen.RunTestMaker(TestCasesPath, EditorData,compPath,compOption);
-                if (TestMaker == 0) {
-                    MessageBox.Show("Tạo TestCase Hoàn Tất, Bạn có thể lưu lại testcase", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Question);
+                var (TestMaker, XmlDataNew) = await TestGen.RunTestMaker(TestCasesPath, EditorData, compPath, compOption);
+                if (TestMaker == 0)
+                {
+                    MessageBox.Show("Tạo TestCase Hoàn Tất, Bạn có thể lưu lại testcase", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     File.WriteAllText(TestCasesPath, XmlDataNew, new UTF8Encoding(false));
                     return;
                 }
@@ -414,6 +436,25 @@ namespace CodeTestGenV1
 
         }
 
+        private async void StartZoneWatcher()
+        {
+            _zoneWatcherCts = new CancellationTokenSource();
+            var token = _zoneWatcherCts.Token;
+
+            while (!token.IsCancellationRequested)
+            {
+                bool exists = File.Exists(Path.Combine(Hotro.StuffFolder, "testcases.xml"));
+
+                this.Invoke((MethodInvoker)(() =>
+                {
+                    materialRaisedButton3.Enabled = exists;
+                    materialRaisedButton10.Enabled = exists;
+                    materialRaisedButton11.Enabled = exists;
+                }));
+
+                await Task.Delay(300, token);
+            }
+        }
 
         private void materialRaisedButton5_Click(object sender, EventArgs e)
         {
@@ -426,9 +467,184 @@ namespace CodeTestGenV1
 
         }
 
-        private void materialRaisedButton7_Click(object sender, EventArgs e)
+        private async void materialRaisedButton7_Click(object sender, EventArgs e)
         {
 
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Executable Files (*.exe)|*.exe",
+                Title = "Chọn file thực thi (.exe)"
+            };
+
+
+            DialogResult result = openFileDialog.ShowDialog();
+
+            if (result != DialogResult.OK || string.IsNullOrWhiteSpace(openFileDialog.FileName))
+            {
+                return;
+            }
+            string ExePath = openFileDialog.FileName;
+            string YeuCau = fastColoredTextBox1.Text;
+            string pythonCode = "";
+            if (YeuCau.Contains("NoAIFlag"))
+            {
+                pythonCode = YeuCau.Substring(YeuCau.IndexOf("NoAIFlag") + "NoAIFlag".Length).Trim();
+                if (string.IsNullOrEmpty(pythonCode))
+                {
+                    MessageBox.Show("Vui lòng cung cấp code sau NoAIFlag!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                int Pyec = await TestGen.RunPython(pythonCode, appSettings.PythonCompilerPath);
+                if (Pyec == 0)
+                {
+                    string XMLData = File.ReadAllText(TestCasesPath);
+                    var Result3 = MessageBox.Show("Input của Testcase đã tạo xong, Bạn có muốn xem lại hay tùy chỉnh gì không?", "Hỏi", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+                    if (Result3 == DialogResult.OK)
+                    {
+                        using (var TestcaseViewer = new TestcaseViewer(XMLData, this))
+                        {
+                            if (TestcaseViewer.ShowDialog() == DialogResult.OK)
+                            {
+                                XMLData = TestcaseViewer.Xml;
+                            }
+                        }
+                        File.WriteAllText(TestCasesPath, XMLData, new UTF8Encoding(false));
+                    }
+
+
+                    var (TestMaker, XmlDataNew) = await TestGen.RunTestMakerExeMode(TestCasesPath, ExePath);
+                    if (TestMaker == 0)
+                    {
+                        MessageBox.Show("Tạo TestCase Hoàn Tất, Bạn có thể lưu lại testcase", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        File.WriteAllText(TestCasesPath, XmlDataNew, new UTF8Encoding(false));
+                        return;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Code Bị Lỗi, Vui Lòng Tạo Lại Hoặc Xem Lại Code Của Bạn", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else
+                {
+
+                    var Result = MessageBox.Show("Code Bị Lỗi, Bạn Có Muốn Tự Sửa Lại Để Tiếp Tục Tạo Test?", "Lỗi", MessageBoxButtons.OKCancel, MessageBoxIcon.Error);
+                    if (Result == DialogResult.OK)
+                    {
+                        using (var formCode = new FormCode(pythonCode, this))
+                        {
+                            if (formCode.ShowDialog() == DialogResult.OK)
+                            {
+                                string userCode = formCode.Code;
+                                await TestGen.RunPython(userCode, appSettings.PythonCompilerPath);
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Không Có Code Sinh Input Test Case Bạn Vui Long Cung Cấp Code!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                appSettings = Settings.LoadSettings(materialSkinManager, this);
+                new TestMaker(this).ShowDialog();
+                materialRaisedButton7_Click(sender, e);
+            }
+
+        }
+
+        private void materialRaisedButton11_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(Path.Combine(Hotro.StuffFolder, "testcases.xml")))
+            {
+                string TCData = File.ReadAllText(Path.Combine(Hotro.StuffFolder, "testcases.xml"));
+                using (var TestcaseViewer = new TestcaseViewer(TCData, this))
+                {
+                    if (TestcaseViewer.ShowDialog() == DialogResult.OK)
+                    {
+                        TCData = TestcaseViewer.Xml;
+                    }
+                }
+                File.WriteAllText(Path.Combine(Hotro.StuffFolder, "testcases.xml"), TCData);
+                MessageBox.Show("Đã Chỉnh Sửa Và Lưu Các Test Case Xong!", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Không Tìm Thấy File Lưu TestCase, Vui Lòng Xem LẠi Hoặc Tạo Cái Mới", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void materialRaisedButton8_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "XML File (*.xml)|*.xml",
+                Title = "Chọn file lưu XML Được Xuất Ra Từ Phần Mềm Này! (.xml)"
+            };
+
+
+            DialogResult result = openFileDialog.ShowDialog();
+
+            if (result != DialogResult.OK || string.IsNullOrWhiteSpace(openFileDialog.FileName))
+            {
+                return;
+            }
+            File.Copy(openFileDialog.FileName, TestCasesPath);
+        }
+
+        private void materialRaisedButton3_Click(object sender, EventArgs e)
+        {
+
+            var testCaseFormat = new TestCaseFormat();
+            List<TestCase> validTestCases = LoadTestCases(TestCasesPath);
+            try
+            {
+                // Get selected item from dropdown
+                var selectedItem = crownDropDownList1.SelectedItem as CrownDropDownItem;
+                if (selectedItem == null)
+                {
+                    MessageBox.Show("Vui lòng chọn một định dạng!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (selectedItem.Text == "Themis")
+                {
+                    testCaseFormat = TestCaseFormat.Themis;
+                }
+                else if (selectedItem.Text == "Online Judge (VNOJ, DMOJ,...)")
+                {
+                    testCaseFormat = TestCaseFormat.OnlineJudge;
+                }
+                else if (selectedItem.Text == "Legacy inputX.txt/outputX.txt")
+                {
+                    testCaseFormat = TestCaseFormat.LegacyTxt;
+                }
+                else if (selectedItem.Text == "XML (CodeTestGen)")
+                {
+                    testCaseFormat = TestCaseFormat.XmlCodeTestGen;
+                }
+                else if (selectedItem.Text == "(Yandex / Polygon)")
+                {
+                    testCaseFormat = TestCaseFormat.DotTest;
+                }
+                else if (selectedItem.Text == "JSON (Web/API)")
+                {
+                    testCaseFormat = TestCaseFormat.JsonWebApi;
+                }
+                else if (selectedItem.Text == "ZIP (Gộp test)")
+                {
+                    testCaseFormat = TestCaseFormat.ZipGrouped;
+                }
+                else
+                {
+                    MessageBox.Show("Định dạng không được hỗ trợ!");
+                }
+                new SaveForm(testCaseFormat, validTestCases, TestCasesPath).Show();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi lưu file: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

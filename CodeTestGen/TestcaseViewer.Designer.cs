@@ -43,7 +43,7 @@
             this.webView21.DefaultBackgroundColor = System.Drawing.Color.White;
             this.webView21.Location = new System.Drawing.Point(0, 25);
             this.webView21.Name = "webView21";
-            this.webView21.Size = new System.Drawing.Size(800, 389);
+            this.webView21.Size = new System.Drawing.Size(996, 510);
             this.webView21.TabIndex = 0;
             this.webView21.ZoomFactor = 1D;
             // 
@@ -51,11 +51,11 @@
             // 
             this.materialRaisedButton1.Depth = 0;
             this.materialRaisedButton1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.materialRaisedButton1.Location = new System.Drawing.Point(0, 412);
+            this.materialRaisedButton1.Location = new System.Drawing.Point(0, 533);
             this.materialRaisedButton1.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialRaisedButton1.Name = "materialRaisedButton1";
             this.materialRaisedButton1.Primary = true;
-            this.materialRaisedButton1.Size = new System.Drawing.Size(800, 38);
+            this.materialRaisedButton1.Size = new System.Drawing.Size(996, 38);
             this.materialRaisedButton1.TabIndex = 1;
             this.materialRaisedButton1.Text = "Hoàn Thành!";
             this.materialRaisedButton1.UseVisualStyleBackColor = true;
@@ -65,7 +65,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(996, 571);
             this.Controls.Add(this.materialRaisedButton1);
             this.Controls.Add(this.webView21);
             this.Name = "TestcaseViewer";

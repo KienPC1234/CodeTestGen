@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace TestMaker
 {
-    internal class BienDich
+    public class BienDich
     {
         public enum CompilerType
         {
@@ -18,6 +18,9 @@ namespace TestMaker
             Unknown
         }
 
+        // Static utility class for logging and animations
+        
+
         public class CompilerArguments
         {
             public string CompilerPath { get; set; }
@@ -26,7 +29,10 @@ namespace TestMaker
             public CompilerType DetectCompilerType()
             {
                 if (string.IsNullOrWhiteSpace(CompilerPath))
-                    return CompilerType.Unknown;
+                {
+                    ConsoleUtils.LogError("Đường dẫn trình biên dịch trống.");
+                    Environment.Exit(-1);
+                }
 
                 string file = CompilerPath.Trim().ToLower();
                 if (file.EndsWith("g++.exe") || file.Contains("g++"))
@@ -36,6 +42,7 @@ namespace TestMaker
                 if (file.EndsWith("fpc.exe") || file.Contains("fpc"))
                     return CompilerType.Pascal;
 
+                ConsoleUtils.LogWarning("Không xác định được loại trình biên dịch.");
                 return CompilerType.Unknown;
             }
 
@@ -43,13 +50,17 @@ namespace TestMaker
             {
                 if (string.IsNullOrWhiteSpace(ScriptData))
                 {
-                    return Tuple.Create<string, string, string>(null, null, null);
+                    ConsoleUtils.LogError("Mã nguồn trống, không thể xử lý.");
+                    Environment.Exit(-1);
                 }
 
                 var type = DetectCompilerType();
                 string input = null;
                 string output = null;
-                string code = ScriptData;
+                string code = ScriptData.TrimStart('\uFEFF'); // Trim BOM if present
+
+                ConsoleUtils.LogInfo("🔍 Đang xử lý mã nguồn...");
+                ConsoleUtils.ShowProgressAnimation("Xử lý", 5);
 
                 // Bước 1: Xử lý comment và lệnh I/O theo ngôn ngữ
                 switch (type)
@@ -70,7 +81,9 @@ namespace TestMaker
                         break;
 
                     default:
-                        return Tuple.Create<string, string, string>(null, null, null);
+                        ConsoleUtils.LogError("Loại trình biên dịch không được hỗ trợ.");
+                        Environment.Exit(-1);
+                        return Tuple.Create<string, string, string>(null, null, null); // Satisfy compiler
                 }
 
                 // Bước 2: Kiểm tra sự hiện diện của .in, .out, .inp
@@ -98,21 +111,25 @@ namespace TestMaker
 
                     if (input == null || output == null || hasSpecialChars || hasVariable)
                     {
-                        Console.WriteLine("Lỗi: Tên file .in, .inp hoặc .out không rõ ràng trong mã nguồn.");
+                        ConsoleUtils.LogWarning("Tên file .in, .inp hoặc .out không rõ ràng trong mã nguồn.");
                         if (input == null || hasSpecialChars || hasVariable)
                         {
-                            Console.WriteLine("Vui lòng nhập tên file input (vd: input.inp):");
-                            input = Console.ReadLine()?.Trim();
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.Write("  📥 Nhập tên file input (vd: input.inp): ");
+                            Console.ResetColor();
+                            input = Console.ReadLine().Trim();
                         }
                         if (output == null || hasSpecialChars || hasVariable)
                         {
-                            Console.WriteLine("Vui lòng nhập tên file output (vd: output.out):");
-                            output = Console.ReadLine()?.Trim();
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.Write("  📤 Nhập tên file output (vd: output.out): ");
+                            Console.ResetColor();
+                            output = Console.ReadLine().Trim();
                         }
 
                         if (string.IsNullOrWhiteSpace(input) || string.IsNullOrWhiteSpace(output))
                         {
-                            Console.WriteLine("Lỗi: Tên file input/output không được để trống.");
+                            ConsoleUtils.LogError("Tên file input/output không được để trống.");
                             return Tuple.Create<string, string, string>(null, null, code);
                         }
                     }
@@ -120,7 +137,9 @@ namespace TestMaker
 
                 // Bước 4: Hiển thị mã nguồn đã xử lý
                 Console.WriteLine();
-                Console.WriteLine("Nội dung script sau khi xử lý:");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("📜 Nội dung script sau khi xử lý:");
+                Console.ResetColor();
                 Console.WriteLine(code != null ? code : "(null)");
                 Console.WriteLine();
 
@@ -131,14 +150,19 @@ namespace TestMaker
                     Console.WriteLine();
                     if (input == null && output == null)
                     {
-                        Console.WriteLine("Phát hiện chương trình dùng stdio (không có file I/O).");
+                        ConsoleUtils.LogInfo("📡 Phát hiện chương trình dùng stdio (không có file I/O).");
                     }
                     else
                     {
-                        Console.WriteLine("Input File: {0}, Output File: {1}", input ?? "none", output ?? "none");
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.WriteLine($"  📄 Input File: {(input ?? "none")}");
+                        Console.WriteLine($"  📄 Output File: {(output ?? "none")}");
+                        Console.ResetColor();
                     }
-                    Console.WriteLine("Nhấn Enter để chấp nhận, hoặc nhập 'no' để từ chối:");
-                    string response = Console.ReadLine()?.Trim().ToLower();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.Write("Nhấn Enter để chấp nhận, hoặc nhập 'no' để từ chối: ");
+                    Console.ResetColor();
+                    string response = Console.ReadLine().Trim().ToLower();
 
                     if (string.IsNullOrEmpty(response))
                     {
@@ -146,43 +170,52 @@ namespace TestMaker
                     }
                     else if (response == "no")
                     {
-                        Console.WriteLine("Chọn chế độ:");
-                        Console.WriteLine("1. Dùng stdio (không dùng file)");
-                        Console.WriteLine("2. Nhập tên file mới");
-                        Console.Write("Nhập lựa chọn (1 hoặc 2): ");
-                        string choice = Console.ReadLine()?.Trim();
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.WriteLine("🔧 Chọn chế độ:");
+                        Console.WriteLine("  1. Dùng stdio (không dùng file)");
+                        Console.WriteLine("  2. Nhập tên file mới");
+                        Console.Write("  Nhập lựa chọn (1 hoặc 2): ");
+                        Console.ResetColor();
+                        string choice = Console.ReadLine().Trim();
 
                         if (choice == "1")
                         {
                             input = null;
                             output = null;
                             confirmed = true;
+                            ConsoleUtils.LogSuccess("Chuyển sang chế độ stdio.");
                         }
                         else if (choice == "2")
                         {
-                            Console.WriteLine("Nhập tên file input (bất kỳ extension):");
-                            input = Console.ReadLine()?.Trim();
-                            Console.WriteLine("Nhập tên file output (bất kỳ extension):");
-                            output = Console.ReadLine()?.Trim();
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.Write("  📥 Nhập tên file input (bất kỳ extension): ");
+                            Console.ResetColor();
+                            input = Console.ReadLine().Trim();
+                            Console.ForegroundColor = ConsoleColor.Yellow;
+                            Console.Write("  📤 Nhập tên file output (bất kỳ extension): ");
+                            Console.ResetColor();
+                            output = Console.ReadLine().Trim();
 
                             if (string.IsNullOrWhiteSpace(input) || string.IsNullOrWhiteSpace(output))
                             {
-                                Console.WriteLine("Lỗi: Tên file không được để trống.");
+                                ConsoleUtils.LogError("Tên file không được để trống.");
                                 continue;
                             }
                             confirmed = true;
+                            ConsoleUtils.LogSuccess("Cập nhật tên file thành công.");
                         }
                         else
                         {
-                            Console.WriteLine("Lựa chọn không hợp lệ, thử lại.");
+                            ConsoleUtils.LogError("Lựa chọn không hợp lệ, thử lại.");
                         }
                     }
                     else
                     {
-                        Console.WriteLine("Đầu vào không hợp lệ, nhấn Enter hoặc 'no'.");
+                        ConsoleUtils.LogError("Đầu vào không hợp lệ, nhấn Enter hoặc 'no'.");
                     }
                 }
 
+                ConsoleUtils.LogSuccess("Xử lý mã nguồn hoàn tất.");
                 return Tuple.Create(input, output, code);
             }
         }
@@ -204,15 +237,15 @@ namespace TestMaker
             {
                 _tempFolder = Path.Combine(Path.GetTempPath(), string.Format("TM_SandBox_{0}", Guid.NewGuid().ToString("N")));
                 Directory.CreateDirectory(_tempFolder);
+                ConsoleUtils.LogInfo(string.Format("📁 Tạo thư mục tạm: {0}", _tempFolder));
             }
 
             public CompileResult ProcessAndCompile(CompilerArguments args, string compilerOption, Tuple<string, string, string> extractResult)
             {
                 if (string.IsNullOrWhiteSpace(args.CompilerPath))
                 {
-                    Console.WriteLine("Lỗi: Đường dẫn trình biên dịch không được để trống.");
+                    ConsoleUtils.LogError("Đường dẫn trình biên dịch không được để trống.");
                     Environment.Exit(-1);
-                    return null;
                 }
 
                 string fullPath = args.CompilerPath;
@@ -236,20 +269,19 @@ namespace TestMaker
 
                 if (!File.Exists(fullPath))
                 {
-                    Console.WriteLine("Lỗi: Không tìm thấy trình biên dịch trong PATH hoặc đường dẫn không hợp lệ.");
-                    return null;
+                    ConsoleUtils.LogError("Không tìm thấy trình biên dịch trong PATH hoặc đường dẫn không hợp lệ.");
+                    Environment.Exit(-1);
                 }
 
                 if (string.IsNullOrWhiteSpace(args.ScriptData))
                 {
-                    Console.WriteLine("Lỗi: Mã nguồn rỗng, không thể biên dịch.");
-                    return null;
+                    ConsoleUtils.LogError("Mã nguồn rỗng, không thể biên dịch.");
+                    Environment.Exit(-1);
                 }
 
                 var result = extractResult;
-
                 var type = args.DetectCompilerType();
-                string ext;
+                string ext = string.Empty; // Initialize to avoid unassigned variable error
                 switch (type)
                 {
                     case CompilerType.Cpp:
@@ -262,20 +294,26 @@ namespace TestMaker
                         ext = ".py";
                         break;
                     default:
-                        throw new NotSupportedException("Loại trình biên dịch không được hỗ trợ.");
+                        ConsoleUtils.LogError("Loại trình biên dịch không được hỗ trợ.");
+                        Environment.Exit(-1);
+                        throw new NotSupportedException("Loại trình biên dịch không được hỗ trợ."); // Satisfy compiler
                 }
 
                 string scriptPath = Path.Combine(_tempFolder, string.Format("script_{0}{1}", Guid.NewGuid().ToString("N"), ext));
-                string batPath = null; 
+                string batPath = null;
                 string compiledPath = null;
 
                 try
                 {
-                    File.WriteAllText(scriptPath, result.Item3);
+                    ConsoleUtils.LogInfo("💾 Đang ghi file mã nguồn...");
+                    ConsoleUtils.ShowProgressAnimation("Ghi", 5);
+                    // Use UTF-8 without BOM
+                    File.WriteAllText(scriptPath, result.Item3, new UTF8Encoding(false));
+                    ConsoleUtils.LogSuccess("Ghi file mã nguồn thành công.");
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("Lỗi khi ghi file mã nguồn: {0}", ex.Message);
+                    ConsoleUtils.LogError(string.Format("Lỗi khi ghi file mã nguồn: {0}", ex.Message));
                     return null;
                 }
 
@@ -284,7 +322,7 @@ namespace TestMaker
                 if (type != CompilerType.Python)
                 {
                     string exePath = Path.Combine(_tempFolder, string.Format("script_{0}.exe", Guid.NewGuid().ToString("N")));
-                    string arguments;
+                    string arguments = string.Empty;
                     switch (type)
                     {
                         case CompilerType.Cpp:
@@ -293,10 +331,10 @@ namespace TestMaker
                         case CompilerType.Pascal:
                             arguments = string.Format("{0} \"{1}\" -o\"{2}\"", compilerOption != null ? compilerOption.Trim() : "", scriptPath, exePath);
                             break;
-                        default:
-                            arguments = "";
-                            break;
                     }
+
+                    ConsoleUtils.LogInfo("⚙️ Đang biên dịch mã nguồn...");
+                    ConsoleUtils.ShowProgressAnimation("Biên dịch", 5);
 
                     Process process = null;
                     try
@@ -321,18 +359,18 @@ namespace TestMaker
 
                         if (process.ExitCode != 0)
                         {
-                            Console.WriteLine("Lỗi biên dịch:");
-                            Console.WriteLine("Chi tiết lỗi: {0}", stderr);
-                            Console.WriteLine("Đầu ra: {0}", stdout);
+                            ConsoleUtils.LogError("Biên dịch thất bại:");
+                            Console.WriteLine(string.Format("  Chi tiết lỗi: {0}", stderr));
+                            Console.WriteLine(string.Format("  Đầu ra: {0}", stdout));
                             return null;
                         }
 
-                        Console.WriteLine("Biên dịch thành công.");
+                        ConsoleUtils.LogSuccess("Biên dịch thành công!");
                         compiledPath = exePath;
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("Lỗi khi chạy trình biên dịch: {0}", ex.Message);
+                        ConsoleUtils.LogError(string.Format("Lỗi khi chạy trình biên dịch: {0}", ex.Message));
                         return null;
                     }
                     finally
@@ -350,12 +388,15 @@ namespace TestMaker
 
                     try
                     {
-                        byte[] scriptBytes = Encoding.UTF8.GetBytes(result.Item3);
+                        ConsoleUtils.LogInfo("🐍 Đang chuẩn bị script Python...");
+                        ConsoleUtils.ShowProgressAnimation("Chuẩn bị", 5);
+                        // Use UTF-8 without BOM for Python script
+                        byte[] scriptBytes = new UTF8Encoding(false).GetBytes(result.Item3);
                         File.WriteAllBytes(scriptPath, scriptBytes);
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("Lỗi khi ghi file Python '{0}': {1}", scriptPath, ex.Message);
+                        ConsoleUtils.LogError(string.Format("Lỗi khi ghi file Python '{0}': {1}", scriptPath, ex.Message));
                         return null;
                     }
 
@@ -365,18 +406,21 @@ namespace TestMaker
 
                     try
                     {
+                        // Use ASCII for batch file to avoid BOM issues
                         byte[] batBytes = Encoding.ASCII.GetBytes(batContent);
                         File.WriteAllBytes(batPath, batBytes);
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("Lỗi khi tạo file .bat '{0}': {1}", batPath, ex.Message);
+                        ConsoleUtils.LogError(string.Format("Lỗi khi tạo file .bat '{0}': {1}", batPath, ex.Message));
                         return null;
                     }
 
                     compiledPath = batPath;
+                    ConsoleUtils.LogSuccess("Chuẩn bị script Python hoàn tất.");
                 }
 
+                ConsoleUtils.LogSuccess("✅ Hoàn tất quá trình biên dịch!");
                 return new CompileResult
                 {
                     InputFile = result.Item1,
@@ -391,6 +435,9 @@ namespace TestMaker
                 if (_disposed)
                     return;
 
+                ConsoleUtils.LogInfo("🗑️ Đang dọn dẹp thư mục tạm...");
+                ConsoleUtils.ShowProgressAnimation("Dọn dẹp", 5);
+
                 int retries = 3;
                 for (int i = 0; i < retries; i++)
                 {
@@ -399,12 +446,13 @@ namespace TestMaker
                         if (Directory.Exists(_tempFolder))
                         {
                             Directory.Delete(_tempFolder, true);
+                            ConsoleUtils.LogSuccess("Dọn dẹp thư mục tạm thành công.");
                             break;
                         }
                     }
                     catch (Exception ex)
                     {
-                        Console.WriteLine("Lỗi khi xóa thư mục tạm (lần {0}/{1}): {2}", i + 1, retries, ex.Message);
+                        ConsoleUtils.LogError(string.Format("Lỗi khi xóa thư mục tạm (lần {0}/{1}): {2}", i + 1, retries, ex.Message));
                         if (i < retries - 1)
                             Thread.Sleep(500);
                     }

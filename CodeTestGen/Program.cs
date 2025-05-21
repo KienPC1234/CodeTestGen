@@ -24,6 +24,14 @@ namespace CodeTestGenV1
             {
                 Directory.Delete(Path.Combine(Path.GetTempPath(), "ctgPDF"),true);
             }
+            if (File.Exists(Path.Combine(Hotro.StuffFolder, "temp_code.py")))
+            {
+                File.Delete(Path.Combine(Hotro.StuffFolder, "temp_code.py"));
+            }
+            if (File.Exists(Path.Combine(Hotro.StuffFolder, "testcases.xml")))
+            {
+                File.Delete(Path.Combine(Hotro.StuffFolder, "testcases.xml"));
+            }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain());

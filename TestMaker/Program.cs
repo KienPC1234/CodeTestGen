@@ -9,22 +9,6 @@ namespace TestMaker
 {
     class Program
     {
-        private const string banner = @"
-╔════════════════════════════════════════════════════════════════════════════════╗
-║ █████   ████   █████████  ██████████      ██████████   ██████████ █████   █████║
-║░░███   ███░   ███░░░░░███░░███░░░░███    ░░███░░░░███ ░░███░░░░░█░░███   ░░███ ║
-║ ░███  ███    ███     ░░░  ░███   ░░███    ░███   ░░███ ░███  █ ░  ░███    ░███ ║
-║ ░███████    ░███          ░███    ░███    ░███    ░███ ░██████    ░███    ░███ ║
-║ ░███░░███   ░███          ░███    ░███    ░███    ░███ ░███░░█    ░░███   ███  ║
-║ ░███ ░░███  ░░███     ███ ░███    ███     ░███    ███  ░███ ░   █  ░░░█████░   ║
-║ █████ ░░████ ░░█████████  ██████████      ██████████   ██████████    ░░███     ║
-║░░░░░   ░░░░   ░░░░░░░░░  ░░░░░░░░░░      ░░░░░░░░░░   ░░░░░░░░░░      ░░░      ║
-╚═════════════════════════════════════════════════ v1.0 ═════════════════════════╝
-Make by KCD DEV (KienTensorFlow) - https://github.com/KienPC1234/CodeTestGen
-Chú ý: Vui lòng không thoát khi đang sinh test!
-
-";
-
         class Options
         {
             [Option('s', "scriptdata", Required = false, HelpText = "Mã nguồn chương trình (Base64).")]
@@ -46,29 +30,66 @@ Chú ý: Vui lòng không thoát khi đang sinh test!
             public string XmlData { get; set; }
         }
 
+        static void ExitWithPrompt(bool isSuccess)
+        {
+            Console.WriteLine("Chờ 3 giây hoặc nhấn phím bất kỳ để thoát...");
+            if (!Console.KeyAvailable)
+            {
+                Thread.Sleep(3000);
+            }
+            else
+            {
+                Console.ReadKey(true);
+            }
+            Environment.Exit(isSuccess ? 0 : -1);
+        }
+
         static void Main(string[] args)
         {
-            Console.OutputEncoding = Encoding.UTF8;
-            Console.InputEncoding = Encoding.UTF8;
+            Console.OutputEncoding = new UTF8Encoding(false);
+            Console.InputEncoding = new UTF8Encoding(false);
 
-            Parser.Default.ParseArguments<Options>(args)
-                .WithParsed(RunWithOptions)
-                .WithNotParsed(errors =>
-                {
-                    LogError("Không thể phân tích tham số. Sử dụng --help để xem hướng dẫn.");
-                });
+            Console.CancelKeyPress += (sender, e) =>
+            {
+                e.Cancel = true;
+                ConsoleUtils.LogError("Ứng dụng bị dừng bởi người dùng.");
+                ExitWithPrompt(false);
+            };
+
+            AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
+            {
+                ConsoleUtils.LogError(string.Format("Ứng dụng gặp sự cố nghiêm trọng: {0}", e.ExceptionObject.ToString()));
+                ExitWithPrompt(false);
+            };
+
+            bool isSuccess = false;
+            try
+            {
+                Parser.Default.ParseArguments<Options>(args)
+                    .WithParsed(RunWithOptions)
+                    .WithNotParsed(errors =>
+                    {
+                        ConsoleUtils.LogError("Không thể phân tích tham số. Sử dụng --help để xem hướng dẫn.");
+                        Environment.Exit(-1);
+                    });
+                isSuccess = true;
+            }
+            finally
+            {
+                ExitWithPrompt(isSuccess);
+            }
         }
 
         static void RunWithOptions(Options opts)
         {
             Console.Clear();
-            AnimateBanner();
+            ConsoleUtils.AnimateBanner();
 
-            string xmlData;
+            string xmlData = null;
             if (string.IsNullOrEmpty(opts.XmlData))
             {
-                LogError("Cần cung cấp XmlData hoặc đường dẫn file XML.");
-                return;
+                ConsoleUtils.LogError("Cần cung cấp XmlData hoặc đường dẫn file XML.");
+                Environment.Exit(-1);
             }
 
             if (File.Exists(opts.XmlData))
@@ -77,19 +98,17 @@ Chú ý: Vui lòng không thoát khi đang sinh test!
                 {
                     byte[] xmlBytes = File.ReadAllBytes(opts.XmlData);
                     xmlData = Encoding.UTF8.GetString(xmlBytes).TrimStart('\uFEFF').Trim();
-
                     if (!xmlData.StartsWith("<?xml", StringComparison.OrdinalIgnoreCase))
                     {
-                        LogError($"XML không hợp lệ: '{xmlData.Substring(0, Math.Min(50, xmlData.Length))}'");
-                        return;
+                        ConsoleUtils.LogError(string.Format("XML không hợp lệ: '{0}'", xmlData.Substring(0, Math.Min(50, xmlData.Length))));
+                        Environment.Exit(-1);
                     }
-
-                    LogSuccess("Đọc file XML thành công.");
+                    ConsoleUtils.LogSuccess("Đọc file XML thành công.");
                 }
                 catch (Exception ex)
                 {
-                    LogError($"Lỗi khi đọc file XML: {ex.Message}");
-                    return;
+                    ConsoleUtils.LogError(string.Format("Lỗi khi đọc file XML: {0}", ex.Message));
+                    Environment.Exit(-1);
                 }
             }
             else
@@ -97,53 +116,48 @@ Chú ý: Vui lòng không thoát khi đang sinh test!
                 xmlData = opts.XmlData.TrimStart('\uFEFF').Trim();
                 if (!xmlData.StartsWith("<?xml", StringComparison.OrdinalIgnoreCase))
                 {
-                    LogError($"XML không hợp lệ: '{xmlData.Substring(0, Math.Min(50, xmlData.Length))}'");
-                    return;
+                    ConsoleUtils.LogError(string.Format("XML không hợp lệ: '{0}'", xmlData.Substring(0, Math.Min(50, xmlData.Length))));
+                    Environment.Exit(-1);
                 }
-
-                LogSuccess("Nhận chuỗi XML hợp lệ.");
+                ConsoleUtils.LogSuccess("Nhận chuỗi XML hợp lệ.");
             }
 
             using (var executor = new BienDich.CompilerExecutor())
             {
                 BienDich.CompileResult compileResult = null;
-
                 if (opts.IsExeFlag)
                 {
                     if (string.IsNullOrEmpty(opts.ExePath))
                     {
-                        LogError("Cần cung cấp ExePath khi IsExeFlag là true.");
-                        return;
+                        ConsoleUtils.LogError("Cần cung cấp ExePath khi IsExeFlag là true.");
+                        Environment.Exit(-1);
                     }
-
                     if (!File.Exists(opts.ExePath))
                     {
-                        LogError($"File thực thi '{opts.ExePath}' không tồn tại.");
-                        return;
+                        ConsoleUtils.LogError(string.Format("File thực thi '{0}' không tồn tại.", opts.ExePath));
+                        Environment.Exit(-1);
                     }
-
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine("📥 Nhập thông tin file I/O (để trống nếu dùng stdio):");
                     Console.ResetColor();
                     Console.Write("  Tên file input: ");
-                    string inputFile = Console.ReadLine()?.Trim() ?? null;
+                    string inputFile = Console.ReadLine().Trim();
+                    if (string.IsNullOrEmpty(inputFile)) inputFile = null;
                     Console.Write("  Tên file output: ");
-                    string outputFile = Console.ReadLine()?.Trim() ?? null;
-
-                    string tempFileName = $"script_{Guid.NewGuid():N}{Path.GetExtension(opts.ExePath)}";
+                    string outputFile = Console.ReadLine().Trim();
+                    if (string.IsNullOrEmpty(outputFile)) outputFile = null;
+                    string tempFileName = string.Format("script_{0}{1}", Guid.NewGuid().ToString("N"), Path.GetExtension(opts.ExePath));
                     string tempFolder = executor.GetType().GetField("_tempFolder", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(executor) as string;
                     string tempPath = Path.Combine(tempFolder, tempFileName);
-
                     try
                     {
                         File.Copy(opts.ExePath, tempPath, true);
                     }
                     catch (Exception ex)
                     {
-                        LogError($"Lỗi khi sao chép file thực thi: {ex.Message}");
-                        return;
+                        ConsoleUtils.LogError(string.Format("Lỗi khi sao chép file thực thi: {0}", ex.Message));
+                        Environment.Exit(-1);
                     }
-
                     compileResult = new BienDich.CompileResult
                     {
                         InputFile = inputFile,
@@ -151,145 +165,73 @@ Chú ý: Vui lòng không thoát khi đang sinh test!
                         CompiledPath = tempPath,
                         CompileDir = tempFolder
                     };
-
-                    LogSuccess("Chuẩn bị file thực thi hoàn tất.");
+                    ConsoleUtils.LogSuccess("Chuẩn bị file thực thi hoàn tất.");
                 }
                 else
                 {
                     if (string.IsNullOrEmpty(opts.ScriptData) || string.IsNullOrEmpty(opts.CompilerPath))
                     {
-                        LogError("Cần cung cấp ScriptData và CompilerPath khi IsExeFlag là false.");
-                        return;
+                        ConsoleUtils.LogError("Cần cung cấp ScriptData và CompilerPath khi IsExeFlag là false.");
+                        Environment.Exit(-1);
                     }
-
-                    string cleanedScriptData;
+                    string cleanedScriptData = null;
                     try
                     {
-                        cleanedScriptData = Encoding.UTF8.GetString(Convert.FromBase64String(opts.ScriptData));
+                        byte[] scriptBytes = Convert.FromBase64String(opts.ScriptData);
+                        cleanedScriptData = Encoding.UTF8.GetString(scriptBytes).TrimStart('\uFEFF');
                     }
                     catch (Exception ex)
                     {
-                        LogError($"Lỗi giải mã Base64: {ex.Message}");
-                        return;
+                        ConsoleUtils.LogError(string.Format("Lỗi giải mã Base64: {0}", ex.Message));
+                        Environment.Exit(-1);
                     }
-
                     var compilerArgs = new BienDich.CompilerArguments
                     {
                         CompilerPath = opts.CompilerPath,
                         ScriptData = cleanedScriptData
                     };
-
-                    LogInfo("🔄 Đang xử lý mã nguồn...");
-                    ShowProgressAnimation("Xử lý", 5);
+                    ConsoleUtils.LogInfo("🔄 Đang xử lý mã nguồn...");
+                    ConsoleUtils.ShowProgressAnimation("Xử lý", 5);
                     var extractResult = compilerArgs.ExtractIOFiles();
                     if (extractResult == null)
                     {
-                        LogError("Không thể xử lý mã nguồn.");
-                        return;
+                        ConsoleUtils.LogError("Không thể xử lý mã nguồn.");
+                        Environment.Exit(-1);
                     }
-
-                    LogInfo("⚙️ Đang biên dịch...");
-                    ShowProgressAnimation("Biên dịch", 5);
+                    ConsoleUtils.LogInfo("⚙️ Đang biên dịch...");
+                    ConsoleUtils.ShowProgressAnimation("Biên dịch", 5);
                     compileResult = executor.ProcessAndCompile(compilerArgs, opts.CompilerOption, extractResult);
                     if (compileResult == null)
                     {
-                        LogError("Biên dịch thất bại.");
-                        return;
+                        ConsoleUtils.LogError("Biên dịch thất bại.");
+                        Environment.Exit(-1);
                     }
-
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("✅ Kết quả biên dịch:");
                     Console.ResetColor();
-                    LogCompileResult(compileResult);
+                    ConsoleUtils.LogCompileResult(compileResult);
                 }
-
                 Console.Clear();
-                AnimateBanner();
-
+                ConsoleUtils.AnimateBanner();
                 var testGen = new TestGenComp(compileResult, xmlData);
-                LogInfo("⏳ Đang chạy testcase...");
-                ShowProgressAnimation("Chạy test", 5);
+                ConsoleUtils.LogInfo("⏳ Đang chạy testcase...");
+                ConsoleUtils.ShowProgressAnimation("Chạy test", 5);
                 testGen.ProcessTestCases();
-
                 string xmlOutputPath = Path.Combine(compileResult.CompileDir, "testcases.xml");
                 if (File.Exists(xmlOutputPath))
                 {
                     byte[] xmlBytes = File.ReadAllBytes(xmlOutputPath);
-                    File.WriteAllBytes(Path.Combine(Directory.GetCurrentDirectory(), "fulltestcases.xml"), xmlBytes);
-                    LogSuccess("🎉 Sinh testcase hoàn tất! Kết quả lưu tại 'fulltestcases.xml'.");
+                    string xmlContent = Encoding.UTF8.GetString(xmlBytes).TrimStart('\uFEFF');
+                    string outputPath = Path.Combine(Directory.GetCurrentDirectory(), "fulltestcases.xml");
+                    string finalContent = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + Environment.NewLine + xmlContent;
+                    File.WriteAllText(outputPath, finalContent, new UTF8Encoding(false));
+                    ConsoleUtils.LogSuccess(string.Format("🎉 Sinh testcase hoàn tất! Kết quả lưu tại '{0}'.", outputPath));
                 }
                 else
                 {
-                    LogError("Không tìm thấy file testcase đầu ra.");
+                    ConsoleUtils.LogError("Không tìm thấy file testcase đầu ra.");
+                    Environment.Exit(-1);
                 }
-            }
-        }
-
-        static void LogError(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine($"❌ Lỗi: {message}");
-            Console.ResetColor();
-            Environment.Exit(-1);
-        }
-
-        static void LogSuccess(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine($"✅ {message}");
-            Console.ResetColor();
-        }
-
-        static void LogInfo(string message)
-        {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine(message);
-            Console.ResetColor();
-        }
-
-        static void LogCompileResult(BienDich.CompileResult result)
-        {
-            Console.WriteLine($"  📄 Input File: {(result.InputFile ?? "none")}");
-            Console.WriteLine($"  📄 Output File: {(result.OutputFile ?? "none")}");
-            Console.WriteLine($"  🛠️ Compiled Path: {result.CompiledPath}");
-            Console.WriteLine($"  📁 Compile Directory: {result.CompileDir}");
-        }
-
-        static void AnimateBanner()
-        {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            string[] lines = banner.Split('\n');
-            for (int i = 0; i < lines.Length; i++)
-            {
-                Console.WriteLine(lines[i]);
-                Thread.Sleep(50);
-            }
-            Console.ResetColor();
-            Thread.Sleep(200);
-        }
-
-        static void ShowProgressAnimation(string task, int cycles)
-        {
-            string[] frames = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" };
-            int cursorLeft = Console.CursorLeft;
-            int cursorTop = Console.CursorTop;
-            try
-            {
-                for (int i = 0; i < cycles * frames.Length; i++)
-                {
-                    Console.SetCursorPosition(cursorLeft, cursorTop);
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.Write($"{task} {frames[i % frames.Length]}");
-                    Console.ResetColor();
-                    Console.Out.Flush();
-                    Thread.Sleep(50);
-                }
-            }
-            finally
-            {
-                Console.SetCursorPosition(cursorLeft, cursorTop);
-                Console.Write(new string(' ', task.Length + 2));
-                Console.SetCursorPosition(cursorLeft, cursorTop);
             }
         }
     }
