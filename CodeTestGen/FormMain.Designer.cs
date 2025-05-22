@@ -161,7 +161,7 @@
             this.materialRaisedButton8.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialRaisedButton8.Name = "materialRaisedButton8";
             this.materialRaisedButton8.Primary = true;
-            this.materialRaisedButton8.Size = new System.Drawing.Size(141, 31);
+            this.materialRaisedButton8.Size = new System.Drawing.Size(142, 31);
             this.materialRaisedButton8.TabIndex = 12;
             this.materialRaisedButton8.Text = "Sử dụng bản lưu";
             this.toolTip1.SetToolTip(this.materialRaisedButton8, "Bạn có thể xuất file lưu XML từ máy khác và sử dụng lại ở đây, nhớ cung cấp code " +
@@ -180,7 +180,7 @@
             this.materialRaisedButton5.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialRaisedButton5.Name = "materialRaisedButton5";
             this.materialRaisedButton5.Primary = true;
-            this.materialRaisedButton5.Size = new System.Drawing.Size(292, 42);
+            this.materialRaisedButton5.Size = new System.Drawing.Size(293, 42);
             this.materialRaisedButton5.TabIndex = 12;
             this.materialRaisedButton5.Text = "Sử dụng mã code để sinh test tùy chỉnh";
             this.toolTip1.SetToolTip(this.materialRaisedButton5, "Sử dụng mã python tùy chỉnh dùng module \"SinhTest\".");
@@ -756,7 +756,7 @@
             this.lostBorderPanel2.Name = "lostBorderPanel2";
             this.lostBorderPanel2.Padding = new System.Windows.Forms.Padding(4);
             this.lostBorderPanel2.ShowText = false;
-            this.lostBorderPanel2.Size = new System.Drawing.Size(317, 323);
+            this.lostBorderPanel2.Size = new System.Drawing.Size(318, 323);
             this.lostBorderPanel2.TabIndex = 2;
             // 
             // lostBorderPanel4
@@ -773,7 +773,7 @@
             this.lostBorderPanel4.Name = "lostBorderPanel4";
             this.lostBorderPanel4.Padding = new System.Windows.Forms.Padding(5);
             this.lostBorderPanel4.ShowText = false;
-            this.lostBorderPanel4.Size = new System.Drawing.Size(292, 142);
+            this.lostBorderPanel4.Size = new System.Drawing.Size(293, 142);
             this.lostBorderPanel4.TabIndex = 8;
             this.lostBorderPanel4.Text = "lostBorderPanel4";
             // 
@@ -800,7 +800,6 @@
             this.fastColoredTextBox1.CharWidth = 8;
             this.fastColoredTextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.fastColoredTextBox1.DisabledColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))), ((int)(((byte)(180)))));
-            this.fastColoredTextBox1.Font = new System.Drawing.Font("Courier New", 9.75F);
             this.fastColoredTextBox1.ForeColor = System.Drawing.Color.Black;
             this.fastColoredTextBox1.IsReplaceMode = false;
             this.fastColoredTextBox1.Location = new System.Drawing.Point(3, 3);
@@ -809,12 +808,11 @@
             this.fastColoredTextBox1.SelectionColor = System.Drawing.Color.FromArgb(((int)(((byte)(60)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(255)))));
             this.fastColoredTextBox1.ServiceColors = ((FastColoredTextBoxNS.ServiceColors)(resources.GetObject("fastColoredTextBox1.ServiceColors")));
             this.fastColoredTextBox1.ShowLineNumbers = false;
-            this.fastColoredTextBox1.Size = new System.Drawing.Size(286, 136);
+            this.fastColoredTextBox1.Size = new System.Drawing.Size(287, 136);
             this.fastColoredTextBox1.TabIndex = 10;
             this.fastColoredTextBox1.Text = resources.GetString("fastColoredTextBox1.Text");
             this.fastColoredTextBox1.Zoom = 100;
             this.fastColoredTextBox1.TextChanged += new System.EventHandler<FastColoredTextBoxNS.TextChangedEventArgs>(this.fastColoredTextBox1_TextChanged);
-            this.fastColoredTextBox1.Load += new System.EventHandler(this.fastColoredTextBox1_Load_1);
             this.fastColoredTextBox1.MouseEnter += new System.EventHandler(this.fastColoredTextBox1_Load);
             this.fastColoredTextBox1.MouseLeave += new System.EventHandler(this.fastColoredTextBox1_MouseLeave);
             // 
@@ -844,7 +842,7 @@
             0,
             0});
             this.crownNumeric1.Name = "crownNumeric1";
-            this.crownNumeric1.Size = new System.Drawing.Size(161, 29);
+            this.crownNumeric1.Size = new System.Drawing.Size(162, 29);
             this.crownNumeric1.TabIndex = 9;
             this.crownNumeric1.Value = new decimal(new int[] {
             100,
@@ -875,7 +873,7 @@
             this.materialRaisedButton6.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialRaisedButton6.Name = "materialRaisedButton6";
             this.materialRaisedButton6.Primary = true;
-            this.materialRaisedButton6.Size = new System.Drawing.Size(292, 47);
+            this.materialRaisedButton6.Size = new System.Drawing.Size(293, 47);
             this.materialRaisedButton6.TabIndex = 5;
             this.materialRaisedButton6.Text = "Dùng PDF, Ảnh Của Đề Bài Để Ai Tự Tạo Yêu Cầu (Có Thể Chọn Nhiều File)";
             this.materialRaisedButton6.UseVisualStyleBackColor = true;
@@ -898,7 +896,7 @@
             this.lostBorderPanel1.Name = "lostBorderPanel1";
             this.lostBorderPanel1.Padding = new System.Windows.Forms.Padding(4);
             this.lostBorderPanel1.ShowText = false;
-            this.lostBorderPanel1.Size = new System.Drawing.Size(317, 135);
+            this.lostBorderPanel1.Size = new System.Drawing.Size(318, 135);
             this.lostBorderPanel1.TabIndex = 0;
             // 
             // materialLabel12
@@ -930,7 +928,7 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(294, 79);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(295, 79);
             this.tableLayoutPanel3.TabIndex = 11;
             // 
             // materialRaisedButton11
@@ -975,7 +973,7 @@
             this.materialRaisedButton10.MouseState = MaterialSkin.MouseState.HOVER;
             this.materialRaisedButton10.Name = "materialRaisedButton10";
             this.materialRaisedButton10.Primary = true;
-            this.materialRaisedButton10.Size = new System.Drawing.Size(141, 33);
+            this.materialRaisedButton10.Size = new System.Drawing.Size(142, 33);
             this.materialRaisedButton10.TabIndex = 4;
             this.materialRaisedButton10.Text = "Làm sạch";
             this.materialRaisedButton10.UseVisualStyleBackColor = true;
@@ -987,7 +985,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.crownDropDownList1.Location = new System.Drawing.Point(123, 19);
             this.crownDropDownList1.Name = "crownDropDownList1";
-            this.crownDropDownList1.Size = new System.Drawing.Size(182, 20);
+            this.crownDropDownList1.Size = new System.Drawing.Size(183, 20);
             this.crownDropDownList1.TabIndex = 4;
             this.crownDropDownList1.Text = "crownDropDownList1";
             // 
@@ -1048,6 +1046,7 @@
             this.Name = "FormMain";
             this.Text = "Code Test Generator";
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormMain_FormClosing);
             this.tabPage3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.VideoPlayer)).EndInit();
             this.tabPage2.ResumeLayout(false);

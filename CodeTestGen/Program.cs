@@ -9,34 +9,87 @@ namespace CodeTestGenV1
 {
     internal static class Program
     {
+        #region Constants
+        private const string StuffFolderName = "Stuff";
+        private const string TempPdfFolder = "ctgPDF";
+        private const string TempCodeFile = "temp_code.py";
+        private const string TestCasesFile = "testcases.xml";
+        #endregion
+
+        #region Main Entry Point
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
         {
-            Hotro.StuffFolder = Path.Combine(Hotro.AppPath, "Stuff");
-            if (!Directory.Exists(Hotro.StuffFolder)) {
-                MessageBox.Show("KHông Tìm Thấy Thư Mục Chứa File Quan Trọng, Vui Lòng Cài Lại App!","Lỗi Nghiêm Trọng",MessageBoxButtons.OK,MessageBoxIcon.Stop);
+            try
+            {
+                InitializeApplication();
+                PerformCleanup();
+                RunApplication();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi khởi động ứng dụng: {ex.Message}", "Lỗi Nghiêm Trọng",
+                    MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 Environment.Exit(-1);
             }
-            if (Directory.Exists(Path.Combine(Path.GetTempPath(), "ctgPDF")))
+        }
+        #endregion
+
+        #region Initialization Methods
+        private static void InitializeApplication()
+        {
+            Hotro.StuffFolder = Path.Combine(Hotro.AppPath, StuffFolderName);
+            if (!Directory.Exists(Hotro.StuffFolder))
             {
-                Directory.Delete(Path.Combine(Path.GetTempPath(), "ctgPDF"),true);
+                throw new DirectoryNotFoundException("Không tìm thấy thư mục chứa file quan trọng. Vui lòng cài lại ứng dụng!");
             }
-            if (File.Exists(Path.Combine(Hotro.StuffFolder, "temp_code.py")))
-            {
-                File.Delete(Path.Combine(Hotro.StuffFolder, "temp_code.py"));
-            }
-            if (File.Exists(Path.Combine(Hotro.StuffFolder, "testcases.xml")))
-            {
-                File.Delete(Path.Combine(Hotro.StuffFolder, "testcases.xml"));
-            }
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormMain());
-            //cleanUp
-            
         }
+        #endregion
+
+        #region Cleanup Methods
+        private static void PerformCleanup()
+        {
+            try
+            {
+                // Clean up temporary PDF folder
+                string tempPdfPath = Path.Combine(Path.GetTempPath(), TempPdfFolder);
+                if (Directory.Exists(tempPdfPath))
+                {
+                    Directory.Delete(tempPdfPath, true);
+                }
+
+                // Clean up temporary code file
+                string tempCodePath = Path.Combine(Hotro.StuffFolder, TempCodeFile);
+                if (File.Exists(tempCodePath))
+                {
+                    File.Delete(tempCodePath);
+                }
+
+                // Clean up test cases file
+                string testCasesPath = Path.Combine(Hotro.StuffFolder, TestCasesFile);
+                if (File.Exists(testCasesPath))
+                {
+                    File.Delete(testCasesPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new IOException("Lỗi khi dọn dẹp file tạm thời: " + ex.Message);
+            }
+        }
+        #endregion
+
+        #region Application Execution
+        private static void RunApplication()
+        {
+            Application.Run(new FormMain());
+        }
+        #endregion
     }
 }

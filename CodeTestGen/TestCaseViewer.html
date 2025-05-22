@@ -573,7 +573,7 @@
     function renderTestcaseTree() {
       const tree = document.getElementById("testcaseTree");
       if (testcases.length === 0) {
-        tree.innerHTML = '<div class="no-data text-center animate__animated animate__fadeIn">Không có testcase nào</div>';
+        tree.innerHTML = '<div class="no-data text-center animate__animated animate__fadeIn">Đang Load các testcase...</div>';
       } else {
         tree.innerHTML = '<ul class="list-group">' + testcases.map((tc, index) => 
           `<li class="list-group-item d-flex justify-content-between align-items-center animate__animated animate__fadeIn ${selectedIndex === index ? 'selected' : ''}" onclick="selectTestcase(${index})">

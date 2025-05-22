@@ -17,13 +17,31 @@ namespace CodeTestGen
         private readonly string TestCasesPath;
         private TestCaseFormat _tsf;
         private List<TestCase> _ts;
-
-        public SaveForm(TestCaseFormat tsf, List<TestCase> ts, string tcpath)
+        private FormMain _fm;
+        public SaveForm(TestCaseFormat tsf, List<TestCase> ts, string tcpath, FormMain fm)
         {
             InitializeComponent();
             _tsf = tsf;
+            _fm = fm;
             _ts = ts;
             TestCasesPath = tcpath;
+            SetTheme();
+        }
+        private void SetTheme()
+        {
+            if (_fm != null)
+            {
+                string Mode = _fm.appSettings.Mode;
+                if (Mode == "Dark")
+                {
+                    panel1.BackColor= Color.FromArgb(29, 35, 44);
+                }
+                else // Light mode
+                {
+                    panel1.BackColor = Color.WhiteSmoke;
+                }
+
+            }
         }
 
         private async void materialRaisedButton2_Click(object sender, EventArgs e)

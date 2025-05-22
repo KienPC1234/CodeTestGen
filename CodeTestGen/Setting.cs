@@ -87,7 +87,15 @@ namespace CodeTestGenV1
 
         public static Settings LoadSettings(MaterialSkinManager skinManager,FormMain formM)
         {
+            string BasePath = Hotro.AppPath;
+            string bienDichPath = Path.Combine(BasePath, "BienDich");
             var data = LoadSettingsData();
+            if (data.UseAppCompiler && Directory.Exists(bienDichPath))
+            {
+                data.PythonCompilerPath = Path.Combine(bienDichPath, "python", "python.exe");
+                data.CppCompilerPath = Path.Combine(bienDichPath, "mingw64", "bin", "g++.exe");
+                data.PascalCompilerPath = Path.Combine(bienDichPath, "FPC", "bin", "i386-win32", "fpc.exe");
+            }
             var settings = new Settings(skinManager,formM)
             {
                 ApiKey = data.ApiKey,

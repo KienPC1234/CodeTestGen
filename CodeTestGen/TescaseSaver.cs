@@ -297,14 +297,8 @@ namespace CodeTestGen
                     var outputNumber = long.Parse(testCase.TestCaseOutput.Trim());
                     var jsonPayload = new
                     {
-                        input = new
-                        {
-                            body = new { input = testCase.TestCaseInput }
-                        },
-                        output = new
-                        {
-                            body = new { output = outputNumber }
-                        }
+                        input = testCase.TestCaseInput,
+                        output = outputNumber
                     };
 
                     string jsonFileName = $"{testCase.TestCaseIndex:D2}.json";

@@ -39,6 +39,24 @@ Chú ý: Vui lòng không thoát khi đang sinh test!
             Console.WriteLine($"✅ {message}");
             Console.ResetColor();
         }
+        static int lastMessageLength = 0;
+
+        public static void LogSuccessInline(string message)
+        {
+            
+            Console.SetCursorPosition(0, Console.CursorTop);
+            Console.Write(new string(' ', lastMessageLength));
+            Console.SetCursorPosition(0, Console.CursorTop); 
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            string fullMessage = $"✅ {message}";
+            Console.Write(fullMessage);
+            Console.Out.Flush();
+            Console.ResetColor();
+
+            lastMessageLength = fullMessage.Length;
+        }
+
 
         public static void LogInfo(string message)
         {

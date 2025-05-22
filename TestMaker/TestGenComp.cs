@@ -99,7 +99,7 @@ namespace TestMaker
                     }
 
                     results.Add((caseNumber, output1));
-                    ConsoleUtils.LogSuccess(string.Format("Hoàn tất testcase {0}!", caseNumber));
+                    ConsoleUtils.LogSuccessInline(string.Format("Hoàn tất testcase {0}!", caseNumber));
                     testIndex++;
                 }
 
