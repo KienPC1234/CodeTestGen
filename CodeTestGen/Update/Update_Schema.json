@@ -2,22 +2,16 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "UpdateLogWithLatest",
   "type": "object",
-  "required": [ "latest_version", "history" ],
+  "required": ["latest_version", "history"],
   "properties": {
     "latest_version": {
       "type": "object",
-      "required": [ "version", "change_logs", "download_link", "release_date" ],
+      "required": ["version", "change_logs", "download_link", "release_date"],
       "properties": {
         "version": { "type": "string" },
         "change_logs": { "type": "string" },
-        "download_link": {
-          "type": "string",
-          "format": "uri"
-        },
-        "release_date": {
-          "type": "string",
-          "format": "date"
-        }
+        "download_link": { "type": "string", "format": "uri" },
+        "release_date": { "type": "string", "format": "date" }
       },
       "additionalProperties": false
     },
@@ -25,18 +19,12 @@
       "type": "array",
       "items": {
         "type": "object",
-        "required": [ "version", "change_logs", "download_link", "release_date" ],
+        "required": ["version", "change_logs", "download_link", "release_date"],
         "properties": {
           "version": { "type": "string" },
           "change_logs": { "type": "string" },
-          "download_link": {
-            "type": "string",
-            "format": "uri"
-          },
-          "release_date": {
-            "type": "string",
-            "format": "date"
-          }
+          "download_link": { "type": "string", "format": "uri" },
+          "release_date": { "type": "string", "format": "date" }
         },
         "additionalProperties": false
       }

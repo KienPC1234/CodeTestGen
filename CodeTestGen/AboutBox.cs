@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using FastColoredTextBoxNS;
 using MaterialSkin.Controls;
 using MaterialSkin;
+using CodeTestGen;
 
 namespace CodeTestGenV1
 {
@@ -14,9 +15,10 @@ namespace CodeTestGenV1
     {
         private readonly TextStyle hyperlinkStyle = new TextStyle(Brushes.Blue, null, FontStyle.Underline);
         private readonly TextStyle numberStyle = new TextStyle(Brushes.Green, null, FontStyle.Bold);
-
-        public AboutBox()
+        private SettingsData _Settings;
+        public AboutBox(SettingsData Settings)
         {
+            _Settings = Settings;   
             InitializeComponent();
             this.Text = $"About {AssemblyTitle}";
             labelProductName.Text = AssemblyProduct;
@@ -95,5 +97,6 @@ https://github.com/KienPC1234/CodeTestGen";
             return (T)Attribute.GetCustomAttribute(Assembly.GetExecutingAssembly(), typeof(T));
         }
 
+        private void materialRaisedButton3_Click(object sender, EventArgs e) => new FormChangeLog(_Settings).Show();
     }
 }

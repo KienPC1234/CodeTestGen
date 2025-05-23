@@ -54,10 +54,10 @@
             this.labelProductName.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.labelProductName.Font = new System.Drawing.Font("Roboto", 11F);
             this.labelProductName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.labelProductName.Location = new System.Drawing.Point(168, 16);
+            this.labelProductName.Location = new System.Drawing.Point(168, 15);
             this.labelProductName.MouseState = MaterialSkin.MouseState.HOVER;
             this.labelProductName.Name = "labelProductName";
-            this.labelProductName.Size = new System.Drawing.Size(343, 18);
+            this.labelProductName.Size = new System.Drawing.Size(343, 19);
             this.labelProductName.TabIndex = 29;
             this.labelProductName.Text = "ProductName";
             // 
@@ -68,10 +68,10 @@
             this.labelCopyright.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.labelCopyright.Font = new System.Drawing.Font("Roboto", 11F);
             this.labelCopyright.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.labelCopyright.Location = new System.Drawing.Point(168, 70);
+            this.labelCopyright.Location = new System.Drawing.Point(168, 69);
             this.labelCopyright.MouseState = MaterialSkin.MouseState.HOVER;
             this.labelCopyright.Name = "labelCopyright";
-            this.labelCopyright.Size = new System.Drawing.Size(343, 18);
+            this.labelCopyright.Size = new System.Drawing.Size(343, 19);
             this.labelCopyright.TabIndex = 27;
             this.labelCopyright.Text = "Copyright";
             // 
@@ -82,10 +82,10 @@
             this.labelVersion.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.labelVersion.Font = new System.Drawing.Font("Roboto", 11F);
             this.labelVersion.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.labelVersion.Location = new System.Drawing.Point(168, 43);
+            this.labelVersion.Location = new System.Drawing.Point(168, 42);
             this.labelVersion.MouseState = MaterialSkin.MouseState.HOVER;
             this.labelVersion.Name = "labelVersion";
-            this.labelVersion.Size = new System.Drawing.Size(343, 18);
+            this.labelVersion.Size = new System.Drawing.Size(343, 19);
             this.labelVersion.TabIndex = 28;
             this.labelVersion.Text = "Version";
             // 
@@ -112,6 +112,7 @@
             this.materialRaisedButton3.TabIndex = 25;
             this.materialRaisedButton3.Text = "Kiểm Tra Cập Nhật";
             this.materialRaisedButton3.UseVisualStyleBackColor = true;
+            this.materialRaisedButton3.Click += new System.EventHandler(this.materialRaisedButton3_Click);
             // 
             // materialRaisedButton2
             // 

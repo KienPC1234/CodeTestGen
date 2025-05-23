@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changelog</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Animate.css -->
+    <link href="https://cdn.jsdelivr.net/npm/animate.css@4.1.1/animate.min.css" rel="stylesheet">
+    <style>
+        body {
+            transition: background-color 0.3s, color 0.3s;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding-top: 60px; /* Space for fixed button */
+        }
+        .dark-theme {
+            background-color: #1c2526;
+            color: #e0e7e9;
+        }
+        .light-theme {
+            background-color: #f5f6f5;
+            color: #2e2f2f;
+        }
+        #changelog {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            transition: background-color 0.3s;
+        }
+        .dark-theme #changelog {
+            background-color: #2e2f2f;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        .light-theme #changelog {
+            background-color: #ffffff;
+        }
+        #theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 1000; /* Ensure button is above other content */
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        .dark-theme #theme-toggle {
+            background-color: #e0e7e9;
+            color: #1c2526;
+        }
+        .light-theme #theme-toggle {
+            background-color: #2e2f2f;
+            color: #f5f6f5;
+        }
+        h1, h2, h3 {
+            font-weight:  visione700;
+            margin-bottom: 1rem;
+        }
+        h1 {
+            font-size: 1.8rem;
+        }
+        h2 {
+            font-size: 1.5rem;
+        }
+        h3 {
+            font-size: 1.2rem;
+        }
+        ul, ol {
+            padding-left: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        code {
+            background-color: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        .dark-theme code {
+            background-color: #495057;
+        }
+        pre {
+            background-color: #e9ecef;
+            padding: 1.2rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .dark-theme pre {
+            background-color: #495057;
+        }
+    </style>
+</head>
+<body class="light-theme">
+    <button id="theme-toggle" class="btn animate__animated animate__fadeIn">Switch to Dark</button>
+    <div id="changelog" class="animate__animated animate__fadeInUp"></div>
+
+    <!-- Bootstrap 5 JS (with Popper.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        // Load HTML content into changelog div
+        function LoadHTMLs(htmlContent) {
+            const changelogDiv = document.getElementById('changelog');
+            changelogDiv.innerHTML = htmlContent;
+            // Apply fade-in animation
+            changelogDiv.classList.remove('animate__fadeInUp');
+            void changelogDiv.offsetWidth; // Trigger reflow
+            changelogDiv.classList.add('animate__fadeInUp');
+        }
+
+        // Theme toggle function with boolean parameter
+        function toggleTheme(isDark) {
+            const body = document.body;
+            const changelog = document.getElementById('changelog');
+            const themeToggle = document.getElementById('theme-toggle');
+            if (isDark) {
+                body.classList.remove('light-theme');
+                body.classList.add('dark-theme');
+                themeToggle.textContent = 'Switch to Light';
+            } else {
+                body.classList.remove('dark-theme');
+                body.classList.add('light-theme');
+                themeToggle.textContent = 'Switch to Dark';
+            }
+            // Apply animation on changelog
+            changelog.classList.remove('animate__fadeInUp');
+            void changelog.offsetWidth;
+            changelog.classList.add('animate__fadeInUp');
+            // Apply animation on button
+            themeToggle.classList.remove('animate__fadeIn');
+            void themeToggle.offsetWidth;
+            themeToggle.classList.add('animate__fadeIn');
+        }
+
+        // Attach toggleTheme to button click
+        document.getElementById('theme-toggle').addEventListener('click', () => toggleTheme(!document.body.classList.contains('dark-theme')));
+    </script>
+</body>
+</html>

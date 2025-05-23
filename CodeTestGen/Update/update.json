@@ -1,7 +1,16 @@
-[
-  {
-    "Lastest_Version": "1.0 Beta",
-    "Change_Logs": "Init",
-    "Download_Link": ""
-  }
-]
+{
+  "latest_version": {
+    "version": "1.0R",
+    "change_logs": "# Version 1.0R\n## Release Date: 2025-05-23\n\n### New Features\n- **UI Overhaul**: Redesigned user interface with modern aesthetics and improved usability.\n- **Production Environment Features**:\n  - Added support for automated deployment workflows.\n  - Integrated real-time monitoring tools for production servers.\n- **Script Enhancements**:\n  - Optimized scripting engine for 30% faster execution.\n  - Added new API endpoints for custom scripts.\n\n### Bug Fixes\n- Fixed crashes during high-load scenarios.\n- Resolved alignment issues in the settings panel.\n- Corrected data syncing errors with external services.\n\n### Improvements\n- Enhanced accessibility for keyboard navigation.\n- Updated dependencies to latest stable versions.\n\nFor more details, see [our documentation](https://example.com/docs).",
+    "download_link": "https://github.com/KienPC1234/CodeTestGen/archive/refs/tags/v1.0Beta.zip",
+    "release_date": "2025-05-23"
+  },
+  "history": [
+    {
+      "version": "1.0 Beta",
+      "change_logs": "# Version 1.0 Beta\n## Release Date: 2025-04-15\n\n### Initial Release\n- Introduced core functionality for the application.\n- Basic UI with support for light theme.\n- Initial scripting engine for automation tasks.\n\n### Known Issues\n- Occasional crashes under heavy load.\n- Limited production environment support.",
+      "download_link": "https://github.com/KienPC1234/CodeTestGen/archive/refs/tags/v1.0Beta.zip",
+      "release_date": "2025-04-15"
+    }
+  ]
+}

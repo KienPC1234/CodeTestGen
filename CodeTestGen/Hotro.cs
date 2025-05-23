@@ -17,7 +17,7 @@ namespace CodeTestGenV1
     internal class Hotro
     {
         public static readonly string AppPath = Directory.GetCurrentDirectory();
-        public static readonly string version = "1.0 Beta";
+        public static readonly string version = "1.0R";
         public static string StuffFolder = null;
 
         //AI
